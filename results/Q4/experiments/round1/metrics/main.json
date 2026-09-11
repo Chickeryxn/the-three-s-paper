@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "M4",
+  "role": "main_candidate",
+  "script": "code/Q4/q4_main.py",
+  "scheme": "vertex-centred finite volume in xi = r/R(t) (conservative flux form) + Crank-Nicolson with a 3-step backward-Euler (Rannacher) startup",
+  "grid": {
+    "nodes": 801,
+    "dxi": 0.00125,
+    "dt_s": 5.0,
+    "n_be_start": 3,
+    "report_points_are_exact_nodes": true,
+    "radius_interpolation": "PCHIP on attachment 2 (1800 s step)"
+  },
+  "drying_time_hours": 52.63611111111111,
+  "table6_moisture_kg_per_kg": {
+    "6": [
+      1.9473,
+      1.7782,
+      1.254,
+      null,
+      0.5654
+    ],
+    "12": [
+      0.8718,
+      0.775,
+      0.4851,
+      null,
+      0.214
+    ],
+    "18": [
+      0.4588,
+      0.4126,
+      0.265,
+      null,
+      0.1019
+    ],
+    "24": [
+      0.307,
+      0.2803,
+      0.1901,
+      null,
+      0.0713
+    ],
+    "30": [
+      0.2379,
+      0.2197,
+      0.1554,
+      null,
+      0.061
+    ],
+    "36": [
+      0.1999,
+      0.186,
+      0.1356,
+      null,
+      0.0567
+    ],
+    "42": [
+      0.176,
+      0.1647,
+      0.1226,
+      null,
+      0.0545
+    ],
+    "48": [
+      0.1596,
+      0.1499,
+      0.1135,
+      null,
+      0.0532
+    ]
+  },
+  "table6_columns_cm": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    "药材表面"
+  ],
+  "table6_end_row": {
+    "label": "烘干结束时间",
+    "time_hours": 52.63611111111111,
+    "R_cm": 1.2,
+    "C": [
+      0.15,
+      0.1413,
+      0.1081,
+      null,
+      0.0526
+    ]
+  },
+  "reference_case": {
+    "config": "radius frozen at R0 = 2 cm, D frozen at 1e-9 m^2/s, T_inf = 50 degC, C_inf = 0.05 kg/kg, surface node native",
+    "t_hours": 6.0,
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "C_at_6h": [
+      2.520808,
+      2.469801,
+      2.21013,
+      1.503459,
+      0.355293
+    ]
+  },
+  "radius": {
+    "R0_cm": 2.0,
+    "R_min_cm": 1.198,
+    "shrinkage_percent": 40.1,
+    "R_at_drying_end_cm": 1.2
+  },
+  "deliverable": {
+    "file": "results/Q4/experiments/round1/result4.xlsx",
+    "sheets": [
+      "Sheet1"
+    ],
+    "data_rows": 3159,
+    "data_cols": 21,
+    "written": true,
+    "write_wall_s": 1.2,
+    "time_axis": "every 60 s, last row is the exact drying end",
+    "distance_axis_cm": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      "药材表面"
+    ],
+    "blank_rule": "cells with r > R(t) are left empty (T1 caliber)"
+  },
+  "timing": {
+    "solver_wall_s": 25.9,
+    "xlsx_wall_s": 1.2
+  }
+}

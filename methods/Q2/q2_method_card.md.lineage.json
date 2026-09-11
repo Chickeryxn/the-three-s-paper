@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q2/q2_method_card.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "planning/parse/problem_parse.json",
+      "exists": true,
+      "sha256": "8f08393e8aaac2308575e6ec1edddc3b0c352b29abb4c2e3c41a8e8e0269d757"
+    },
+    {
+      "path": "planning/framing_decisions.jsonl",
+      "exists": true,
+      "sha256": "2209d2f01445fc4cb9f4beb89fddf9c6c0a0745cf0835498590dc674ceb9746f"
+    },
+    {
+      "path": "workspace/data/data_profile.json",
+      "exists": true,
+      "sha256": "836a6f96309d6e6f96843b7afa7dc62827f0235647140c489de8cac49ffa5a40"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "model-code-analyzer"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:04+0800"
+}

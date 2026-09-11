@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "profile": "lean",
+  "generated_at": "2026-09-11T14:56:31+0800",
+  "tested_sources": {
+    "main": "results/Q1/experiments/round1/metrics/main.json",
+    "baseline": "results/Q1/experiments/round1/metrics/baseline.json",
+    "verifier": "results/Q1/experiments/round1/metrics/verifier_validation.json"
+  },
+  "checks": {
+    "solver_equivalence": {
+      "claim": "the vectorised solver reproduces the validated cell-centred implementation (baseline role B2)",
+      "perturbation": "none",
+      "metric": "max abs difference of the reported profile",
+      "observed": 8.881784197001252e-15,
+      "threshold": 1e-10,
+      "status": "PASS"
+    },
+    "scheme_independence": {
+      "claim": "the sensitivity sweep runs on the baseline implementation but describes the model, not the scheme",
+      "perturbation": "none",
+      "metric": "max abs difference of the reported moisture profile at t = 1800 s, sweep implementation vs main role M2",
+      "observed": 0.0,
+      "threshold": 0.0001,
+      "status": "PASS",
+      "interpretation": "the sweep implementation and the main role agree to within one unit in the last reported decimal"
+    },
+    "h_m_perturbation": {
+      "claim": "the reported moisture field, given h_m = 8e-7 m/s as supplied in appendix 2",
+      "perturbation": "h_m scaled by 0.95 / 1.05 / 1.10 (the value is a problem input, not fitted)",
+      "metric": "max abs change of the 5 reported moisture values at t = 1800 s",
+      "threshold": "predeclared: < 1e-4 (one unit in the last reported decimal) would be negligible",
+      "observed": {
+        "h_m x0.95": {
+          "max_abs_diff_C": 0.03643444617292557,
+          "at_r_cm": 2.0,
+          "surface_C": 1.5466716156021647,
+          "surface_shift": 0.03643444617292557,
+          "relative_change": 0.024124983089043667,
+          "units_in_last_reported_decimal": 364.3444617292557
+        },
+        "h_m x1.05": {
+          "max_abs_diff_C": 0.035242983975255715,
+          "at_r_cm": 2.0,
+          "surface_C": 1.4749941854539834,
+          "surface_shift": -0.035242983975255715,
+          "relative_change": 0.02333605918901799,
+          "units_in_last_reported_decimal": 352.42983975255714
+        },
+        "h_m x1.10": {
+          "max_abs_diff_C": 0.06934186039487034,
+          "at_r_cm": 2.0,
+          "surface_C": 1.4408953090343688,
+          "surface_shift": -0.06934186039487034,
+          "relative_change": 0.045914550243175756,
+          "units_in_last_reported_decimal": 693.4186039487033
+        }
+      },
+      "status": "CONDITIONAL",
+      "interpretation": "a 5 percent change in h_m moves the surface value by ~0.035 kg/kg (2.3 percent), 350+ units in the last decimal; the reported surface value is meaningful only under the supplied h_m"
+    },
+    "D_perturbation": {
+      "claim": "the empirical diffusivity D = 7e-9 exp(-0.89/C)",
+      "perturbation": "D scaled by 1.05",
+      "metric": "max abs change of reported moisture",
+      "observed": {
+        "max_abs_diff_C": 0.015986160282109196,
+        "at_r_cm": 2.0,
+        "relative_change": 0.01058519854080324
+      },
+      "threshold": "predeclared: < 1e-4 negligible",
+      "status": "CONDITIONAL",
+      "interpretation": "second-order parameter effect, about half the h_m effect"
+    },
+    "mass_equation_form": {
+      "claim": "the mass equation uses the Fick form given by the problem (decision g_assumption_mass_equation_form)",
+      "perturbation": "the wet-basis self-consistent form, whose effective diffusivity is (1+C) times larger",
+      "metric": "max abs change of the reported moisture field",
+      "observed": {
+        "max_abs_diff_C": 0.3231343525501935,
+        "at_r_cm": 2.0,
+        "surface_C": 1.8333715219794327,
+        "surface_shift": 0.3231343525501935,
+        "relative_change": 0.21396265374154116
+      },
+      "threshold": "predeclared: < 1e-4 negligible",
+      "status": "FAIL",
+      "interpretation": "the alternative form changes the surface value by an order of magnitude more than the reported precision; the adopted reading is per the problem text and is recorded as a conditional limitation"
+    },
+    "environment_interpolation": {
+      "claim": "linear interpolation of attachment 1, including t = 100 s which is not a sample point",
+      "perturbation": "cubic spline interpolation instead of linear",
+      "metric": "max abs change of the reported moisture field",
+      "observed": {
+        "max_abs_diff_C": 3.710491478514655e-07,
+        "at_r_cm": 2.0
+      },
+      "threshold": "predeclared: < 1e-4 negligible",
+      "status": "PASS"
+    },
+    "end_face_neglect": {
+      "claim": "one-dimensional radial symmetry (decision g_framing_spatial_dimension)",
+      "perturbation": "not a numerical perturbation; magnitude estimate of the ignored axial transport",
+      "metric": "axial penetration depth over the Q1 window and the end-face share of the transfer area",
+      "observed": {
+        "axial_heat_penetration_cm": 1.7433873995086342,
+        "axial_mass_penetration_cm": 0.2981237858593824,
+        "length_cm": 25.0,
+        "end_face_area_share": 0.0741,
+        "heat_penetration_share_of_length": 0.06973549598034537,
+        "mass_penetration_share_of_length": 0.011924951434375294
+      },
+      "threshold": "qualitative",
+      "status": "CONDITIONAL",
+      "interpretation": "over the 1800 s window the axial mass penetration is under 2 percent of the length, so the radial assumption is well supported for Q1; it degrades for the multi-day questions"
+    },
+    "numerical_discretisation": {
+      "claim": "the reported four-decimal values are grid- and solver-tolerance-independent in both roles",
+      "perturbation": "main: grid 400 vs 800 nodes, BDF rtol 1e-8 vs 1e-9; baseline: grid 400 vs 800 cells, dt 0.5 vs 0.25 s",
+      "metric": "max abs change of the reported profile",
+      "observed": {
+        "main_grid": 3.2406530383610743e-06,
+        "main_tolerance": 3.890383570848144e-10,
+        "baseline_grid": 2.1355154204982796e-06
+      },
+      "threshold": 5e-05,
+      "status": "PASS"
+    },
+    "independent_implementation": {
+      "claim": "the reported values are reproduced by an independently written solver",
+      "perturbation": "different spatial discretisation and adaptive BDF time integration",
+      "metric": "difference of the Richardson limits at the hardest point (r = 2.0 cm, t = 100 s)",
+      "observed": 9.722982206028519e-07,
+      "threshold": 5e-05,
+      "status": "PASS"
+    },
+    "output_degeneracy": {
+      "claim": "the outputs are not degenerate or concentrated",
+      "perturbation": "none",
+      "metric": "monotonicity, spatial spread, unique values",
+      "observed": {
+        "C_monotone_decreasing": true,
+        "center_is_global_max": true,
+        "profile": [
+          2.55,
+          2.5497,
+          2.5383,
+          2.3755,
+          1.5102
+        ],
+        "surface_to_center_drop_1800s": 1.0397552287111749
+      },
+      "threshold": "qualitative",
+      "status": "PASS",
+      "interpretation": "all of the sensitivity lives in the surface column because the interior has not responded within 1800 s"
+    }
+  },
+  "limitations": [
+    "h_m and D are problem-supplied inputs, not fitted quantities; the reported values are conditional on them",
+    "the interior moisture is essentially unchanged over the 1800 s window, so Q1 cannot discriminate between competing long-time diffusivity models",
+    "the axial end faces are ignored; the estimate above bounds the effect for Q1 but not for the multi-day questions"
+  ],
+  "fallback_trigger_relevance": {
+    "fallback_id": "F1",
+    "trigger": "M2 and B2 disagree beyond the reported tolerance and the disagreement cannot be attributed",
+    "observed": false,
+    "evidence": "independent_implementation check above",
+    "note": "no perturbation triggered the fallback"
+  },
+  "baseline_profile_C_1800s": {
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "C": [
+      2.55,
+      2.5497,
+      2.5383,
+      2.3755,
+      1.5102
+    ]
+  },
+  "elapsed_s": 60.99,
+  "overall_status": "CONDITIONAL"
+}

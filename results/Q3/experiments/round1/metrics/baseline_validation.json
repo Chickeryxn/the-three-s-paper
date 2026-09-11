@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "method_id": "B3",
+  "mass_balance": {
+    "W0": 0.0032044245066615885,
+    "Wend": 0.00015617186534738485,
+    "rel_error": 2.1667637037986329e-13
+  },
+  "wall_s": 58.4,
+  "steps": 206847,
+  "note": "cross-checked against the vertex-centred main method in q3_verifier.py"
+}

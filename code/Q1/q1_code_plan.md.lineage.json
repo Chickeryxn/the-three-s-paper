@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "artifact": "code/Q1/q1_code_plan.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q1/q1_method_card.md",
+      "exists": true,
+      "sha256": "23440f775d724da9174e40b38720314e7422dd0b22449c6237c8091de486bf87"
+    },
+    {
+      "path": "methods/Q1/q1_decisions.jsonl",
+      "exists": true,
+      "sha256": "2c4fd7e296e1d0b37a89912a7125f943411e62b302cc28b01e49e76388ad76cb"
+    },
+    {
+      "path": "planning/model_contract.json",
+      "exists": true,
+      "sha256": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "python-model-code-generator"
+  ],
+  "decision_ids": [
+    "q1_method_role_swap"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:01+0800"
+}

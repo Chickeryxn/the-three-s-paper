@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "round": "round1",
+  "implementation_target": "python",
+  "random_seed": 2026,
+  "approved_decision_id": "q4_method_choice",
+  "contract_hash": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba",
+  "run_snapshot": "results/Q4/experiments/round1/runs/main/run_metadata.json",
+  "snapshot_ref": "results/Q4/experiments/round1/runs/main/run_metadata.json",
+  "methods": [
+    {
+      "method_id": "M4",
+      "role": "main_candidate",
+      "script": "code/Q4/q4_main.py",
+      "status": "success",
+      "execution_time_seconds": 25.9,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "workspace/data_clean/attachment2_radius.csv",
+        "planning/model_contract.json",
+        "methods/Q4/q4_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q4/experiments/round1/result4.xlsx",
+        "results/Q4/experiments/round1/tables/table6_main.csv"
+      ],
+      "figure_files": [
+        "results/Q4/experiments/round1/figures/fig1_q4_curves.png"
+      ],
+      "metrics_summary": {
+        "drying_time_hours": 52.63611111111111,
+        "grid_diff_400_vs_800": 2.116968417231746e-06,
+        "time_diff_10_vs_5_s_hours": 0.0,
+        "radius_interpolation_diff_hours": 0.002777777777772883,
+        "mass_balance_rel": 2.556858865229655e-14,
+        "moving_boundary_dev": 1.4166445794216997e-13,
+        "scheme": "vertex-centred finite volume in xi = r/R(t) (conservative flux form) + Crank-Nicolson with a 3-step backward-Euler (Rannacher) startup"
+      },
+      "result_ref": "results/Q4/experiments/round1/metrics/main.json",
+      "validation_ref": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "run_snapshot": "results/Q4/experiments/round1/runs/main/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q4/experiments/round1/runs/main/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q4/q4_main.py",
+        "elapsed_seconds": 69.51221466064453,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "method_id": "B4",
+      "role": "usable_baseline",
+      "script": "code/Q4/q4_baseline.py",
+      "status": "success",
+      "execution_time_seconds": 20.07,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "workspace/data_clean/attachment2_radius.csv",
+        "planning/model_contract.json",
+        "methods/Q4/q4_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q4/experiments/round1/tables/table6_baseline.csv"
+      ],
+      "figure_files": [],
+      "metrics_summary": {
+        "drying_time_hours": 52.63194444444444,
+        "grid_diff_400_vs_800": 0.0004098491258620607,
+        "time_diff_10_vs_5_s_hours": 0.0013888888888899942,
+        "moving_boundary_dev": 9.370282327836321e-14,
+        "scheme": "cell-centred finite volume in xi + Crank-Nicolson (no startup), surface value from the Robin half-cell relation"
+      },
+      "result_ref": "results/Q4/experiments/round1/metrics/baseline.json",
+      "validation_ref": "results/Q4/experiments/round1/metrics/baseline_validation.json",
+      "run_snapshot": "results/Q4/experiments/round1/runs/baseline/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q4/experiments/round1/runs/baseline/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q4/q4_baseline.py",
+        "elapsed_seconds": 38.117223501205444,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "verifier": {
+    "method_id": "V4",
+    "script": "code/Q4/q4_verifier.py",
+    "result_ref": "results/Q4/experiments/round1/metrics/verifier.json",
+    "validation_ref": "results/Q4/experiments/round1/metrics/verifier_validation.json",
+    "run_snapshot": "results/Q4/experiments/round1/runs/verifier/run_metadata.json",
+    "snapshot": {
+      "path": "results/Q4/experiments/round1/runs/verifier/run_metadata.json",
+      "status": "SUCCESS",
+      "command": "python code/Q4/q4_verifier.py",
+      "elapsed_seconds": 2.6969568729400635,
+      "executed_by_runner": true,
+      "return_code": 0
+    },
+    "metrics_summary": {
+      "reference_max_abs_err": 1.153605800663371e-06,
+      "table6_max_abs_diff": 0.00040000000000006697,
+      "drying_time_diff_hours": 0.0041666666666699825,
+      "moving_boundary_analytic_invariance": true
+    }
+  },
+  "independence": {
+    "runtime_status": "RUNTIME_INDEPENDENT"
+  },
+  "comparison": {
+    "main_metric_source": "results/Q4/experiments/round1/metrics/main.json",
+    "baseline_metric_source": "results/Q4/experiments/round1/metrics/baseline.json",
+    "max_abs_diff_table6": 0.00040000000000006697,
+    "drying_time_diff_hours": 0.0041666666666699825,
+    "verdict": "M4 and B4 agree on the drying time to 0.0042 h (15 s) and on table 6 to 4.0e-04; the maximum table difference sits in the surface column, which the baseline reconstructs by a first-order half-cell relation"
+  },
+  "fallback_trigger": {
+    "fallback_id": "F4",
+    "condition": "M4 and B4 disagree on the drying time or the reported points beyond tolerance and the disagreement cannot be attributed",
+    "observed": false,
+    "evidence": "results/Q4/experiments/round1/metrics/verifier_validation.json"
+  },
+  "environment": {
+    "python": "3.14.2",
+    "platform": "win32",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0"
+  }
+}

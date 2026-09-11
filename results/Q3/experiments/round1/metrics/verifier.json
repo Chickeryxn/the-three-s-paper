@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "method_id": "V3",
+  "role": "verifier",
+  "script": "code/Q3/q3_verifier.py",
+  "independent_path": "constant-property reduction against the Bessel series solution",
+  "reference_config": {
+    "rho": 976.4,
+    "cp": 3415.295774647887,
+    "k": 0.48295774647887324,
+    "D": 5.641680373025664e-09,
+    "C_inf": 0.05
+  },
+  "reference_profile_at_1800s": {
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "numeric": [
+      2.549969,
+      2.549338,
+      2.531933,
+      2.347645,
+      1.599815
+    ],
+    "analytical": [
+      2.549969,
+      2.549338,
+      2.531934,
+      2.347644,
+      1.599815
+    ]
+  }
+}

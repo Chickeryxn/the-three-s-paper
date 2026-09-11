@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "method_id": "M2",
+  "time_refinement_full_span": {
+    "dt_s": [
+      2.0,
+      1.0
+    ],
+    "t_dry_hours": {
+      "2.0": 57.464444444444446,
+      "1.0": 57.46472222222222
+    },
+    "abs_diff_hours": 0.00027777777777515666,
+    "reported_4dp_stable": true
+  },
+  "grid_refinement_6h": {
+    "N": [
+      400,
+      800
+    ],
+    "max_abs_diff_C": 3.201593784529777e-07,
+    "reported_4dp_stable": true
+  },
+  "mass_balance": {
+    "W0": 0.0032044245066615885,
+    "Wend": 0.00015618518818167758,
+    "flux": 0.0030482393184785113,
+    "rel_error": 4.368715325335407e-13
+  },
+  "invariants": {
+    "C_monotone_decreasing": true,
+    "T_monotone_increasing": false,
+    "center_is_argmax_C": true,
+    "surface_native_node": true,
+    "axis_symmetry": "dual-cell inner face area is zero (exact)"
+  },
+  "reference_wall_s": 37.8,
+  "solver_wall_s": 56.1
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q4/q4_decisions.jsonl",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q4/q4_method_card.md",
+      "exists": true,
+      "sha256": "b94b1207417061ebf83cb603588eaf57b1cb63a8b855fb139577e6b035535d3a"
+    },
+    {
+      "path": "methods/Q4/probes/risk_probe_summary.json",
+      "exists": true,
+      "sha256": "827cdaa87816c79661ee8b597ec03890751bd85e279dc2967dc1d3a8b2214d85"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "python-model-code-generator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:05+0800"
+}

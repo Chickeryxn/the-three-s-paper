@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "question_id": "Q3",
+  "rigor_profile": "submission",
+  "current_gate": "G6",
+  "status": "g6_audits_complete_conditional_on_ai_use_disclosure",
+  "artifacts": {
+    "method_card": "methods/Q3/q3_method_card.md",
+    "risk_probe": "methods/Q3/probes/risk_probe_summary.json",
+    "decision_ledger": "methods/Q3/q3_decisions.jsonl",
+    "run_summary": "results/Q3/experiments/round1/run_summary.json",
+    "final_method_explanation": "methods/Q3/q3_final_method_explanation.md",
+    "solution_package": "results/Q3/reports/q3_solution_package_for_writer.md",
+    "result_report": "results/Q3/reports/q3_final_result_analysis.md",
+    "frozen_numbers": "results/Q3/reports/frozen_numbers.json"
+  },
+  "gate_evidence": {
+    "problem_parse": "planning/parse/problem_parse.json",
+    "problem_classification": "planning/classification/problem_classification.json",
+    "data_profile": "workspace/data/data_profile.json",
+    "data_report": "workspace/data/data_report.md",
+    "python_review": "code/Q3/reviews/q3_python_review.json",
+    "model_contract": "planning/model_contract.json"
+  },
+  "dependencies": [
+    "Q2"
+  ],
+  "allowed": {
+    "code_generation": false,
+    "freeze": false,
+    "paper_writing": false,
+    "final_assembly": false
+  },
+  "blockers": [
+    "AI 使用声明缺失：waiting for submission_authorization or paper/ai_use_disclosure.md"
+  ],
+  "next_action": {
+    "owner": "human",
+    "skill": "decision-prompt-builder",
+    "reason": "G6 三审已完成：一致性 PASSED、完整性 PASSED、QA CONDITIONAL。唯一具名条件为 AI 使用声明；补齐或明确不要求后即可最终装配。"
+  },
+  "profile_snapshot": {
+    "profile": "lean",
+    "recorded_at": "2026-09-10T11:57:48Z"
+  },
+  "updated_at": "2026-09-11T09:39:11Z",
+  "next_gate": "G5(submission only)",
+  "artifact_relocation_note": "code_plan / python_review / model_contract 的 lineage 位于 code/<qid>/ 与 planning/，不在 qa_report 的扫描目录内；它们移入 gate_evidence，其 lineage 仍由 validate_artifacts 单独校验。"
+}

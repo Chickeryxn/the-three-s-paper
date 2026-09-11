@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "method_id": "M1",
+  "grid_refinement": {
+    "N": [
+      400,
+      800
+    ],
+    "dt_s": 0.25,
+    "max_abs_diff_400_vs_800": 2.1355154204982796e-06,
+    "reported_4dp_stable": true
+  },
+  "time_refinement": {
+    "dt_s": [
+      0.5,
+      0.25
+    ],
+    "N": 800,
+    "compared_at_times_s": [
+      100,
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800
+    ],
+    "max_abs_diff_0_5_vs_0_25": 3.556404485571818e-06,
+    "reported_4dp_stable": true
+  },
+  "surface_column_convergence": {
+    "where": "r = 2.0 cm, t = 100 s (thinnest boundary layer)",
+    "N": [
+      200,
+      400,
+      800
+    ],
+    "Cs": {
+      "200": 2.24677722314778,
+      "400": 2.2469789726812297,
+      "800": 2.2470293566340565
+    },
+    "richardson_limit": 2.247046151284999,
+    "error_at_N800": 1.6794650942397737e-05,
+    "observed_order": 2
+  },
+  "analytical_cross_check": {
+    "reference": "Bessel series, constant D",
+    "max_abs_err": 2.857002487921534e-06,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "mass_balance": {
+    "W0": 0.0032044245066615885,
+    "Wend": 0.002882169305388388,
+    "flux_sum": 0.0003222552012732197,
+    "abs_balance_error": 1.929879867024198e-17,
+    "rel_balance_error": 5.988669412935529e-14
+  },
+  "invariants": {
+    "C_monotone_decreasing": true,
+    "T_monotone_increasing": true,
+    "center_is_argmax_C": true,
+    "n_unique_4dp": 500,
+    "surface_from_boundary_relation": true,
+    "axis_symmetry": "finite-volume face area Af[0] = 0 (exact)"
+  },
+  "time_scheme_note": "backward Euler was rejected at round1: surface cell tau=0.503 s made the r=2.0 cm column the whole error budget; see q1_time_scheme_amendment",
+  "elapsed_s": 309.743
+}

@@ -1,0 +1,14 @@
+# 跨平台换行与二进制识别：避免 Windows / macOS 协作时整文件显示为已修改
+* text=auto
+
+*.tex   text
+*.py    text
+*.md    text
+*.bib   text
+*.json  text
+*.csv   text
+
+*.pdf   binary
+*.png   binary
+*.xlsx  binary
+*.zip   binary

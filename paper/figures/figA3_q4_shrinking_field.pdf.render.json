@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "rendered_at": "2026-09-11T17:42:40+0800",
+  "checks": {
+    "procedural": [
+      "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
+      "no overlapping labels obscuring values",
+      "font size readable at final column width",
+      "units present on every axis label",
+      "no empty or unintended subplot",
+      "series distinguished by colour AND line style or marker (survives grayscale)",
+      "data drawn opaque (alpha=1.0), no grid, white background",
+      "caption and visual support the same claim",
+      "plotted values agree with the canonical data artifact recorded in source"
+    ],
+    "measured": {
+      "no_text_outside_saved_canvas": {
+        "pass": true,
+        "offenders": [],
+        "texts_checked": 14
+      },
+      "no_overlapping_text": {
+        "pass": true,
+        "offenders": []
+      },
+      "no_empty_panel": {
+        "pass": true,
+        "offenders": []
+      },
+      "data_opaque": {
+        "pass": true,
+        "alphas": [
+          1.0
+        ]
+      },
+      "no_grid": {
+        "pass": true
+      }
+    }
+  },
+  "source": {
+    "data": [
+      "results/Q4/experiments/round1/result4.xlsx",
+      "workspace/data_clean/attachment2_radius.csv"
+    ],
+    "note": "Type 4 appendix: full-field view behind figure 4; the boundary R(t) is drawn on top and cells with r > R(t) are blank in the deliverable"
+  },
+  "outputs": [
+    "paper/figures/figA3_q4_shrinking_field.png",
+    "paper/figures/figA3_q4_shrinking_field.pdf"
+  ],
+  "dpi": 400,
+  "style": "topjournal-style (opaque data, no grid, white background)"
+}

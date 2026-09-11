@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "V4",
+  "role": "verifier",
+  "script": "code/Q4/q4_verifier.py",
+  "independent_path": "own Bessel series (own root finder) for the frozen-radius limit + contract invariants on the delivered grid",
+  "contract_hash_used": "planning/model_contract.json",
+  "frozen_config": {
+    "R_m": 0.02,
+    "D_m2_s": 1e-09,
+    "h_m": 8e-07,
+    "C_init": 2.55,
+    "C_inf": 0.05,
+    "t_s": 21600.0
+  },
+  "reference_profile_6h": {
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "C": [
+      2.520809,
+      2.469802,
+      2.210131,
+      1.503459,
+      0.355293
+    ]
+  }
+}

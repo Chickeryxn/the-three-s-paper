@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "description": "2026 高教社杯 A 题『药材的烘干问题』的题目专属模型契约。领域无关的结构由 schemas/model_contract.schema.json 定义，本文件只承载本题语义。",
+  "entities": [
+    {
+      "id": "herb_cylinder",
+      "name": "圆柱形中药材",
+      "geometry": "长 25 cm；半径 R(t)，t=0 时为 2 cm，Q4 中按附件2 收缩至 1.198 cm"
+    },
+    {
+      "id": "drying_room",
+      "name": "烘房热风环境",
+      "role": "提供边界驱动量 T_inf(t) 与 C_inf(t)"
+    },
+    {
+      "id": "temperature_field",
+      "name": "药材内部温度场 T(r,t)",
+      "unit": "degC"
+    },
+    {
+      "id": "moisture_field",
+      "name": "药材内部水分浓度场 C(r,t)（干基含水率）",
+      "unit": "kg/kg"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "T_inf",
+      "type": "time_series",
+      "domain": "t in [0, 14400] s, step 60 s",
+      "unit": "degC",
+      "source": "workspace/data_raw/附件1.xlsx"
+    },
+    {
+      "id": "C_inf",
+      "type": "time_series",
+      "domain": "t in [0, 14400] s, step 60 s",
+      "unit": "kg/kg",
+      "source": "workspace/data_raw/附件1.xlsx"
+    },
+    {
+      "id": "R_of_t",
+      "type": "time_series",
+      "domain": "t in [0, 259200] s, step 1800 s",
+      "unit": "cm",
+      "source": "workspace/data_raw/附件2.xlsx"
+    },
+    {
+      "id": "rho",
+      "type": "parameter_or_closure",
+      "domain": "逐子问题",
+      "unit": "kg/m^3",
+      "source": "附录2 常数 820；附录3 650+128C；附录4 760+90C"
+    },
+    {
+      "id": "cp",
+      "type": "parameter_or_closure",
+      "domain": "逐子问题",
+      "unit": "J/(kg*K)",
+      "source": "附录2 常数 2600；附录3 1450+2736C/(C+1)；附录4 1850+2150C/(C+1)"
+    },
+    {
+      "id": "k_cond",
+      "type": "parameter_or_closure",
+      "domain": "逐子问题",
+      "unit": "W/(m*K)",
+      "source": "附录2 常数 0.36；附录3 0.21+0.38C/(C+1)；附录4 0.12+0.20C/(C+1)"
+    },
+    {
+      "id": "h_conv",
+      "type": "parameter",
+      "domain": "四问共用",
+      "unit": "W/(m^2*K)",
+      "source": "附录2，取值 25"
+    },
+    {
+      "id": "h_mass",
+      "type": "parameter",
+      "domain": "四问共用",
+      "unit": "m/s",
+      "source": "附录2，取值 8e-7"
+    },
+    {
+      "id": "D_coef",
+      "type": "closure",
+      "domain": "逐子问题",
+      "unit": "m^2/s",
+      "source": "附录2 7e-9*exp(-0.89/C)；附录3 2.4e-3*exp(-0.45/C)*exp(-3850/T)；附录4 4.2e-4*exp(-0.30/C)*exp(-3850/T)"
+    },
+    {
+      "id": "initial_state",
+      "type": "initial_condition",
+      "domain": "全域均匀",
+      "unit": "degC 与 kg/kg",
+      "source": "题目：T=28 degC，C=2.55 kg/kg"
+    }
+  ],
+  "state_functions": [
+    {
+      "id": "T_r_t",
+      "arguments": "r in [0, R(t)] m, t >= 0 s",
+      "output": "温度 degC",
+      "definition_ref": "rho*cp*dT/dt = (1/r)*d/dr(k*r*dT/dr)；边界 r=R 为 -k*dT/dr=h*(T-T_inf)，r=0 为 dT/dr=0；初值 T=28 degC"
+    },
+    {
+      "id": "C_r_t",
+      "arguments": "r in [0, R(t)] m, t >= 0 s",
+      "output": "干基含水率 kg/kg",
+      "definition_ref": "dC/dt = (1/r)*d/dr(D*r*dC/dr)；边界 r=R 为 -D*dC/dr=h_m*(C-C_inf)，r=0 为 dC/dr=0；初值 C=2.55 kg/kg"
+    },
+    {
+      "id": "C_bar_t",
+      "arguments": "t >= 0 s",
+      "output": "体积加权平均含水率 kg/kg",
+      "definition_ref": "C_bar = ∫C*rho*r dr / ∫rho*r dr，积分域 [0, R(t)]"
+    },
+    {
+      "id": "attainment_rate_t",
+      "arguments": "t >= 0 s",
+      "output": "达标网格比例",
+      "definition_ref": "满足 C_i <= 0.15 kg/kg 的网格点数占总网格点数的比例"
+    }
+  ],
+  "decision_variables": [
+    {
+      "id": "C_i_n",
+      "type": "continuous",
+      "domain": "空间网格 i=1..N、时间层 n=0..M",
+      "unit": "kg/kg"
+    },
+    {
+      "id": "T_i_n",
+      "type": "continuous",
+      "domain": "空间网格 i=1..N、时间层 n=0..M",
+      "unit": "degC"
+    },
+    {
+      "id": "t_dry",
+      "type": "continuous",
+      "domain": "t > 0",
+      "unit": "h"
+    }
+  ],
+  "hard_constraints": [
+    {
+      "id": "hc_initial_condition",
+      "expression_ref": "T(r,0)=28 degC 且 C(r,0)=2.55 kg/kg，全域均匀"
+    },
+    {
+      "id": "hc_boundary_heat",
+      "expression_ref": "-k*dT/dr|_{r=R} = h*(T|_{r=R} - T_inf(t))"
+    },
+    {
+      "id": "hc_boundary_mass",
+      "expression_ref": "-D*dC/dr|_{r=R} = h_m*(C|_{r=R} - C_inf(t))"
+    },
+    {
+      "id": "hc_axis_symmetry",
+      "expression_ref": "dT/dr|_{r=0} = 0 且 dC/dr|_{r=0} = 0"
+    },
+    {
+      "id": "hc_dryness_criterion",
+      "expression_ref": "烘干判据为全域 max_r C(r,t) <= 0.15 kg/kg，由最慢位置决定 t_dry"
+    },
+    {
+      "id": "hc_mass_equation_form",
+      "expression_ref": "质量方程取题目给定的 Fick 标准形式，rho、cp、k 只进入能量方程（decision_id=g_assumption_mass_equation_form）"
+    },
+    {
+      "id": "hc_spatial_dimension",
+      "expression_ref": "一维径向轴对称，沿 25 cm 长度方向不解析（decision_id=g_framing_spatial_dimension）"
+    },
+    {
+      "id": "hc_environment_extrapolation",
+      "expression_ref": "恒温干燥阶段 T_inf=50 degC、C_inf=0.05 kg/kg（decision_id=g_framing_env_extrapolation）"
+    },
+    {
+      "id": "hc_units_and_precision",
+      "expression_ref": "长度 cm、时间 s（表5/表6 用 h）、温度 degC、含水率 kg/kg；输出保留四位小数"
+    },
+    {
+      "id": "hc_output_layout",
+      "expression_ref": "按题目模板写 result1-result4.xlsx；表6 与 result4 的末列由『药材表面』替换，r>R(t) 的位置留空（decision_id=g_framing_q4_column_set、g_framing_q4_coordinate_caliber）"
+    },
+    {
+      "id": "hc_roles",
+      "expression_ref": "主方法 M1、可用基线 B1、独立验证者 verifier 三者角色分离（decision_id=q1_method_choice）"
+    },
+    {
+      "id": "hc_raw_data_readonly",
+      "expression_ref": "workspace/data_raw/ 下的原始附件只读，清洗副本写入 workspace/data_clean/"
+    }
+  ],
+  "soft_constraints": [
+    {
+      "id": "sc_grid_independence",
+      "penalty_ref": "网格加密后指定点四位小数须保持不变；由 Δξ 三档加密实验核验"
+    },
+    {
+      "id": "sc_mass_conservation",
+      "penalty_ref": "离散全局水量变化须与表面通量一致，逐时刻核验"
+    },
+    {
+      "id": "sc_runtime",
+      "penalty_ref": "Q2 全时程单次运行宜控制在可接受时长内；M1 实测 Q1 约 19 s，B1 约 165 s"
+    },
+    {
+      "id": "sc_reporting_precision",
+      "penalty_ref": "报告值与参考解的偏差应小于 5e-5"
+    }
+  ],
+  "objective": {
+    "sense": "MINIMIZE",
+    "value_ref": "t_dry = 最早的 t 使全域 max_r C(r,t) <= 0.15 kg/kg（Q3、Q4）；Q1 与 Q2 为前向场模拟，其交付量为 T(r,t) 与 C(r,t) 在题目指定网格上的值",
+    "output_contract": {
+      "type": "object",
+      "fields": [
+        "T_grid",
+        "C_grid",
+        "t_dry_hours",
+        "attainment_rate_curve",
+        "volume_weighted_mean_C_curve"
+      ],
+      "precision": "保留四位小数"
+    }
+  },
+  "evaluator": {
+    "evaluator_id": "herb_drying_field_evaluator",
+    "implementation_ref": "code/Q1/risk_probe.py::solve_M1 与 ::solve_B1",
+    "event_policy": "t_dry 取离散时间层上首次满足 max_r C <= 0.15 kg/kg 的时刻，并用相邻时间层线性插值细化",
+    "aggregation": "空间聚合用最大值（判据）与体积加权平均（报告量）两种口径，均在此契约中固定"
+  },
+  "uncertainty": {
+    "handling": "参数不确定性与数值不确定性分别处理",
+    "parameter_sensitivity": "h_m 放大 5% 时 Q1 末态浓度场最大变化 0.0352（实测），须在稳健性检验中报告",
+    "numerical": "网格加密与时间步长加密实验；与 Bessel 级数解析解对照",
+    "alternative_formulation": "若改用与湿基密度自洽的质量方程，等效扩散系数相差 (1+C) 倍，作为一条稳健性对比量报告，不改变本题采用的口径"
+  },
+  "validation_contract": {
+    "invariants": [
+      "全域水量变化与表面通量一致",
+      "C 沿半径单调递减、T 沿半径单调递增，无内部极值",
+      "r=0 处对称条件成立",
+      "半径收缩与附件2 一致（Q4）"
+    ],
+    "tolerances": {
+      "reported_value_abs": 0.00005,
+      "mass_balance_rel": 0.000001,
+      "analytical_cross_check_abs": 0.00005
+    },
+    "independent_checks": [
+      "main",
+      "baseline",
+      "verifier"
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "round": "round1",
+  "implementation_target": "python",
+  "reviewer": "python-code-reviewer",
+  "reviewed_scripts": {
+    "code/Q4/q4_main.py": "851bcd436d00a3573e72d5faea88930c1482cb2d5354a224abc7a0a1efad3308",
+    "code/Q4/q4_baseline.py": "8cb54a01150c97bdbd0d5bca64a836e36675cdd766f49efb457f1d74b2621233",
+    "code/Q4/q4_verifier.py": "aa3ce180e174356798025b6c95d800f0835fb84e6f3177a71e2a914c68e6bc4d"
+  },
+  "checks": {
+    "syntax": {
+      "status": "PASS",
+      "detail": {
+        "code/Q4/q4_main.py": "ok",
+        "code/Q4/q4_baseline.py": "ok",
+        "code/Q4/q4_verifier.py": "ok"
+      }
+    },
+    "input_contract": {
+      "status": "PASS",
+      "reads_declared_inputs": true,
+      "appendix4_closures_present": true,
+      "declared_inputs": [
+        "T_inf",
+        "C_inf",
+        "R_of_t",
+        "rho",
+        "cp",
+        "k_cond",
+        "h_conv",
+        "h_mass",
+        "D_coef",
+        "initial_state"
+      ]
+    },
+    "method_alignment": {
+      "status": "PASS",
+      "detail": {
+        "main_xi_vertex_flux_form": true,
+        "main_rannacher_startup": true,
+        "main_moving_boundary_term": true,
+        "baseline_cell_centred_in_xi": true,
+        "baseline_no_startup": true,
+        "baseline_surface_is_reconstructed": true,
+        "verifier_own_bessel": true,
+        "approved_decision_recorded": true,
+        "reference_within_tol": true,
+        "moving_boundary_invariance_pass": true,
+        "verifier_checks_pass": true
+      },
+      "approved_main": "M4",
+      "approved_baseline": "B4",
+      "note": "roles follow the human decision q4_method_choice"
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "deterministic": true,
+      "random_seed": 2026,
+      "snapshot_result_hashes_match_current": true,
+      "snapshots": {
+        "main": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "9f7f21f902b9073e5ed6ba3a806b31c76e58c98cc5fca821169238d72d46daa3",
+          "validation_hash": "35ea6e3896daafbe90533acc8b7e7f5e420abb983417b31aa35fd8a8d8ac3ae1",
+          "code_manifest": {
+            "code/Q4/q4_main.py": "851bcd436d00a3573e72d5faea88930c1482cb2d5354a224abc7a0a1efad3308"
+          }
+        },
+        "baseline": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "3e749d2a3252f23e5b467c0f5da75b24b56bafb4cd9490b4936a4c1c9358f787",
+          "validation_hash": "d4483dc09e7ab27feb489b957579fe6efd06b18f76a643bdbe51a9f508d9703f",
+          "code_manifest": {
+            "code/Q4/q4_baseline.py": "8cb54a01150c97bdbd0d5bca64a836e36675cdd766f49efb457f1d74b2621233"
+          }
+        },
+        "verifier": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "7dfbb585c43b6e6b5f7ee88e6b6de30d5b1ee32997dce7bc736bcd9d7e418647",
+          "validation_hash": "7d253b307f3c010bd32017c2a18a9d48bd3c92bfca7b245f6b6753e7d91dceea",
+          "code_manifest": {
+            "code/Q4/q4_verifier.py": "aa3ce180e174356798025b6c95d800f0835fb84e6f3177a71e2a914c68e6bc4d"
+          }
+        }
+      }
+    },
+    "output_contract": {
+      "status": "PASS",
+      "deliverable": "results/Q4/experiments/round1/result4.xlsx",
+      "detail": {
+        "sheets": [
+          "Sheet1"
+        ],
+        "rows": 3160,
+        "cols": 22,
+        "header_ok": true,
+        "time_axis_starts_60s_ends_at_drying": true,
+        "blanks_present": true,
+        "all_values_le_target_at_end": true
+      },
+      "tables": [
+        "table6_baseline.csv",
+        "table6_main.csv"
+      ],
+      "kpi_tables_present": true
+    }
+  },
+  "overall_status": "PASS"
+}

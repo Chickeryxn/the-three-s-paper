@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "subquestions": [
+    {
+      "id": "Q1",
+      "primary_type": "mechanism/dynamics",
+      "secondary_type": null,
+      "confidence": "high",
+      "evidence": [
+        "problem_parse.json#Q1.goal（建立预热平衡阶段温湿场演化规律的数学模型）",
+        "problem_parse.json#Q1.required_outputs（指定时刻/位置的温度与水分浓度值 + result1.xlsx 完整场）"
+      ],
+      "required_validation": [
+        "网格无关性与时间步长收敛性",
+        "边界通量一致性（对流换热/对流传质条件在离散后仍成立）",
+        "初始条件与终了状态的物理合理性（表面先升温、中心滞后）",
+        "质量守恒（水分浓度变化与环境含湿量变化的相容性）",
+        "与附件1环境时序的对齐（插值误差检查）"
+      ],
+      "framing_decision_id": "g_caliber_service_relationship",
+      "risks": [
+        "边界条件中密度因子用法不确定，可能造成数量级错误",
+        "D=7e-9·exp(-0.89/C) 在 C 较小时急剧减小，数值刚性/时间步长受限",
+        "1800 s 内水分浓度变化幅度小，容易被误判为“模型没跑对”",
+        "r=0 处坐标奇点的处理方式会影响中心值精度"
+      ]
+    },
+    {
+      "id": "Q2",
+      "primary_type": "mechanism/dynamics",
+      "secondary_type": "simulation/scenario",
+      "confidence": "high",
+      "evidence": [
+        "problem_parse.json#Q2.goal（覆盖预热平衡与恒温干燥两阶段的完整过程模型）",
+        "problem_parse.json#Q2.ambiguities（4 h 之后的环境条件需设定，属情景设定）"
+      ],
+      "required_validation": [
+        "两阶段过渡连续性（切换处无跳变）",
+        "长时间行为收敛到合理平衡态",
+        "物性随 C、T 变化时的数值稳定性（非线性系数）",
+        "环境条件外推假设的敏感性分析",
+        "输出规模与精度的可复现性（1 s × 0.1 cm）"
+      ],
+      "framing_decision_id": "g_caliber_service_relationship",
+      "risks": [
+        "附件1只覆盖 4 h，外推假设直接决定 2-3 天的结果",
+        "非线性 D(C,T) 与变物性可能引发数值不稳定",
+        "result2.xlsx 全覆盖 1 s 步长时输出规模巨大（可能数十万行）",
+        "h 与 h_m 缺失，若取值不当会使干燥速率偏离 2-3 天的时间尺度"
+      ]
+    },
+    {
+      "id": "Q3",
+      "primary_type": "prediction/estimation",
+      "secondary_type": "mechanism/dynamics",
+      "confidence": "high",
+      "evidence": [
+        "problem_parse.json#Q3.goal（确定烘干所需时间）",
+        "problem_parse.json#Q3.constraints（判据为各处水分浓度低于 0.15 kg/kg）"
+      ],
+      "required_validation": [
+        "判据在离散网格加密下仍成立（判别位置口径稳健）",
+        "烘干时长的数值收敛性（时间步长敏感性）",
+        "与 2-3 天经验尺度的一致性核对",
+        "水分浓度单调性与拖尾阶段的数值可信度"
+      ],
+      "framing_decision_id": "g_caliber_service_relationship",
+      "risks": [
+        "‘各处’取最劣位置还是平均，会显著改变结论（拖尾效应使两者差距大）",
+        "干燥后期 D 极小，时间步长过大会高估干燥速度",
+        "阈值附近结果对参数假设敏感"
+      ]
+    },
+    {
+      "id": "Q4",
+      "primary_type": "mechanism/dynamics",
+      "secondary_type": "simulation/scenario",
+      "confidence": "medium",
+      "evidence": [
+        "problem_parse.json#Q4.goal（在半径收缩条件下建立水分浓度场模型并确定烘干时长）",
+        "problem_parse.json#Q4.inputs（附件2 半径时序驱动域边界变化）"
+      ],
+      "required_validation": [
+        "半径演化与附件2 一致（插值/拟合误差）",
+        "收缩域上的质量守恒（含表观对流项）",
+        "坐标口径（物理 vs 归一化）对结果的影响说明",
+        "烘干时长判据与 Q3 口径一致",
+        "网格在移动边界下的稳定性"
+      ],
+      "framing_decision_id": "g_caliber_service_relationship",
+      "risks": [
+        "移动边界 + 非线性扩散，数值实现复杂度最高",
+        "附件2 步长 1800 s 而输出需 60 s，插值口径影响结果",
+        "距离列与‘药材表面’列并存时的空间口径歧义",
+        "附录4 与附录3 的物性差异较大，跨问结果不可直接比较"
+      ]
+    }
+  ],
+  "notes": [
+    "四个子问题均为机理/动力学建模为主，Q3 的落点是给出烘干时长的定量结论（预测/估计），Q2/Q4 含情景设定成分。",
+    "口径（判据粒度/服务关系/总指标）尚未经建模者确认，本分类不自行定义口径。",
+    "口径轴1 已确认为条件式（g_caliber_criterion_granularity），轴2 已确认不适用；轴3 尚待建模者决定，未决定前不自行定义总指标口径。"
+  ]
+}

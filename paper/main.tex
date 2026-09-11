@@ -1,0 +1,238 @@
+% Clean-room contest paper baseline (self-written; no upstream template code is vendored).
+% Compile with XeLaTeX from the repository root:
+%   xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex   (twice)
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs,longtable,tabularx,multirow,array}
+\usepackage{float}
+\usepackage{caption,subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}   % 正文无彩色：链接与引用均为黑色
+\graphicspath{{paper/figures/}}
+
+\ctexset{
+  section/format=\large\bfseries\heiti,
+  section/number=\chinese{section},
+  subsection/format=\normalsize\bfseries\heiti,
+  subsubsection/format=\normalsize\bfseries\heiti,
+}
+
+% ---------------------------------------------------------------------------
+% 附录代码清单的排版：整幅细框、行号、按语法着色（灰阶，不喧宾夺主）、
+% 自动折行并按缩进对齐，中文注释经 ctex 正常显示。
+% ---------------------------------------------------------------------------
+\lstdefinestyle{pycode}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\bfseries\color{black},
+  commentstyle=\itshape\color{black!55},
+  stringstyle=\color{black!70},
+  breaklines=true,
+  breakatwhitespace=false,
+  postbreak=\mbox{$\hookrightarrow$\space},   % 折行续行标记（不能用 \textcolor，会破坏 listings 的间距计算）
+  columns=flexible,
+  showstringspaces=false,
+  keepspaces=true,
+  frame=single,
+  framexleftmargin=14pt,
+  rulecolor=\color{black!45},
+  numbers=left,
+  numberstyle=\tiny\color{black!50},
+  numbersep=7pt,
+  extendedchars=true,
+  tabsize=4,
+  xleftmargin=20pt,
+  xrightmargin=2pt,
+  lineskip=1.2pt,
+  captionpos=b,
+}
+\lstset{style=pycode}
+
+% Frozen-number macros (injected by scripts/latex_assembly.py)
+\newcommand{\qoneCcenteroneeightzerozeros}{2.55\,kg/kg}
+\newcommand{\qoneCsurfaceoneeightzerozeros}{1.5102\,kg/kg}
+\newcommand{\qoneTcenteroneeightzerozeros}{33.5753\,°C}
+\newcommand{\qoneTsurfaceoneeightzerozeros}{36.7856\,°C}
+\newcommand{\qoneanalyticalmaxabserr}{$6.18\times10^{-7}$\,kg/kg}
+\newcommand{\qonegridrefinementdiff}{$3.24\times10^{-6}$\,kg/kg}
+\newcommand{\qonehmplusfivepctsurfaceshift}{-0.0352\,kg/kg}
+\newcommand{\qoneindependentimplementationsdiff}{$9.72\times10^{-7}$\,kg/kg}
+\newcommand{\qonemassbalancerel}{$5.41\times10^{-11}$}
+\newcommand{\qonetimeaccuracytolerancediff}{$3.89\times10^{-10}$\,kg/kg}
+\newcommand{\qtwoCcenterthreeh}{1.7662\,kg/kg}
+\newcommand{\qtwoCsurfacethreeh}{1.0081\,kg/kg}
+\newcommand{\qtwoTcenterthreeh}{49.8495\,°C}
+\newcommand{\qtwoTsurfacethreeh}{49.9664\,°C}
+\newcommand{\qtwoanalyticalmaxabserr}{$5.98\times10^{-7}$\,kg/kg}
+\newcommand{\qtwodryingtime}{57.4647\,h}
+\newcommand{\qtwodryingtimespread}{26\,s}
+\newcommand{\qtwogridrefinementdiff}{$3.2\times10^{-7}$\,kg/kg}
+\newcommand{\qtwomassbalancerel}{$4.37\times10^{-13}$}
+\newcommand{\qtwosensDplusfivepct}{-4.2031\,\%}
+\newcommand{\qtwosensTinfplustwoC}{-6.0776\,\%}
+\newcommand{\qtwosenshmplusfivepct}{-0.5332\,\%}
+\newcommand{\qtwosensmassequationform}{-14.7245\,\%}
+\newcommand{\qtwotableregionenvinsensitivity}{$2.64\times10^{-5}$\,kg/kg}
+\newcommand{\qtwotimerefinementdiff}{$2.78\times10^{-4}$\,h}
+\newcommand{\qthreeCcenterfivefourh}{0.1539\,kg/kg}
+\newcommand{\qthreeCcenteratend}{0.15\,kg/kg}
+\newcommand{\qthreeCsurfaceatend}{0.0527\,kg/kg}
+\newcommand{\qthreeconsistencywithQtwo}{57.4647\,h}
+\newcommand{\qthreedryingtime}{57.4647\,h}
+\newcommand{\qthreegridrefinementdiff}{$3.2\times10^{-7}$\,kg/kg}
+\newcommand{\qthreemassbalancerel}{$4.76\times10^{-13}$}
+\newcommand{\qthreetimerefinementdiff}{$3.6\times10^{-3}$\,h}
+\newcommand{\qfourRatdryingendcm}{1.2\,cm}
+\newcommand{\qfourbaselinedryingtimeseconds}{15\,s}
+\newcommand{\qfourbaselinetablesixdiff}{$4\times10^{-4}$\,kg/kg}
+\newcommand{\qfourdryingtimehours}{52.6361\,h}
+\newcommand{\qfourgridrefinementdiff}{$2.12\times10^{-6}$\,kg/kg}
+\newcommand{\qfourmassbalancerel}{$2.56\times10^{-14}$}
+\newcommand{\qfourmovingboundarydev}{$1.42\times10^{-13}$\,kg/kg}
+\newcommand{\qfourradiusinterphours}{$2.8\times10^{-3}$\,h}
+\newcommand{\qfourreferencemaxabserr}{$1.15\times10^{-6}$\,kg/kg}
+\newcommand{\qfoursensDplusfivepcthours}{-2.1722\,h}
+\newcommand{\qfoursensTinfplustwoChours}{-3.1306\,h}
+\newcommand{\qfoursenshmplusfivepcthours}{-0.1278\,h}
+\newcommand{\qfoursensmassequationformhours}{-9.225\,h}
+\newcommand{\qfourshrinkagepercent}{40.1\,\%}
+\newcommand{\qfourtablesixendcenter}{0.15\,kg/kg}
+\newcommand{\qfourtablesixendsurface}{0.0526\,kg/kg}
+\newcommand{\qfourtablesixtsixcenter}{1.9473\,kg/kg}
+\newcommand{\qfourtablesixtsixsurface}{0.5654\,kg/kg}
+\newcommand{\qfourtimerefinementhours}{0\,h}
+\newcommand{\qfourvsqthreedryingtimehours}{-4.8286\,h}
+
+\title{中药材热风烘干过程的温湿耦合建模与尺寸收缩效应分析}
+\author{}
+\date{}
+
+\linespread{1.4}\selectfont   % 正文行距，对齐获奖论文的 20pt \u884c间距
+\captionsetup{font={small},labelsep=quad,justification=centering}
+\captionsetup[table]{position=below}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+本文研究圆柱形中药材在热风烘干过程中温度与水分浓度的时空演化规律，并确定烘干所需时长。
+针对题目给出的四个问题，本文建立\textbf{统一的一维径向轴对称耦合模型}，
+采用守恒型的顶点有限体积格式离散，并用四类相互独立的证据验证全部数值结果。
+
+\textbf{针对问题一}，建立预热平衡阶段的温湿耦合模型，以附件 1 的实测环境序列驱动边界。
+结果表明该阶段\textbf{以升温为主、失水仅限表层}：$1800$~s 时中心与表面温度分别为 
+\qoneTcenteroneeightzerozeros 与 \qoneTsurfaceoneeightzerozeros，
+而中心干基含水率仍保持初值 \qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros。
+其物理原因在于水分扩散的特征时间约为 $22$~h，远长于本阶段的三十分钟。
+
+\textbf{针对问题二和问题三}，改用温度与浓度相关的物性经验式，建立含双向耦合的全过程模型，
+并以三步后向 Euler 启动的 Crank--Nicolson 格式推进。结果表明烘干过程由\textbf{内部扩散控制}，
+全域最大干基含水率于 \qtwodryingtime 首次降至判据以下，即烘干时长为 \qtwodryingtime；
+问题三独立求解所得 \qthreedryingtime 与之完全一致，构成一次跨问自检。
+
+\textbf{针对问题四}，药材在失水过程中会发生尺寸收缩。本文引入归一化径向坐标，
+把移动边界转化为已知的表观对流项，从而在固定网格上保持精确的守恒性。
+结果表明烘干时长为 \qfourdryingtimehours，此时半径已收缩至 \qfourRatdryingendcm（收缩 \qfourshrinkagepercent）。
+\textbf{这一结论揭示了一个反直觉的机理}：附录 4 给出的扩散系数前因子比附录 3 小 $5.7$ 倍，
+若只替换物性本应\textbf{延长}烘干时间；但收缩把扩散路径缩短到约 $0.6$ 倍，其效应压倒了扩散系数的下降，
+最终使烘干时长比不考虑收缩的情形缩短 \qfourvsqthreedryingtimehours。
+\textbf{因此尺寸收缩不可忽略，问题四的烘干时长不能由问题三直接推算。}
+
+\textbf{模型检验}方面，本文不依赖先验论证，而给出四类证据：与常物性圆柱扩散的解析级数解对照，
+最大绝对误差达 \qfourreferencemaxabserr 量级；网格与时间的双向加密使报告值不再变化；
+另写一套空间离散与时间推进都不同的格心实现独立复算，报告点差异在一个末位单位以内；
+并把离散质量守恒写成可逐时步核验的恒等式，残差达 \qfourmassbalancerel。
+对问题四，本文进一步设计\textbf{解析不变量检验}——关闭表面传质后收缩不得改变干基含水率，
+实测偏离仅 \qfourmovingboundarydev，使移动边界项的正确性可以被证伪。
+
+\textbf{灵敏度分析}给出了一个对结论表述至关重要的结果：烘干时长对题目给定的表面传质系数并不敏感
+（放大 $5\%$ 仅变化 \qtwosenshmplusfivepct），而主要由模型口径决定
+（质量方程读法变化 \qtwosensmassequationform，环境温度升高 $2^\circ$C 变化 \qtwosensTinfplustwoC）。
+因此本文的全部结论均以条件式给出，并显式列出恒温段环境为外推口径、端面轴向输运被忽略等局限。
+
+\noindent\textbf{关键词}：热风烘干；径向轴对称；有限体积法；移动边界；归一化坐标；参数灵敏度
+\end{abstract}
+
+\newpage
+
+% Sections are \input fragments produced by paper-section-writer
+\input{paper/sections/01_problem_restatement.tex}
+\input{paper/sections/02_problem_analysis.tex}
+\input{paper/sections/03_assumptions.tex}
+\input{paper/sections/04_symbols.tex}
+\input{paper/sections/05_model_and_solution.tex}
+\input{paper/sections/06_validation.tex}
+\input{paper/sections/07_evaluation.tex}
+
+% AI-use declaration (injected from decision ledgers / ai_use_disclosure.md)
+
+
+\begin{thebibliography}{99}
+\bibitem{virtanen2020scipy} Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and others. SciPy 1.0: fundamental algorithms for scientific computing in Python. Nature Methods. 2020
+\bibitem{harris2020numpy} Harris, Charles R. and Millman, K. Jarrod and van der Walt, St{\'e}fan and others. Array programming with NumPy. Nature. 2020
+\bibitem{carslaw1959conduction} Carslaw, Horatio S. and Jaeger, John C.. Conduction of Heat in Solids. Oxford University Press. 1959
+\bibitem{incropera2007heat} Incropera, Frank P. and DeWitt, David P. and Bergman, Theodore L. and Lavine, Adrienne S.. Fundamentals of Heat and Mass Transfer. John Wiley \& Sons. 2007
+\bibitem{leveque2002finite} LeVeque, Randall J.. Finite Volume Methods for Hyperbolic Problems. Cambridge University Press. 2002
+\bibitem{crank1947practical} Crank, John. The Mathematics of Diffusion. Oxford University Press. 1975
+\bibitem{patankar1980numerical} Patankar, Suhas V.. Numerical Heat Transfer and Fluid Flow. Hemisphere Publishing. 1980
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{支撑材料与程序代码}
+
+\subsection{支撑材料清单}
+
+\begin{table}[H]
+  \centering
+  \caption{程序文件清单}\label{tab:code}
+  \small
+  \begin{tabularx}{\textwidth}{@{}llX@{}}
+    \toprule
+    文件 & 对应问题 & 作用 \\
+    \midrule
+    \texttt{code/Q1/q1\_common.py} & 问题一 & 公共常数、输入读取、报告点映射与解析级数解 \\
+    \texttt{code/Q1/q1\_main.py} & 问题一 & 主方法：顶点有限体积 + 自适应隐式积分；产出结果表与完整场文件 \\
+    \texttt{code/Q1/q1\_baseline.py} & 问题一 & 可用基线：格心有限体积 + 固定步长 Crank--Nicolson \\
+    \texttt{code/Q1/q1\_verifier.py} & 问题一 & 独立验证：解析级数参照与不变量核验 \\
+    \texttt{code/Q2/q2\_main.py} 等 & 问题二 & 含双向耦合的全过程求解、基线与验证 \\
+    \texttt{code/Q3/q3\_main.py} 等 & 问题三 & 烘干时长的确定、基线与验证 \\
+    \texttt{code/Q4/q4\_main.py} & 问题四 & 主方法：归一化坐标下的移动边界求解，含表观对流项 \\
+    \texttt{code/Q4/q4\_baseline.py} & 问题四 & 可用基线：归一化坐标下的格心实现 \\
+    \texttt{code/Q4/q4\_verifier.py} & 问题四 & 独立验证：自建级数解与报告口径逐格核验 \\
+    \texttt{code/figures/} & 全部 & 论文图表的生成脚本（含统一的视觉系统与渲染自检） \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+四个问题的完整计算文件为 \texttt{result1.xlsx}--\texttt{result4.xlsx}，
+分别给出题目要求的时间步长与径向间隔下的温度场与水分浓度场。
+
+下文给出核心程序全文。为便于对照正文，每段代码的注释均标出其在论文中的对应位置
+（如"论文对应：5.2 节"）。问题二与问题三复用问题一、问题四的求解器，其差异仅在物性
+经验式与环境条件，故不再重复列出，完整工程见支撑材料目录 \texttt{code/}。
+
+\subsection{问题一公共模块}
+\lstinputlisting[style=pycode, caption={问题一公共模块 \texttt{q1\_common.py}：常数、附件读取、报告点映射与解析级数参照}]
+  {code/Q1/q1_common.py}
+
+\subsection{问题一主方法}
+\lstinputlisting[style=pycode, caption={问题一主方法 \texttt{q1\_main.py}：顶点有限体积离散与自适应 BDF 时间推进}]
+  {code/Q1/q1_main.py}
+
+\subsection{问题一独立验证}
+\lstinputlisting[style=pycode, caption={问题一独立验证 \texttt{q1\_verifier.py}：自建 Bessel 参照与契约不变量核验}]
+  {code/Q1/q1_verifier.py}
+
+\subsection{问题四主方法}
+\lstinputlisting[style=pycode, caption={问题四主方法 \texttt{q4\_main.py}：\texorpdfstring{$\xi=r/R(t)$}{xi = r/R(t)} 归一化坐标下的移动边界有限体积求解}]
+  {code/Q4/q4_main.py}
+
+\subsection{问题四独立验证}
+\lstinputlisting[style=pycode, caption={问题四独立验证 \texttt{q4\_verifier.py}：自建级数参照、交付文件逐格核验}]
+  {code/Q4/q4_verifier.py}
+
+\end{document}

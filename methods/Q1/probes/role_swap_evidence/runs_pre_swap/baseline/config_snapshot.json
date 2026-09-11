@@ -1,0 +1,14 @@
+{
+  "planned_budget": {
+    "wall_seconds": 420,
+    "grid_cells": 800
+  },
+  "actual_budget": {
+    "wall_seconds": 420,
+    "grid_cells": 800
+  },
+  "budget_delta": {},
+  "config_manifest": {
+    "planning/session_config.json": "4dc1f55332ec6127f4411a2828502e4615086ecf7bde16d9cfabd95259b3afdc"
+  }
+}

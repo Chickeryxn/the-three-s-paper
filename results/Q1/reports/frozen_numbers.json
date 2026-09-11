@@ -1,0 +1,104 @@
+{
+  "claims": [
+    {
+      "claim_id": "q1_T_center_1800s",
+      "value": 33.5753,
+      "unit": "°C",
+      "source_file": "results/Q1/experiments/round1/metrics/main.json",
+      "source_locator": "$.table1_temperature_C['1800'][0]",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_T_surface_1800s",
+      "value": 36.7856,
+      "unit": "°C",
+      "source_file": "results/Q1/experiments/round1/metrics/main.json",
+      "source_locator": "$.table1_temperature_C['1800'][4]",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_C_center_1800s",
+      "value": 2.55,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/main.json",
+      "source_locator": "$.table2_moisture_kg_per_kg['1800'][0]",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_C_surface_1800s",
+      "value": 1.5102,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/main.json",
+      "source_locator": "$.table2_moisture_kg_per_kg['1800'][4]",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_analytical_max_abs_err",
+      "value": 6.18e-07,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.analytical_cross_check.max_abs_err",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_grid_refinement_diff",
+      "value": 3.24e-06,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.grid_refinement.max_abs_diff_400_vs_800",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_time_accuracy_tolerance_diff",
+      "value": 3.89e-10,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.time_accuracy.max_abs_diff_1e_8_vs_1e_9",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_mass_balance_rel",
+      "value": 5.41e-11,
+      "unit": "",
+      "source_file": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.mass_balance.rel_balance_error",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_independent_implementations_diff",
+      "value": 9.72e-07,
+      "unit": "kg/kg",
+      "source_file": "results/Q1/experiments/round1/metrics/verifier_validation.json",
+      "source_locator": "$.convergence_limit_comparison.abs_diff",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    },
+    {
+      "claim_id": "q1_h_m_plus5pct_surface_shift",
+      "value": -0.0352,
+      "unit": "kg/kg",
+      "source_file": "robustness/Q1/q1_robustness_summary.json",
+      "source_locator": "$.checks.h_m_perturbation.observed['h_m x1.05'].surface_shift",
+      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q1_package_signoff"
+    }
+  ]
+}

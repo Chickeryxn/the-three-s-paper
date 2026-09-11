@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "method_id": "V1",
+  "role": "verifier",
+  "script": "code/Q1/q1_verifier.py",
+  "independent_path": "Bessel series semi-analytical reference (own computation from the model contract)",
+  "contract_hash_used": "planning/model_contract.json",
+  "frozen_config": {
+    "D_m2_s": 4.937655094173937e-09,
+    "h_m": 8e-07,
+    "C_inf": 0.05,
+    "C_init": 2.55,
+    "T_inf": 28.0
+  },
+  "reference_profile_1800s": {
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "C": [
+      2.55,
+      2.5497,
+      2.5378,
+      2.3672,
+      1.5603
+    ]
+  },
+  "r_cm": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0
+  ]
+}

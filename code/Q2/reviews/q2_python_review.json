@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "round": "round1",
+  "implementation_target": "python",
+  "reviewer": "python-code-reviewer",
+  "reviewed_scripts": {
+    "code/Q2/q2_main.py": "41db771cf8c3006a2ac0d403f7db0e6938a4dc33686c12f81c6ce0f9e9effcc9",
+    "code/Q2/q2_baseline.py": "7d33d623699665d526209d1cb16b68492e500a04e52f614919eb73b42d837625",
+    "code/Q2/q2_verifier.py": "39c1b04c805fab63b7bfb22b366501d437b4036eb5419df31bc7659a5a4aef3e",
+    "code/Q2/q2_round_summary.py": "d174e09f5716ff43b00fb44d611bc6fe976d08847313758799968cac2ba0677e"
+  },
+  "checks": {
+    "syntax": {
+      "status": "PASS",
+      "detail": {
+        "code/Q2/q2_main.py": "ok",
+        "code/Q2/q2_baseline.py": "ok",
+        "code/Q2/q2_verifier.py": "ok",
+        "code/Q2/q2_round_summary.py": "ok"
+      }
+    },
+    "input_contract": {
+      "status": "PASS",
+      "constants": {
+        "TARGET": true,
+        "H": true,
+        "HM": true,
+        "C0": true
+      },
+      "appendix3_closures_present": true,
+      "reads_declared_input": true
+    },
+    "method_alignment": {
+      "status": "PASS",
+      "detail": {
+        "main_is_vertex_centred": true,
+        "main_uses_crank_nicolson": true,
+        "baseline_is_cell_centred": true,
+        "verifier_uses_bessel": true,
+        "role_amendment_recorded": true,
+        "method_choice_recorded": true,
+        "verifier_reference_pass": true,
+        "verifier_cross_check_pass": true,
+        "time_refinement_reported": true
+      },
+      "presented_main": "vertex-centred finite volume",
+      "verification": "cell-centred finite volume"
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "deterministic": true,
+      "random_seed": 2026,
+      "snapshot_hashes_match_current": true,
+      "snapshots": {
+        "main": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "ee46c19c9bfa06515bfea780212f4d5e2bedc9e9a276e5b533b892ac39a0f9ad",
+          "validation_hash": "f837f8eafeca2f138e0c85bb12383c424b2599a883eed010213df9541afd605a",
+          "degraded": false
+        },
+        "baseline": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "ca7920c50d2b364dbf7d12da9565eccd50bb5d3eb9b15eeb9f6f96443ac08bff",
+          "validation_hash": "0497413e9e4da3d5e0dc00778b9118680a6164886137c0e05af9d223bf8e4031",
+          "degraded": false
+        },
+        "verifier": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "0fb6c4ee641e3ee334f62732720a6fcf89c815c08b328a2362c996ca3125073c",
+          "validation_hash": "3f9268990f839306e17e675ca24d8b843630dbb9666353bb2ecfe2fe0b88bbfe",
+          "degraded": false
+        }
+      }
+    },
+    "output_contract": {
+      "status": "PASS",
+      "deliverable": "results/Q2/experiments/round1/result2.xlsx",
+      "detail": {
+        "sheets": [
+          "温度",
+          "水分浓度"
+        ],
+        "data_rows": 206873,
+        "header_cols": 22,
+        "header_last_cm": 2,
+        "first_time": 1,
+        "first_T_first_cell": 28,
+        "first_T_last_cell": 28.0001,
+        "moisture_sheet_present": true
+      },
+      "tables": [
+        "table3_baseline.csv",
+        "table3_main.csv",
+        "table4_baseline.csv",
+        "table4_main.csv"
+      ],
+      "temperature_scale_is_degC": true
+    }
+  },
+  "overall_status": "PASS"
+}

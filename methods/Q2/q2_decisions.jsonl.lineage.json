@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q2/q2_decisions.jsonl",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q2/q2_method_card.md",
+      "exists": true,
+      "sha256": "1d484cd62e612f4786cf01ec60bc398ba2c366b98bbdb1a6a12014a0e6e27724"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "python-model-code-generator",
+    "solution-package-builder"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:04+0800"
+}

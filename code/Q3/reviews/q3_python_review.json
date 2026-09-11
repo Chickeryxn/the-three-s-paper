@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "round": "round1",
+  "implementation_target": "python",
+  "reviewer": "python-code-reviewer",
+  "reviewed_scripts": {
+    "code/Q3/q3_main.py": "4362a6055b9b19598f18d9ccb1672ee8d829bff2f2bcae66e0d204488fcae9b4",
+    "code/Q3/q3_baseline.py": "2fbf36efcb099512e8c222a15cb96a0ac1ad01430f7f76b7d13c3f04a21455c0",
+    "code/Q3/q3_verifier.py": "3fabbbb212deaf60955c9544a0ff54341f4a1b767b6cebdab10574627b66b288"
+  },
+  "checks": {
+    "syntax": {
+      "status": "PASS",
+      "detail": {
+        "code/Q3/q3_main.py": "ok",
+        "code/Q3/q3_baseline.py": "ok",
+        "code/Q3/q3_verifier.py": "ok"
+      }
+    },
+    "input_contract": {
+      "status": "PASS",
+      "constants": {
+        "TARGET": true,
+        "H": true,
+        "HM": true,
+        "C0": true,
+        "N_BE_START": true
+      },
+      "imports_frozen_q2_physics": true,
+      "note": "Q3 imports the grid and the appendix-3 closures from the frozen Q2 implementation so the two questions cannot drift"
+    },
+    "method_alignment": {
+      "status": "PASS",
+      "detail": {
+        "main_is_vertex_centred": true,
+        "harmless": true,
+        "rannacher_startup_present": true,
+        "baseline_is_cell_centred_no_startup": true,
+        "verifier_uses_bessel": true,
+        "method_choice_recorded": true,
+        "startup_decision_recorded": true,
+        "verifier_reference_pass": true,
+        "verifier_cross_check_pass": true,
+        "drying_time_within_band": true
+      }
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "deterministic": true,
+      "random_seed": 2026,
+      "snapshots": {
+        "main": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "e2faf0cca6ee73ce95fa3dc97fef501e1ba59506d38bdca7cbcac255d9a70731",
+          "degraded": false
+        },
+        "baseline": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "c01de14869a676b033c1f22207f446139675d251be0de8562bb57a00d7636f84",
+          "degraded": false
+        },
+        "verifier": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "69860dc0774034e707d2fe4b4f01386dee7c65cde0b50f45ac96a514debb05ba",
+          "degraded": false
+        }
+      }
+    },
+    "output_contract": {
+      "status": "PASS",
+      "deliverable": "results/Q3/experiments/round1/result3.xlsx",
+      "detail": {
+        "sheets": [
+          "Sheet1"
+        ],
+        "data_rows": 3448,
+        "header_cols": 22,
+        "header_last_cm": 2,
+        "first_time": 60,
+        "first_value": 2.55,
+        "last_value_in_row2": 2.3271
+      },
+      "tables": [
+        "table5_baseline.csv",
+        "table5_main.csv"
+      ],
+      "table5_present": true
+    }
+  },
+  "overall_status": "PASS"
+}

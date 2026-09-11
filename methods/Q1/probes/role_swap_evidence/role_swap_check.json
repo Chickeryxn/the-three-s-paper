@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "kind": "role_swap_check",
+  "decision_id": "q1_method_role_swap",
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "main_reproduces_archived_baseline_reported_values",
+      "status": "PASS",
+      "detail": {
+        "table1_temperature_C": true,
+        "table2_moisture_kg_per_kg": true,
+        "final_profile_1800s": true,
+        "reference_case": true,
+        "r_cm": true
+      }
+    },
+    {
+      "check": "main_reproduces_archived_baseline_validation_core",
+      "status": "PASS",
+      "detail": {
+        "grid_refinement": true,
+        "surface_column_convergence": true,
+        "analytical_cross_check": true
+      }
+    },
+    {
+      "check": "baseline_reproduces_archived_main_reported_values",
+      "status": "PASS",
+      "detail": {
+        "table1_temperature_C": true,
+        "table2_moisture_kg_per_kg": true,
+        "final_profile_1800s": true,
+        "reference_case": true,
+        "r_cm": true
+      }
+    },
+    {
+      "check": "baseline_reproduces_archived_main_validation_core",
+      "status": "PASS",
+      "detail": {
+        "grid_refinement": true,
+        "surface_column_convergence": true,
+        "analytical_cross_check": true
+      }
+    },
+    {
+      "check": "solve_M2_body_matches_archived_solve_B1",
+      "status": "PASS",
+      "detail": {
+        "differing_lines": [
+          "-                    rtol=1e-9, atol=1e-11)",
+          "+                    rtol=rtol, atol=atol, dense_output=True)",
+          "-        raise RuntimeError(\"B1 integration failed: \" + str(sol.message))",
+          "+        raise RuntimeError(\"M2 integration failed: \" + str(sol.message))"
+        ],
+        "n_differing": 4,
+        "note": "differences must be confined to the solver-tolerance arguments and the error-message label"
+      }
+    },
+    {
+      "check": "solve_B2_body_identical_to_archived_solve_M1",
+      "status": "PASS",
+      "detail": {
+        "differing_lines": [],
+        "n_differing": 0
+      }
+    },
+    {
+      "check": "deliverable_t1800_row_unchanged",
+      "status": "PASS",
+      "detail": {
+        "max_abs_diff": 0.0
+      }
+    },
+    {
+      "check": "deliverable_delta_bounded_to_one_ulp",
+      "status": "PASS",
+      "detail": {
+        "moisture": {
+          "cells_changed_at_4dp": 443,
+          "cells_total": 37800,
+          "max_abs_diff": 0.0004999999999997229,
+          "worst_cell": {
+            "t_s": 1,
+            "r_cm": 2.0
+          }
+        },
+        "temperature": {
+          "cells_changed_at_4dp": 110,
+          "cells_total": 37800,
+          "max_abs_diff": 0.00010000000000331966,
+          "worst_cell": {
+            "t_s": 133,
+            "r_cm": 1.8
+          }
+        }
+      }
+    },
+    {
+      "check": "independent_implementations_still_agree",
+      "status": "PASS",
+      "detail": {
+        "max_abs_diff_moisture": 0.00010000000000021103,
+        "max_abs_diff_temperature": 0.0,
+        "convergence_limits_diff": 9.722982206028519e-07
+      }
+    }
+  ]
+}

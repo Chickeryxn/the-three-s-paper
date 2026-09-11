@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "profile": "lean",
+  "generated_at": "2026-09-10T23:04:56+0800",
+  "methods": {
+    "M1": {
+      "role": "main_candidate",
+      "verdict": "PASS",
+      "executability": {
+        "reference": "Bessel series, constant D, convective BC, 200 roots",
+        "max_abs_err_C": 4.299974508459314e-06,
+        "observed_spatial_order": 1.7269106750891006,
+        "err_by_grid": {
+          "100": 4.71161403754472e-05,
+          "200": 1.2868760322692907e-05,
+          "400": 4.299974508459314e-06,
+          "800": 3.2174223367764654e-06
+        }
+      },
+      "data_coverage": {
+        "env_points": 241,
+        "env_span_s": [
+          0.0,
+          14400.0
+        ],
+        "env_step_s": 60.0,
+        "t_100s_is_sample_point": false,
+        "t_100s_handling": "linear interpolation of附件1"
+      },
+      "assumption_checks": {
+        "D_range_m2_per_s": [
+          3.894455006320852e-09,
+          4.9376498998615335e-09
+        ],
+        "D_dynamic_range": 1.2678667212350727,
+        "explicit_stability_dt_s": 0.2531568712546942,
+        "used_dt_s": 0.25,
+        "implicit_unconditionally_stable": true,
+        "mass_equation_form": "Fick standard; rho,c_p,k enter only the energy equation (g_assumption_mass_equation_form)",
+        "axis_treatment": "finite-volume face area Af[0]=0 -> symmetry exact, no 1/r singularity",
+        "surface_recovery": "convective boundary relation; holding the last cell-centre value is only 1st order"
+      },
+      "output_degeneracy": {
+        "center_is_argmax_at_1800s": true,
+        "argmax_r_cm": 0.0025,
+        "max_C": 2.549992314067085,
+        "center_C": 2.549992314067085,
+        "surface_C": 1.5102620571946146,
+        "profile_monotone_decreasing": true,
+        "n_unique_rounded4": 270,
+        "T_center_C": 33.57564826465404,
+        "T_surface_C": 36.78573964309258,
+        "T_monotone_increasing": true
+      },
+      "perturbation_sensitivity": {
+        "grid_100_vs_200_max_abs_diff_C": 3.409841613200015e-05,
+        "grid_200_vs_400_max_abs_diff_C": 8.536321972396621e-06,
+        "h_m_plus5pct_max_abs_diff_C": 0.03521393341448453,
+        "reported_4dp_stable": true
+      },
+      "scale_check": {
+        "Q1_wall_s": 19.013338799995836,
+        "Q1_steps": 7200,
+        "cells": 400,
+        "Q2_projected_wall_s": 2737.9207871994004,
+        "note": "Q2/Q4 需 1 s 输出；若内部步长取 1 s 则 ≈2.6e5 步"
+      }
+    },
+    "B1": {
+      "role": "usable_baseline",
+      "verdict": "PASS",
+      "executability": {
+        "solver": "scipy solve_ivp BDF + node-centred differences",
+        "status": "ok"
+      },
+      "data_coverage": {
+        "same_inputs_as_M1": true
+      },
+      "assumption_checks": {
+        "space_and_time_discretisation_differ_from_M1": true,
+        "wall_s": 164.87370979999832
+      },
+      "output_degeneracy": {
+        "max_abs_diff_vs_M1_C": 2.3133098878691527e-05,
+        "max_abs_diff_vs_M1_T_C": 0.00029891841884932546,
+        "independent_implementation": true
+      },
+      "perturbation_sensitivity": {
+        "rtol": 1e-09,
+        "atol": 1e-11
+      },
+      "scale_check": {
+        "wall_s": 164.87370979999832,
+        "nodes": 400
+      }
+    },
+    "F1": {
+      "role": "conditional_fallback",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "not activated in this probe"
+      },
+      "data_coverage": {
+        "same_inputs_as_M1": true
+      },
+      "assumption_checks": {
+        "explicit_dt_limit_s": 0.2531568712546942
+      },
+      "output_degeneracy": {
+        "pending": "evaluated only on activation"
+      },
+      "perturbation_sensitivity": {
+        "pending": "evaluated only on activation"
+      },
+      "scale_check": {
+        "projected_steps_for_Q2": 1023872
+      }
+    }
+  },
+  "sample_1800s": {
+    "r_cm": [
+      0.0,
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ],
+    "T_C": [
+      33.57564335162391,
+      33.77229498934738,
+      34.36443894786575,
+      35.362362786180306,
+      36.78573964309258
+    ],
+    "C": [
+      2.5499923156949347,
+      2.5497227861530174,
+      2.5382905110651,
+      2.375464712604662,
+      1.5102620571946148
+    ]
+  },
+  "amendment_note": {
+    "decision_id": "q1_time_scheme_amendment",
+    "what_changed": "M1 的时间积分由后向 Euler 改为 Crank-Nicolson",
+    "why": "round1 实现阶段发现最外层有限体积单元时间常数 tau=0.503 s，后向 Euler 误差集中在表面列（err~4.4e-4*dt），Q2/Q3/Q4 时程上不可行",
+    "effect_on_this_probe": "无：本探针评估的是空间离散（格心有限体积）、边界处理与候选角色；三者均未改变。verdict 依然有效。",
+    "evidence": "methods/Q1/probes/time_scheme_diagnostic.txt"
+  }
+}

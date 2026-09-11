@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "artifact": "code/Q1/reviews/q1_python_review.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "code/Q1/q1_common.py",
+      "exists": true,
+      "sha256": "57d7fe728fcf2f8daa054dd110d40cea9854fddce1837046cf72c3e2f50652bf"
+    },
+    {
+      "path": "code/Q1/q1_main.py",
+      "exists": true,
+      "sha256": "d7b1fb289f3c7bd71d0aaea16d491381acb469d50d45be26d6b754fe38b8b512"
+    },
+    {
+      "path": "code/Q1/q1_baseline.py",
+      "exists": true,
+      "sha256": "0aecae157edfb0ed19b96f5ba63a7184b94f18cb0a2bba36f3ddc1b053010a3f"
+    },
+    {
+      "path": "code/Q1/q1_verifier.py",
+      "exists": true,
+      "sha256": "db904003b4e1aa57297509d9139e1fb23236930b06cee4045079169e75710ae6"
+    },
+    {
+      "path": "methods/Q1/q1_decisions.jsonl",
+      "exists": true,
+      "sha256": "2c4fd7e296e1d0b37a89912a7125f943411e62b302cc28b01e49e76388ad76cb"
+    },
+    {
+      "path": "results/Q1/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "a650ec52f1c4fc7512f800bf57f3254e1843c58bedc1f62986217dd2bc93851c"
+    },
+    {
+      "path": "results/Q1/experiments/round1/result1.xlsx",
+      "exists": true,
+      "sha256": "ff7e81b1b07eb3dfda9b605f48215a5ab388118d925e1981588c32c1bd22eaf5"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [
+    "q1_method_role_swap"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q1/q1_code_review.py": "0d21285b1de3c8a63b69382e3194ffc8fb9d0ebfae0e21bdc120693df02aa361"
+  },
+  "created_at": "2026-09-11T17:34:02+0800"
+}

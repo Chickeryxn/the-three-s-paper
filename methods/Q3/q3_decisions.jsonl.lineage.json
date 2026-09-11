@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q3/q3_decisions.jsonl",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q3/q3_method_card.md",
+      "exists": true,
+      "sha256": "6cabba5edbd3194498e6471ea1bcb2b5ae0a78daed019aef5e1c4974556243e8"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "python-model-code-generator",
+    "solution-package-builder"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:04+0800"
+}

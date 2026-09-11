@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q4/q4_final_method_explanation.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q4/q4_method_card.md",
+      "exists": true,
+      "sha256": "b94b1207417061ebf83cb603588eaf57b1cb63a8b855fb139577e6b035535d3a"
+    },
+    {
+      "path": "methods/Q4/q4_decisions.jsonl",
+      "exists": true,
+      "sha256": "8fbfb202a91e62cd2fe14ba5fc427b25d1d12ea598d4dff8c79acbb6bef983bb"
+    },
+    {
+      "path": "planning/model_contract.json",
+      "exists": true,
+      "sha256": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "9f7f21f902b9073e5ed6ba3a806b31c76e58c98cc5fca821169238d72d46daa3"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "35ea6e3896daafbe90533acc8b7e7f5e420abb983417b31aa35fd8a8d8ac3ae1"
+    },
+    {
+      "path": "robustness/Q4/q4_robustness_summary.json",
+      "exists": true,
+      "sha256": "55bcc750e8ead5191f292b3058c5a24f315aaf2d73f180bfa8eda3d57a95e23a"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer",
+    "solution-package-builder"
+  ],
+  "decision_ids": [
+    "q4_method_choice"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:05+0800"
+}

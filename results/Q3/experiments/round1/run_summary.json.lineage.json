@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q3/experiments/round1/run_summary.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q3/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "e2faf0cca6ee73ce95fa3dc97fef501e1ba59506d38bdca7cbcac255d9a70731"
+    },
+    {
+      "path": "results/Q3/experiments/round1/metrics/baseline.json",
+      "exists": true,
+      "sha256": "c01de14869a676b033c1f22207f446139675d251be0de8562bb57a00d7636f84"
+    },
+    {
+      "path": "results/Q3/experiments/round1/metrics/verifier.json",
+      "exists": true,
+      "sha256": "69860dc0774034e707d2fe4b4f01386dee7c65cde0b50f45ac96a514debb05ba"
+    },
+    {
+      "path": "results/Q3/experiments/round1/runs/main/run_metadata.json",
+      "exists": true,
+      "sha256": "e8553ae7699e5d2a32b679fe1308561046843676c8b766b9805fdf7762c733c2"
+    },
+    {
+      "path": "results/Q3/experiments/round1/runs/baseline/run_metadata.json",
+      "exists": true,
+      "sha256": "6ff4b9b027838bfc8ca1e8a1a2cb332ea99c8bfd092555ae2ba0b6b601462ba9"
+    },
+    {
+      "path": "results/Q3/experiments/round1/runs/verifier/run_metadata.json",
+      "exists": true,
+      "sha256": "4f3255ee5da04e05009b6995e0af359ed0d5867fe5d736dc2004187d713af466"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "result-report-generator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q3/q3_round_summary.py": "389bfb93595bfed117415c888599ce1d2614f3cf2bbcb874db1dbca894844a57"
+  },
+  "created_at": "2026-09-11T17:34:08+0800"
+}

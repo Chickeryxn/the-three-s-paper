@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "run_id": "verifier",
+  "planned_budget": {
+    "wall_seconds": 60
+  },
+  "actual_budget": {
+    "wall_seconds": 60
+  },
+  "budget_delta": {},
+  "degraded": false,
+  "degradation_reason": null,
+  "acceptance_impact": [],
+  "claim_restrictions": [],
+  "input_manifest": {
+    "planning/model_contract.json": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba",
+    "workspace/data_clean/attachment1_env.csv": "fd24486a112e5eec32a0884ec0c0e0007de52bc43504513eccdc0bf0194f06ff"
+  },
+  "code_manifest": {
+    "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58",
+    "code/Q1/q1_verifier.py": "6b8ece2b1142e61cf4c318541e6ca8468cc94d3888e6bf4e2ef2bd6828153c6c"
+  },
+  "config_manifest": {
+    "planning/session_config.json": "4dc1f55332ec6127f4411a2828502e4615086ecf7bde16d9cfabd95259b3afdc"
+  },
+  "config_hash": "182e31f48b8a55b5b7e6665a6572465ce1c5b85cf5c9aae921e6593999b6c6ae",
+  "command": "python code/Q1/q1_verifier.py",
+  "environment": {
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cwd": "D:\\数学建模实战v1"
+  },
+  "vcs": {
+    "available": true,
+    "head": "b9d15507af45e1a921fcea792e606bd6bcbf12a4",
+    "dirty": [
+      " M records/README.md",
+      "?? planning/model_contract.json.lineage.json",
+      "?? records/sessions/2026-09-10-001.md",
+      "?? workspace/code/"
+    ],
+    "dirty_count": 4
+  },
+  "status": "SUCCESS",
+  "started_at": "2026-09-11T00:49:29+0800",
+  "return_code": 0,
+  "result_ref": "results/Q1/experiments/round1/metrics/verifier.json",
+  "validation_ref": "results/Q1/experiments/round1/metrics/verifier_validation.json",
+  "result_hash": "fd0883d59a2807c370f6cf4be9da336b882af594716a425d2e163f311b152b87",
+  "validation_hash": "51f276bfa38b6b91b665771890e979580e5520ac0913a8eee1b827e22a954ff5",
+  "executed_by_runner": true,
+  "elapsed_seconds": 3.2734436988830566,
+  "process_return_code": 0,
+  "finished_at": "2026-09-11T00:49:32+0800"
+}

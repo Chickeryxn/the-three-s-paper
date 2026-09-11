@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "B4",
+  "grid_refinement_6h": {
+    "N": [
+      400,
+      800
+    ],
+    "dt_s": 5.0,
+    "max_abs_diff_C": 0.0004098491258620607,
+    "reported_4dp_stable": false
+  },
+  "time_refinement_full_span": {
+    "dt_s": [
+      10.0,
+      5.0
+    ],
+    "t_dry_hours": {
+      "10.0": 52.63055555555555,
+      "5.0": 52.63194444444444
+    },
+    "abs_diff_hours": 0.0013888888888899942,
+    "reported_4dp_stable": true
+  },
+  "moving_boundary_invariance": {
+    "observed_max_abs_deviation_of_C_from_C0": 9.370282327836321e-14,
+    "threshold": 1e-08,
+    "pass": true
+  },
+  "elapsed_s": 20.07
+}

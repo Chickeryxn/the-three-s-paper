@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "round": "round1",
+  "implementation_target": "python",
+  "random_seed": 2026,
+  "approved_decision_id": "q1_method_choice",
+  "superseding_decision_id": "q1_time_scheme_amendment",
+  "contract_hash": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba",
+  "run_snapshot": "results/Q1/experiments/round1/runs/main/run_metadata.json",
+  "snapshot_ref": "results/Q1/experiments/round1/runs/main/run_metadata.json",
+  "methods": [
+    {
+      "method_id": "M1",
+      "role": "main_candidate",
+      "script": "code/Q1/q1_main.py",
+      "status": "success",
+      "execution_time_seconds": 309.743,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "planning/model_contract.json",
+        "planning/framing_decisions.jsonl",
+        "methods/Q1/q1_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q1/experiments/round1/result1.xlsx",
+        "results/Q1/experiments/round1/tables/table1_main.csv",
+        "results/Q1/experiments/round1/tables/table2_main.csv"
+      ],
+      "figure_files": [
+        "results/Q1/experiments/round1/figures/fig1_q1_fields.png"
+      ],
+      "metrics_summary": {
+        "grid_diff_400_vs_800": 2.1355154204982796e-06,
+        "time_diff_0_5_vs_0_25": 3.556404485571818e-06,
+        "analytical_max_abs_err": 2.857002487921534e-06,
+        "mass_balance_rel": 5.988669412935529e-14,
+        "surface_limit_t100": 2.247046151284999,
+        "surface_err_at_N800": 1.6794650942397737e-05,
+        "scheme": "Crank-Nicolson (theta=0.5), cell-centred finite volume, Thomas"
+      },
+      "result_ref": "results/Q1/experiments/round1/metrics/main.json",
+      "validation_ref": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "run_snapshot": "results/Q1/experiments/round1/runs/main/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q1/experiments/round1/runs/main/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q1/q1_main.py",
+        "elapsed_seconds": 312.4359166622162,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "method_id": "B1",
+      "role": "usable_baseline",
+      "script": "code/Q1/q1_baseline.py",
+      "status": "success",
+      "execution_time_seconds": 235.535,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "planning/model_contract.json",
+        "planning/framing_decisions.jsonl",
+        "methods/Q1/q1_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q1/experiments/round1/tables/table1_baseline.csv",
+        "results/Q1/experiments/round1/tables/table2_baseline.csv"
+      ],
+      "figure_files": [],
+      "metrics_summary": {
+        "grid_diff_400_vs_800": 3.2406530383610743e-06,
+        "analytical_max_abs_err": 6.18448496858548e-07,
+        "mass_balance_rel_to_inventory": 3.3367144437444624e-05,
+        "surface_limit_t100": 2.2470451789867782,
+        "surface_err_at_N800": 1.8587890505461502e-05,
+        "scheme": "node-based conservative flux form + scipy solve_ivp BDF (rtol=1e-9)"
+      },
+      "result_ref": "results/Q1/experiments/round1/metrics/baseline.json",
+      "validation_ref": "results/Q1/experiments/round1/metrics/baseline_validation.json",
+      "run_snapshot": "results/Q1/experiments/round1/runs/baseline/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q1/experiments/round1/runs/baseline/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q1/q1_baseline.py",
+        "elapsed_seconds": 237.20843172073364,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "verifier": {
+    "method_id": "V1",
+    "script": "code/Q1/q1_verifier.py",
+    "result_ref": "results/Q1/experiments/round1/metrics/verifier.json",
+    "validation_ref": "results/Q1/experiments/round1/metrics/verifier_validation.json",
+    "run_snapshot": "results/Q1/experiments/round1/runs/verifier/run_metadata.json",
+    "snapshot": {
+      "path": "results/Q1/experiments/round1/runs/verifier/run_metadata.json",
+      "status": "SUCCESS",
+      "command": "python code/Q1/q1_verifier.py",
+      "elapsed_seconds": 3.2734436988830566,
+      "executed_by_runner": true,
+      "return_code": 0
+    },
+    "metrics_summary": {
+      "analytical_mass_balance_worst": 7.053593626011857e-08,
+      "main_vs_reference": 3.1552173345605894e-05,
+      "baseline_vs_reference": 3.1552173345605894e-05,
+      "convergence_limits_diff": 9.722982206028519e-07
+    }
+  },
+  "independence": {
+    "runtime_status": "RUNTIME_INDEPENDENT"
+  },
+  "comparison": {
+    "main_metric_source": "results/Q1/experiments/round1/metrics/main.json",
+    "baseline_metric_source": "results/Q1/experiments/round1/metrics/baseline.json",
+    "max_abs_diff_moisture": 0.00010000000000021103,
+    "max_abs_diff_temperature": 0.0,
+    "convergence_limits_diff": 9.722982206028519e-07,
+    "verdict": "main and baseline agree pointwise to within one unit in the last reported decimal; their Richardson limits at the hardest point agree to 9.7e-07"
+  },
+  "fallback_trigger": {
+    "fallback_id": "F1",
+    "condition": "M1 and B1 disagree beyond the reported tolerance at a required point and the disagreement cannot be attributed",
+    "observed": false,
+    "evidence": "results/Q1/experiments/round1/metrics/verifier_validation.json"
+  },
+  "environment": {
+    "python": "3.14.2",
+    "platform": "win32",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0"
+  }
+}

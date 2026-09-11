@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "configuration": "cell-centred finite volume + Crank-Nicolson N=800, dt=0.25 s, t_end=1800 s (baseline role B2 after decision q1_method_role_swap)",
+  "why_this_implementation": "the sweep needs many solves, so it runs on the cheap fixed-step implementation; it is cross-checked against the main role below",
+  "cross_check_vs_main_max_abs_diff": 0.0,
+  "cross_check_vs_main_tolerance": 0.0001,
+  "baseline_profile_C": [
+    2.55,
+    2.5497,
+    2.5383,
+    2.3755,
+    1.5102
+  ],
+  "baseline_surface_C": 1.5102371694292465,
+  "r_cm": [
+    0.0,
+    0.5,
+    1.0,
+    1.5,
+    2.0
+  ],
+  "note": "the figure in the risk probe (0.0352) was measured under the earlier backward-Euler configuration and mixed the parameter effect with the time-integration error; these numbers supersede it",
+  "cases": {
+    "h_m x1.05": {
+      "max_abs_diff_C": 0.03524298397526793,
+      "at_r_cm": 2.0,
+      "rel_change_at_that_point": 0.023336059189025964,
+      "surface_C": 1.4749941854539783,
+      "surface_shift": -0.03524298397526815,
+      "units_in_last_reported_decimal": 352.4298397526793,
+      "elapsed_s": 47.97
+    },
+    "h_m x0.95": {
+      "max_abs_diff_C": 0.03643444617291314,
+      "at_r_cm": 2.0,
+      "rel_change_at_that_point": 0.024124983089035316,
+      "surface_C": 1.5466716156021596,
+      "surface_shift": 0.03643444617291314,
+      "units_in_last_reported_decimal": 364.34446172913135,
+      "elapsed_s": 48.1
+    },
+    "h_m x1.10": {
+      "max_abs_diff_C": 0.06934186039487789,
+      "at_r_cm": 2.0,
+      "rel_change_at_that_point": 0.04591455024318053,
+      "surface_C": 1.4408953090343686,
+      "surface_shift": -0.06934186039487789,
+      "units_in_last_reported_decimal": 693.4186039487788,
+      "elapsed_s": 47.92
+    },
+    "h_conv x1.05": {
+      "max_abs_diff_C": 0.0,
+      "at_r_cm": 0.0,
+      "rel_change_at_that_point": 0.0,
+      "surface_C": 1.5102371694292465,
+      "surface_shift": 0.0,
+      "units_in_last_reported_decimal": 0.0,
+      "elapsed_s": 48.03
+    },
+    "D x1.05": {
+      "max_abs_diff_C": 0.01598616028209876,
+      "at_r_cm": 2.0,
+      "rel_change_at_that_point": 0.010585198540796278,
+      "surface_C": 1.5262233297113452,
+      "surface_shift": 0.01598616028209876,
+      "units_in_last_reported_decimal": 159.8616028209876,
+      "elapsed_s": 47.87
+    },
+    "rho_cp x1.05": {
+      "max_abs_diff_C": 0.0,
+      "at_r_cm": 0.0,
+      "rel_change_at_that_point": 0.0,
+      "surface_C": 1.5102371694292465,
+      "surface_shift": 0.0,
+      "units_in_last_reported_decimal": 0.0,
+      "elapsed_s": 47.82
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "round": "round1",
+  "implementation_target": "python",
+  "random_seed": 2026,
+  "approved_decision_id": "q3_method_choice",
+  "superseding_decision_id": "q3_time_scheme_startup",
+  "contract_hash": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba",
+  "run_snapshot": "results/Q3/experiments/round1/runs/main/run_metadata.json",
+  "snapshot_ref": "results/Q3/experiments/round1/runs/main/run_metadata.json",
+  "methods": [
+    {
+      "method_id": "M3",
+      "role": "main_candidate",
+      "script": "code/Q3/q3_main.py",
+      "status": "success",
+      "execution_time_seconds": 55.6,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "planning/model_contract.json",
+        "planning/framing_decisions.jsonl",
+        "methods/Q3/q3_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q3/experiments/round1/result3.xlsx",
+        "results/Q3/experiments/round1/tables/table5_main.csv"
+      ],
+      "figure_files": [
+        "results/Q3/experiments/round1/figures/fig1_q3_curves.png"
+      ],
+      "metrics_summary": {
+        "scheme": "vertex-centred finite volume + Crank-Nicolson with a 3-step backward-Euler (Rannacher) startup",
+        "drying_time_hours": 57.46472222222222,
+        "dt_refinement_full_span_hours": 0.0036111111111125638,
+        "grid_refinement_6h_max_abs_diff_C": 3.201625258242302e-07,
+        "mass_balance_rel": 4.763902709163765e-13,
+        "xlsx_rows": 3448
+      },
+      "result_ref": "results/Q3/experiments/round1/metrics/main.json",
+      "validation_ref": "results/Q3/experiments/round1/metrics/main_validation.json",
+      "run_snapshot": "results/Q3/experiments/round1/runs/main/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q3/experiments/round1/runs/main/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q3/q3_main.py",
+        "elapsed_seconds": 75.51769471168518,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "method_id": "B3",
+      "role": "usable_baseline",
+      "script": "code/Q3/q3_baseline.py",
+      "status": "success",
+      "execution_time_seconds": 58.4,
+      "input_files": [
+        "workspace/data_clean/attachment1_env.csv",
+        "planning/model_contract.json",
+        "planning/framing_decisions.jsonl",
+        "methods/Q3/q3_decisions.jsonl"
+      ],
+      "output_files": [
+        "results/Q3/experiments/round1/tables/table5_baseline.csv"
+      ],
+      "figure_files": [],
+      "metrics_summary": {
+        "scheme": "cell-centred finite volume + Crank-Nicolson, no Rannacher startup",
+        "drying_time_hours": 57.4575,
+        "mass_balance_rel": 2.1667637037986329e-13,
+        "steps": 206847
+      },
+      "result_ref": "results/Q3/experiments/round1/metrics/baseline.json",
+      "validation_ref": "results/Q3/experiments/round1/metrics/baseline_validation.json",
+      "run_snapshot": "results/Q3/experiments/round1/runs/baseline/run_metadata.json",
+      "snapshot": {
+        "path": "results/Q3/experiments/round1/runs/baseline/run_metadata.json",
+        "status": "SUCCESS",
+        "command": "python code/Q3/q3_baseline.py",
+        "elapsed_seconds": 59.914965867996216,
+        "executed_by_runner": true,
+        "return_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "verifier": {
+    "method_id": "V3",
+    "script": "code/Q3/q3_verifier.py",
+    "result_ref": "results/Q3/experiments/round1/metrics/verifier.json",
+    "validation_ref": "results/Q3/experiments/round1/metrics/verifier_validation.json",
+    "run_snapshot": "results/Q3/experiments/round1/runs/verifier/run_metadata.json",
+    "snapshot": {
+      "path": "results/Q3/experiments/round1/runs/verifier/run_metadata.json",
+      "status": "SUCCESS",
+      "command": "python code/Q3/q3_verifier.py",
+      "elapsed_seconds": 3.5633511543273926,
+      "executed_by_runner": true,
+      "return_code": 0
+    },
+    "metrics_summary": {
+      "reference_vs_analytical": 6.054234873431596e-07,
+      "main_vs_baseline_table5": 0.00010000000000001674,
+      "drying_time_spread_seconds": 25.99999999998488
+    }
+  },
+  "independence": {
+    "runtime_status": "RUNTIME_INDEPENDENT"
+  },
+  "comparison": {
+    "main_metric_source": "results/Q3/experiments/round1/metrics/main.json",
+    "baseline_metric_source": "results/Q3/experiments/round1/metrics/baseline.json",
+    "drying_time_main_h": 57.46472222222222,
+    "drying_time_baseline_h": 57.4575,
+    "drying_time_spread_seconds": 25.99999999998488,
+    "max_abs_diff_table5": 0.00010000000000001674,
+    "verdict": "the two implementations agree on table 5 to one unit in the last reported place and on the drying time to 26 s"
+  },
+  "fallback_trigger": {
+    "fallback_id": "F3",
+    "condition": "M3 and B3 disagree beyond the reported tolerance and the disagreement cannot be attributed",
+    "observed": false,
+    "evidence": "results/Q3/experiments/round1/metrics/verifier_validation.json"
+  },
+  "environment": {
+    "python": "3.14.2",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "xlsx_writer": "openpyxl write_only"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q1/reports/q1_solution_package_for_writer.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q1/q1_final_method_explanation.md",
+      "exists": true,
+      "sha256": "c7e4d6d7f25ac08d5ad0bb1bc46c61934835e16afd0cd7b622ed21e3741f9ba5"
+    },
+    {
+      "path": "results/Q1/reports/q1_final_result_analysis.md",
+      "exists": true,
+      "sha256": "c05135eca5726854a96eb6a00e066b007097f4d3648e9a2896d69b7a95564fff"
+    },
+    {
+      "path": "robustness/Q1/q1_robustness_summary.json",
+      "exists": true,
+      "sha256": "bce7293667797c1350cc38fa78d392769e5d0b9d69a9794fe4593f1afac05adf"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer"
+  ],
+  "decision_ids": [
+    "q1_package_signoff"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:07+0800"
+}

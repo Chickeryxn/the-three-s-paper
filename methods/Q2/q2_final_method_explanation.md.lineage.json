@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q2/q2_final_method_explanation.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q2/q2_method_card.md",
+      "exists": true,
+      "sha256": "1d484cd62e612f4786cf01ec60bc398ba2c366b98bbdb1a6a12014a0e6e27724"
+    },
+    {
+      "path": "methods/Q2/q2_decisions.jsonl",
+      "exists": true,
+      "sha256": "b0d33999944c5feed4f6385f29ee269dde3b096b3ed11296a2c7d9bbe88950ae"
+    },
+    {
+      "path": "results/Q2/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "f8acbd6fa51071db3815903a5d94572bb1005a5f5bde0fb704a350d18f637c99"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "solution-package-builder",
+    "paper-section-writer"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:04+0800"
+}

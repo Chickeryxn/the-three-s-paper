@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "source": "methods/Q1-q4 方法卡 §6 承重假设与风险表；由 AI 转录，性质判断（必要/简化）沿用方法卡并由建模者在本轮之前的门禁中确认",
+  "global": [
+    {
+      "id": "g_as_one_dimensional_radial",
+      "statement": "药材按一维径向轴对称处理，忽略端面轴向输运",
+      "kind": "simplifying",
+      "decided_by": "human",
+      "decision_id": "g_framing_spatial_dimension",
+      "impact_if_false": "Q1 窗口内轴向水分渗透不足长度 2%；Q2–Q4 的多日时程渗透可达数厘米/端，需重新评估"
+    },
+    {
+      "id": "g_as_mass_equation_form",
+      "statement": "质量方程取题目给定的 Fick 标准形式，rho、c_p、k 只进入能量方程",
+      "kind": "necessary",
+      "decided_by": "human",
+      "decision_id": "g_assumption_mass_equation_form",
+      "impact_if_false": "改用湿基自洽式使等效扩散系数相差 (1+C) 倍，Q2/Q3 烘干时长变化 -14.7%，Q4 变化 -17.5%"
+    },
+    {
+      "id": "g_as_local_equilibrium",
+      "statement": "药材内部满足局部热力学平衡，可用环境温湿度作边界驱动",
+      "kind": "necessary",
+      "decided_by": "ai_proposed_human_accepted",
+      "decision_id": null,
+      "impact_if_false": "无此项则无法用 T_inf、C_inf 作第三类边界条件"
+    },
+    {
+      "id": "g_as_const_env_dry",
+      "statement": "恒温干燥段维持 T_inf = 50 degC、C_inf = 0.05 kg/kg",
+      "kind": "necessary",
+      "decided_by": "human",
+      "decision_id": "g_framing_env_extrapolation",
+      "impact_if_false": "该段为外推口径而非实测；T_inf +2 degC 使烘干时长变化 -6.1%"
+    },
+    {
+      "id": "g_as_convective_coefficients",
+      "statement": "h = 25 W/(m2 K)、h_m = 8e-7 m/s 取题目给定值，不做拟合",
+      "kind": "necessary",
+      "decided_by": "human",
+      "decision_id": "g_framing_convective_coefficients",
+      "impact_if_false": "h_m +-5% 使 Q1 表面值变化 -0.035 kg/kg；Q2/Q3 烘干时长仅变化 -0.53%"
+    }
+  ],
+  "q1": [
+    {
+      "id": "q1_as_neglect_latent_heat",
+      "statement": "忽略水分汽化潜热对能量的贡献",
+      "kind": "simplifying",
+      "impact_if_false": "题目未给潜热，若计入会使升温阶段偏慢"
+    },
+    {
+      "id": "q1_as_lagged_coefficients",
+      "statement": "变物性系数取上一时间层（滞后系数），使每步为线性系统",
+      "kind": "simplifying",
+      "impact_if_false": "使时间格式对 dt 一阶；Q1 用容差加密核验，Q2–Q4 用步长加密核验"
+    }
+  ],
+  "q2": [
+    {
+      "id": "q2_as_two_way_coupling",
+      "statement": "附录3 下温度与含水率双向耦合（D 依赖 T，rho/c_p/k 依赖 C）",
+      "kind": "necessary",
+      "impact_if_false": "忽略耦合会使升温与失水脱节"
+    }
+  ],
+  "q3": [
+    {
+      "id": "q3_as_shared_with_q2",
+      "statement": "问题三与问题二共用同一模型与参数",
+      "kind": "necessary",
+      "impact_if_false": "两问本应给出同一烘干时长，一致性作为跨问自检"
+    }
+  ],
+  "q4": [
+    {
+      "id": "q4_as_isotropic_shrinkage",
+      "statement": "收缩各向同性，半径严格按附件2 变化",
+      "kind": "necessary",
+      "decided_by": "human",
+      "decision_id": "g_framing_q4_coordinate_caliber",
+      "impact_if_false": "直接决定域边界与表观对流项；半径插值方式改用线性只改变 0.0028 h"
+    },
+    {
+      "id": "q4_as_apparent_convection",
+      "statement": "归一化坐标下的表观对流项 xi*Rdot/R 由附件2 数值微分得到",
+      "kind": "simplifying",
+      "impact_if_false": "Rdot 的噪声会被放大；已用关闭传质后的不变量检验（偏差 1.4e-13）"
+    },
+    {
+      "id": "q4_as_report_caliber_t1",
+      "statement": "报告层取当前物理距离，r > R(t) 处留空",
+      "kind": "necessary",
+      "decided_by": "human",
+      "decision_id": "g_framing_q4_coordinate_caliber",
+      "impact_if_false": "报告层映射错误会导致列语义错位；已由 verifier 逐格核验 blank_rule_exact"
+    }
+  ]
+}

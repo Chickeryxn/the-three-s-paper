@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "artifact": "planning/parse/problem_parse.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "workspace/problem.txt",
+      "exists": true,
+      "sha256": "bf3a446816638f9bcb2d9a63e6451ba10ea5a492460992777040d5e23254a976"
+    },
+    {
+      "path": "workspace/data_raw/附件1.xlsx",
+      "exists": true,
+      "sha256": "7ef32870abeef420b89560b2530ff60dfe4255917805151d89988d0311af9dd7"
+    },
+    {
+      "path": "workspace/data_raw/附件2.xlsx",
+      "exists": true,
+      "sha256": "5563acbfa4b4afb10cc6c03e2207e5369bf39da27576672aff14cc5c32e704af"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "problem-classifier",
+    "method-selector",
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:06+0800"
+}

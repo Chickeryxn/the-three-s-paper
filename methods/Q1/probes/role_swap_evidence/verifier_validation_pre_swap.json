@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "method_id": "V1",
+  "analytical_mass_balance": {
+    "rows": [
+      {
+        "t_s": 300.0,
+        "dWdt": -2.0272293619477688e-07,
+        "surface_flux": 2.02722950494029e-07,
+        "rel_residual": 7.053593626011857e-08
+      },
+      {
+        "t_s": 900.0,
+        "dWdt": -1.7468604427122586e-07,
+        "surface_flux": 1.7468605292298238e-07,
+        "rel_residual": 4.952746256520331e-08
+      },
+      {
+        "t_s": 1500.0,
+        "dWdt": -1.5821759982758213e-07,
+        "surface_flux": 1.5821760601373837e-07,
+        "rel_residual": 3.909903983187013e-08
+      }
+    ],
+    "worst_rel_residual": 7.053593626011857e-08,
+    "tolerance": 1e-06,
+    "pass": true
+  },
+  "main_vs_reference": {
+    "max_abs_err": 3.1552173345605894e-05,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "baseline_vs_reference": {
+    "max_abs_err": 3.1552173345605894e-05,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "main_vs_baseline_real_problem": {
+    "max_abs_diff_moisture": 0.00010000000000021103,
+    "max_abs_diff_temperature": 0.0,
+    "tolerance": 0.00015000000000000001,
+    "tolerance_note": "includes one unit in the last reported place, because both tables are rounded to 4 decimals before comparison",
+    "pass": true
+  },
+  "convergence_limit_comparison": {
+    "where": "r = 2.0 cm, t = 100 s (Richardson extrapolation of each method over its own grid sweep)",
+    "limit_main": 2.247046151284999,
+    "limit_baseline": 2.2470451789867782,
+    "abs_diff": 9.722982206028519e-07,
+    "tolerance": 5e-05,
+    "pass": true,
+    "note": "this is the rounding-free comparison of the two independent implementations"
+  },
+  "invariants": {
+    "C_monotone_decreasing_main": true,
+    "C_monotone_decreasing_baseline": true,
+    "T_monotone_increasing_main": true,
+    "center_is_global_max": true,
+    "axis_flatness_abs_over_first_spacing": -6.609012892511146e-09,
+    "axis_flatness_relative": 2.591769761769077e-09,
+    "axis_symmetry_ok": true,
+    "reference_profile_monotone": true
+  },
+  "independence_statement": "V1 reads main/baseline outputs only for the comparison; its reference values come from its own analytical computation.",
+  "elapsed_s": 1.72
+}

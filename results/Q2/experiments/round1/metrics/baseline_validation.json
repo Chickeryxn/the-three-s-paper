@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "method_id": "B2",
+  "mass_balance": {
+    "W0": 0.0032044245066615885,
+    "Wend": 0.00015617186534738485,
+    "rel_error": 2.1667637037986329e-13
+  },
+  "invariants": {
+    "C_monotone_decreasing": true,
+    "center_is_argmax_C": true
+  },
+  "wall_s": 59.1,
+  "steps": 206847,
+  "note": "cross-checked against the vertex-centred main method in q2_verifier.py"
+}

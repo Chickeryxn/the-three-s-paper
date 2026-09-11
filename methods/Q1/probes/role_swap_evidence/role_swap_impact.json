@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "kind": "role_swap_impact",
+  "question_answered": "if the vertex-centred node scheme becomes main and regenerates result1.xlsx, which reported cells move?",
+  "grid": {
+    "N": 800,
+    "dr_m": 2.5e-05,
+    "times": [
+      1,
+      1800
+    ],
+    "radii_cm": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      2.0
+    ]
+  },
+  "deliverable_delta": {
+    "moisture": {
+      "cells_changed_at_4dp": 443,
+      "cells_total": 37800,
+      "max_abs_diff": 0.0004999999999997229,
+      "worst_cell": {
+        "t_s": 1,
+        "r_cm": 2.0
+      },
+      "fraction_changed": 0.01171957671957672
+    },
+    "temperature": {
+      "cells_changed_at_4dp": 110,
+      "cells_total": 37800,
+      "max_abs_diff": 0.00010000000000331966,
+      "worst_cell": {
+        "t_s": 133,
+        "r_cm": 1.8
+      },
+      "fraction_changed": 0.00291005291005291
+    }
+  },
+  "row_1800s_delta": {
+    "moisture_max_abs_diff": 0.0,
+    "temperature_max_abs_diff": 0.0
+  },
+  "safeguard_reproduces_archived_vertex_numbers": {
+    "moisture_exact": true,
+    "temperature_exact": true,
+    "per_time": {
+      "100": {
+        "C_match": true,
+        "T_match": true
+      },
+      "300": {
+        "C_match": true,
+        "T_match": true
+      },
+      "600": {
+        "C_match": true,
+        "T_match": true
+      },
+      "900": {
+        "C_match": true,
+        "T_match": true
+      },
+      "1200": {
+        "C_match": true,
+        "T_match": true
+      },
+      "1500": {
+        "C_match": true,
+        "T_match": true
+      },
+      "1800": {
+        "C_match": true,
+        "T_match": true
+      }
+    }
+  },
+  "elapsed_s": 82.16
+}

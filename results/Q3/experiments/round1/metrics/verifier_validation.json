@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "method_id": "V3",
+  "reference_vs_analytical": {
+    "max_abs_err": 6.054234873431596e-07,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "main_vs_baseline_table5": {
+    "compared_rows": 9,
+    "max_abs_diff": 0.00010000000000001674,
+    "tolerance": 0.00015000000000000001,
+    "tolerance_note": "includes one unit in the last reported place: both tables are rounded to 4 decimals before comparison, so a value sitting on a rounding boundary can differ by 1e-4",
+    "pass": true
+  },
+  "main_vs_baseline_end_row": {
+    "max_abs_diff": 0.0,
+    "tolerance": 0.00015000000000000001,
+    "pass": true
+  },
+  "drying_time": {
+    "main_h": 57.46472222222222,
+    "baseline_h": 57.4575,
+    "abs_diff_seconds": 25.99999999998488,
+    "abs_diff_percent": 0.012568097335072668,
+    "pass": true,
+    "note": "the crossing time inherits the flatness of the drying tail"
+  },
+  "startup_effect_check": {
+    "note": "the baseline has NO Rannacher startup, so this cross-check also confirms the startup does not move the answer",
+    "measured_startup_effect_at_dt1s": 1.41e-07
+  },
+  "invariants": {
+    "C_monotone_decreasing_main": true,
+    "center_is_global_max": true,
+    "drying_time_within_stated_band_48_72h": true,
+    "criterion_end_row_all_below_target": true,
+    "table5_last_pre_end_row_above_target": true
+  },
+  "independence_statement": "V3 builds the Bessel reference from the model equations; main and baseline outputs are read only for comparison.",
+  "elapsed_s": 2.02
+}

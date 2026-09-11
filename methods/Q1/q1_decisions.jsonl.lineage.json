@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q1/q1_decisions.jsonl",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_impact.json",
+      "exists": true,
+      "sha256": "fad40d3373b07cb12d2d1670ff305ae1d4ec7a240b7044caa876133e5ea5754a"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:03+0800"
+}

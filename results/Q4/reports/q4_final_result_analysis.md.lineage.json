@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q4/reports/q4_final_result_analysis.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q4/q4_final_method_explanation.md",
+      "exists": true,
+      "sha256": "a088d182b279579f62a2982bd9d8e9f49b0e642cb83dbd62ebdd7fc6cad76fbf"
+    },
+    {
+      "path": "results/Q4/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "2541ff3f2da3ee36be906af01b7c18ac11aaf6caa93ceb359712ba0665178769"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "9f7f21f902b9073e5ed6ba3a806b31c76e58c98cc5fca821169238d72d46daa3"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "35ea6e3896daafbe90533acc8b7e7f5e420abb983417b31aa35fd8a8d8ac3ae1"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/baseline_validation.json",
+      "exists": true,
+      "sha256": "d4483dc09e7ab27feb489b957579fe6efd06b18f76a643bdbe51a9f508d9703f"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/verifier_validation.json",
+      "exists": true,
+      "sha256": "7d253b307f3c010bd32017c2a18a9d48bd3c92bfca7b245f6b6753e7d91dceea"
+    },
+    {
+      "path": "robustness/Q4/q4_robustness_summary.json",
+      "exists": true,
+      "sha256": "55bcc750e8ead5191f292b3058c5a24f315aaf2d73f180bfa8eda3d57a95e23a"
+    },
+    {
+      "path": "results/Q3/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "e2faf0cca6ee73ce95fa3dc97fef501e1ba59506d38bdca7cbcac255d9a70731"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "solution-package-builder",
+    "paper-section-writer"
+  ],
+  "decision_ids": [
+    "q4_method_choice"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:10+0800"
+}

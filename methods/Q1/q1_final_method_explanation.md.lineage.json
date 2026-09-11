@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q1/q1_final_method_explanation.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q1/q1_method_card.md",
+      "exists": true,
+      "sha256": "23440f775d724da9174e40b38720314e7422dd0b22449c6237c8091de486bf87"
+    },
+    {
+      "path": "methods/Q1/q1_decisions.jsonl",
+      "exists": true,
+      "sha256": "2c4fd7e296e1d0b37a89912a7125f943411e62b302cc28b01e49e76388ad76cb"
+    },
+    {
+      "path": "code/Q1/q1_code_plan.md",
+      "exists": true,
+      "sha256": "d4ba40f2ab0ef8048fb707596256566c76733c19dfe204d9f653133c72cf7493"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "267baee2a426a1f820bc9cb179e2c4f0cfdc309ca48ccb85aaf072ec9efccb1a"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "bd3b6dd8441834f837eda7381518fe0d324a39e1cbc80759d690578e4dc1932e"
+    },
+    {
+      "path": "robustness/Q1/q1_robustness_summary.json",
+      "exists": true,
+      "sha256": "bce7293667797c1350cc38fa78d392769e5d0b9d69a9794fe4593f1afac05adf"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer",
+    "solution-package-builder"
+  ],
+  "decision_ids": [
+    "q1_method_role_swap"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:03+0800"
+}

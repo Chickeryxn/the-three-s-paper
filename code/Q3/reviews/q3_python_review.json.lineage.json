@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "artifact": "code/Q3/reviews/q3_python_review.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "code/Q3/q3_main.py",
+      "exists": true,
+      "sha256": "4362a6055b9b19598f18d9ccb1672ee8d829bff2f2bcae66e0d204488fcae9b4"
+    },
+    {
+      "path": "code/Q3/q3_baseline.py",
+      "exists": true,
+      "sha256": "2fbf36efcb099512e8c222a15cb96a0ac1ad01430f7f76b7d13c3f04a21455c0"
+    },
+    {
+      "path": "code/Q3/q3_verifier.py",
+      "exists": true,
+      "sha256": "3fabbbb212deaf60955c9544a0ff54341f4a1b767b6cebdab10574627b66b288"
+    },
+    {
+      "path": "results/Q3/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "aac5a151432da867567f543ea7e2a5f4145db22a4fa59c46765e970fe0972b52"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q3/q3_code_review.py": "3d075ec2c3a9419d375a07455d93fa150825189f6242d7eb4c6cdb82ea83c676"
+  },
+  "created_at": "2026-09-11T17:34:02+0800"
+}

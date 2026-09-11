@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "method_id": "V2",
+  "reference_vs_analytical": {
+    "max_abs_err": 5.976250525563387e-07,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "main_vs_baseline_tables": {
+    "max_abs_diff_moisture": 0.0,
+    "max_abs_diff_temperature": 0.0,
+    "tolerance": 5e-05,
+    "pass": true,
+    "note": "tables are rounded to 4 decimals before comparison"
+  },
+  "drying_time": {
+    "main_h": 57.46472222222222,
+    "baseline_h": 57.4575,
+    "abs_diff_seconds": 25.99999999998488,
+    "abs_diff_percent": 0.012568097335072668,
+    "interpretation": "the crossing time inherits the flatness of the drying tail: near the threshold dC/dt is very small, so a field difference of order 1e-7 moves the crossing by tens of seconds",
+    "pass": true
+  },
+  "invariants": {
+    "C_monotone_decreasing_main": true,
+    "C_monotone_decreasing_baseline": true,
+    "center_is_global_max": true,
+    "drying_time_within_stated_band_48_72h": true,
+    "reference_reduction_is_physical": true
+  },
+  "independence_statement": "V2 builds the Bessel reference from the model equations; main and baseline outputs are read only for comparison.",
+  "elapsed_s": 1.93
+}

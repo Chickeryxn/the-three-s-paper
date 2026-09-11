@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "question": "Q3",
+  "profile": "lean",
+  "generated_at": "2026-09-11T12:28:10+0800",
+  "methods": {
+    "M3": {
+      "role": "main_candidate",
+      "scheme": "vertex-centred (dual-cell) finite volume + Crank-Nicolson (same implementation as Q2)",
+      "verdict": "PASS",
+      "executability": {
+        "status": "ok",
+        "runs": {
+          "60.0": true,
+          "10.0": true,
+          "1.0": true
+        },
+        "no_blow_up": true
+      },
+      "data_coverage": {
+        "env_points": 241,
+        "env_span_s": [
+          0.0,
+          14400.0
+        ],
+        "extrapolation": "T_inf = 50 degC, C_inf = 0.05 kg/kg after 14400 s (g_framing_env_extrapolation)",
+        "note": "identical to Q2; no new data is introduced by Q3"
+      },
+      "assumption_checks": {
+        "lambda_per_s": 231.73,
+        "stiffness_ratio_by_step": {
+          "60.0": 13903.5,
+          "10.0": 2317.3,
+          "1.0": 231.7
+        },
+        "cn_amplification_by_step": {
+          "60.0": -0.999712,
+          "10.0": -0.998275,
+          "1.0": -0.982886
+        },
+        "candidate_step_s": 10.0,
+        "note": "the stiff near-surface mode is only weakly damped once the step exceeds a few seconds, so the usable step is an empirical question",
+        "alpha_m2_per_s": 1.4483e-07,
+        "backward_euler_amplification_by_step": {
+          "60.0": 7.192e-05,
+          "10.0": 0.0004314,
+          "1.0": 0.004297
+        },
+        "amplification_note": "the earlier record used the N=400 eigenvalue (67.5 /s); the probe actually runs N=800, so the stiffness ratio is about 3.6x larger. The empirical step sweep is unaffected."
+      },
+      "output_degeneracy": {
+        "criterion_crossed_once": true,
+        "t_dry_monotone_in_step": false,
+        "t_dry_by_step_h": {
+          "60.0": 57.45,
+          "10.0": 57.46111111111111,
+          "1.0": 57.46472222222222
+        }
+      },
+      "perturbation_sensitivity": {
+        "internal_step_s": [
+          60.0,
+          10.0,
+          1.0
+        ],
+        "t_dry_shift_vs_dt1_h": {
+          "60.0": -0.014722222222218306,
+          "10.0": -0.0036111111111125638,
+          "1.0": 0.0
+        },
+        "threshold": "predeclared: |shift| < 0.01 h (36 s)"
+      },
+      "scale_check": {
+        "steps_by_step": {
+          "60.0": 3447,
+          "10.0": 20686,
+          "1.0": 206873
+        },
+        "wall_s_by_step": {
+          "60.0": 0.91,
+          "10.0": 5.71,
+          "1.0": 56.51
+        },
+        "result3_grid": {
+          "rows": 3449,
+          "cols": 22,
+          "sheets": 1,
+          "note": "60 s x 0.1 cm, far smaller than Q2's result2.xlsx"
+        }
+      }
+    },
+    "B3": {
+      "role": "usable_baseline",
+      "scheme": "cell-centred finite volume + Crank-Nicolson (same implementation as Q2)",
+      "verdict": "PASS",
+      "executability": {
+        "status": "ok",
+        "t_dry_h": 57.455555555555556,
+        "steps": 20684
+      },
+      "data_coverage": {
+        "same_inputs_as_M3": true
+      },
+      "assumption_checks": {
+        "distinct_spatial_discretisation": true,
+        "wall_s": 6.1
+      },
+      "output_degeneracy": {
+        "t_dry_difference_vs_main_seconds": 32.999999999995566
+      },
+      "perturbation_sensitivity": {
+        "internal_step_s": 10.0
+      },
+      "scale_check": {
+        "wall_s": 6.1
+      }
+    },
+    "F3": {
+      "role": "conditional_fallback",
+      "scheme": "explicit FTCS",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "not activated in this probe"
+      },
+      "data_coverage": {
+        "same_inputs_as_M3": true
+      },
+      "assumption_checks": {
+        "explicit_heat_limit_s": 0.0018506944444444447
+      },
+      "output_degeneracy": {
+        "not_evaluated": "fallback not activated"
+      },
+      "perturbation_sensitivity": {
+        "not_evaluated": "fallback not activated"
+      },
+      "scale_check": {
+        "projected_steps_full_span": 111849906
+      }
+    }
+  },
+  "candidate_internal_step_s": 10.0,
+  "elapsed_s": 69.23
+}

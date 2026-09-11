@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q4/experiments/round1/run_summary.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q4/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "9f7f21f902b9073e5ed6ba3a806b31c76e58c98cc5fca821169238d72d46daa3"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/baseline.json",
+      "exists": true,
+      "sha256": "3e749d2a3252f23e5b467c0f5da75b24b56bafb4cd9490b4936a4c1c9358f787"
+    },
+    {
+      "path": "results/Q4/experiments/round1/metrics/verifier.json",
+      "exists": true,
+      "sha256": "7dfbb585c43b6e6b5f7ee88e6b6de30d5b1ee32997dce7bc736bcd9d7e418647"
+    },
+    {
+      "path": "results/Q4/experiments/round1/runs/main/run_metadata.json",
+      "exists": true,
+      "sha256": "1aa582262641810572d458c66bfce8dae65a0865e62a1fe168b77bcc67d6a149"
+    },
+    {
+      "path": "results/Q4/experiments/round1/runs/baseline/run_metadata.json",
+      "exists": true,
+      "sha256": "fab958cdcfc38bcf61b65b5817f8f0371f42c14e173b25b28cdcb37dbc11017a"
+    },
+    {
+      "path": "results/Q4/experiments/round1/runs/verifier/run_metadata.json",
+      "exists": true,
+      "sha256": "e5cf6a59646f6ef4b3a24f1aa4cc49226e723021b1b9d7fa4f253c1793fdded0"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator",
+    "result-report-generator"
+  ],
+  "decision_ids": [
+    "q4_method_choice"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q4/q4_round_summary.py": "f2e13aac74b86ed3f36e77db4a232a719602903f8b4487646f0ea843fe7f1713"
+  },
+  "created_at": "2026-09-11T17:34:09+0800"
+}

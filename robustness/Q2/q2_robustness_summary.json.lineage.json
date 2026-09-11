@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "artifact": "robustness/Q2/q2_robustness_summary.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q2/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "ee46c19c9bfa06515bfea780212f4d5e2bedc9e9a276e5b533b892ac39a0f9ad"
+    },
+    {
+      "path": "results/Q2/experiments/round1/metrics/baseline.json",
+      "exists": true,
+      "sha256": "ca7920c50d2b364dbf7d12da9565eccd50bb5d3eb9b15eeb9f6f96443ac08bff"
+    },
+    {
+      "path": "results/Q2/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "f837f8eafeca2f138e0c85bb12383c424b2599a883eed010213df9541afd605a"
+    },
+    {
+      "path": "results/Q2/experiments/round1/metrics/verifier_validation.json",
+      "exists": true,
+      "sha256": "3f9268990f839306e17e675ca24d8b843630dbb9666353bb2ecfe2fe0b88bbfe"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "solution-package-builder"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q2/q2_robustness.py": "8486fe078dc5b32afbd48c513b25064616623d67adb18d15095d988687438cc3"
+  },
+  "created_at": "2026-09-11T17:34:10+0800"
+}

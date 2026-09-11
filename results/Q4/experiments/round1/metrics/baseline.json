@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "B4",
+  "role": "usable_baseline",
+  "script": "code/Q4/q4_baseline.py",
+  "scheme": "cell-centred finite volume in xi + Crank-Nicolson (no startup), surface value from the Robin half-cell relation",
+  "grid": {
+    "cells": 800,
+    "dxi": 0.00125,
+    "dt_s": 5.0
+  },
+  "drying_time_hours": 52.63194444444444,
+  "table6_moisture_kg_per_kg": {
+    "6": [
+      1.947,
+      1.7779,
+      1.2536,
+      null,
+      0.565
+    ],
+    "12": [
+      0.8716,
+      0.7748,
+      0.485,
+      null,
+      0.2139
+    ],
+    "18": [
+      0.4588,
+      0.4125,
+      0.2649,
+      null,
+      0.1019
+    ],
+    "24": [
+      0.307,
+      0.2803,
+      0.1901,
+      null,
+      0.0713
+    ],
+    "30": [
+      0.2379,
+      0.2197,
+      0.1554,
+      null,
+      0.061
+    ],
+    "36": [
+      0.1999,
+      0.186,
+      0.1355,
+      null,
+      0.0567
+    ],
+    "42": [
+      0.176,
+      0.1646,
+      0.1226,
+      null,
+      0.0545
+    ],
+    "48": [
+      0.1596,
+      0.1499,
+      0.1135,
+      null,
+      0.0532
+    ]
+  },
+  "table6_end_row": {
+    "label": "烘干结束时间",
+    "time_hours": 52.63194444444444,
+    "R_cm": 1.2,
+    "C": [
+      0.15,
+      0.1413,
+      0.1081,
+      null,
+      0.0526
+    ]
+  },
+  "r_cm": [
+    0.0,
+    0.5,
+    1.0,
+    1.5
+  ],
+  "role_note": "the surface column is reconstructed from the outer cell centre through the Robin relation"
+}

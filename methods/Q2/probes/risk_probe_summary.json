@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "profile": "lean",
+  "generated_at": "2026-09-11T10:21:37+0800",
+  "methods": {
+    "M2": {
+      "role": "main_candidate",
+      "scheme": "cell-centred finite volume + Crank-Nicolson (theta=0.5) + banded solve",
+      "verdict": "PASS",
+      "executability": {
+        "status": "ok",
+        "ran_s": 21600,
+        "T_range_C": [
+          49.999981138608064,
+          49.999989500400716
+        ],
+        "no_blow_up": true,
+        "note": "backward Euler was chosen over Crank-Nicolson because the 6e5-step horizon lets the near-surface stiff mode ring under an A-stable-only scheme"
+      },
+      "data_coverage": {
+        "env_points": 241,
+        "env_span_s": [
+          0.0,
+          14400.0
+        ],
+        "extrapolation": "T_inf = 50 degC, C_inf = 0.05 kg/kg after 14400 s per g_framing_env_extrapolation",
+        "note": "the constant-rate stage is a human-decided framing assumption, not measured data"
+      },
+      "assumption_checks": {
+        "heat_operator_eigenvalue_per_s": 67.54221388367729,
+        "L_stable_scheme_used": false,
+        "coefficients_frozen_one_level": true,
+        "two_way_coupling": "D depends on T, so the temperature field feeds back into moisture",
+        "coupling_strength": "d ln D / dT = 3850/T^2 ~ 0.04 per K, i.e. about 4 percent per kelvin at 320 K",
+        "stiffness_ratio_z": 16.885553470919323,
+        "cn_amplification_factor": -0.942,
+        "note_on_scheme": "Crank-Nicolson and backward Euler are BOTH stable here; the earlier claim that CN rings over a multi-day horizon came from a run that crashed for an unrelated unit bug (environment function returned degC while the state was in kelvin) and has been withdrawn"
+      },
+      "output_degeneracy": {
+        "max_C_at_6h": 1.0169679251036463,
+        "center_C_at_6h": 1.0169679251036463,
+        "still_drying": true,
+        "note": "no degeneracy within the probe window; full-span behaviour reported under scale_check",
+        "full_span_max_C": 0.14999996994160214,
+        "full_span_center_C": 0.14999996994160214,
+        "t_dry_hours": 57.43375,
+        "criterion_met_once": true,
+        "drying_time_lands_in_expected_band_48_72h": true,
+        "trajectory_head": [
+          [
+            3600.0,
+            2.525716936574524,
+            40.381501393349765,
+            2.525716936574524
+          ],
+          [
+            7200.0,
+            2.17086395503461,
+            48.44993096255803,
+            2.17086395503461
+          ],
+          [
+            10800.0,
+            1.7661972308374645,
+            49.849455135890594,
+            1.7661972308374645
+          ],
+          [
+            14400.0,
+            1.45362379922277,
+            49.99934660537639,
+            1.45362379922277
+          ]
+        ],
+        "trajectory_tail": [
+          [
+            201600.0,
+            0.1515421506919536,
+            49.99999999999915,
+            0.1515421506919536
+          ],
+          [
+            205200.0,
+            0.15045868212920446,
+            49.99999999999403,
+            0.15045868212920446
+          ]
+        ]
+      },
+      "perturbation_sensitivity": {
+        "dt_0.5_vs_0.25_maxC_diff": 6.954819411042479e-06,
+        "grid_200_vs_400_maxC_diff": 1.7581305522540447e-07,
+        "h_m_plus5pct_maxC_diff": 0.025226681609883728
+      },
+      "scale_check": {
+        "steps_for_6h_at_dt_0.25": 86400,
+        "wall_s_6h": 25.38,
+        "ms_per_step": 0.294,
+        "full_span_steps_at_dt_0.5": 413523,
+        "full_span_wall_s": 114.79,
+        "projected_full_span_wall_s_at_dt_0.25": 229.6,
+        "t_dry_hours_at_dt_0.5": 57.43375,
+        "result2_grid": {
+          "rows": 206762,
+          "cols": 22,
+          "sheets": 2,
+          "cells": 9097528
+        }
+      },
+      "time_scheme_comparison": {
+        "correction": "the CN-versus-BE divergence between Q1 and Q2 is NOT required; it was an artefact of a unit bug",
+        "six_hour_window_N400": {
+          "BE_dt0.5_vs_dt0.25_maxC_diff": 6.955e-06,
+          "CN_dt0.5_vs_dt0.25_maxC_diff": 1.01e-07,
+          "BE_dt0.25_vs_CN_dt0.25_maxC_diff": 6.854e-06
+        },
+        "full_span": {
+          "CN_dt1.0_t_dry_h": 57.433333,
+          "CN_dt1.0_wall_s": 283.3,
+          "BE_dt0.5_t_dry_h": 57.43375,
+          "BE_dt0.5_wall_s": 439.3,
+          "t_dry_difference_s": 1.5
+        },
+        "verdict": "both schemes are suitable; CN is about 70x more accurate in time and, at a step matching the required 1 s output grid, also faster"
+      }
+    },
+    "F2": {
+      "role": "conditional_fallback",
+      "scheme": "explicit FTCS",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "not activated in this probe"
+      },
+      "data_coverage": {
+        "same_inputs_as_M2": true
+      },
+      "assumption_checks": {
+        "explicit_dt_limit_heat_s": 0.007402777777777779,
+        "note": "the explicit heat limit is far below any usable step for a 2e5 s horizon"
+      },
+      "output_degeneracy": {
+        "not_evaluated": "fallback not activated; evaluated on activation"
+      },
+      "perturbation_sensitivity": {
+        "not_evaluated": "fallback not activated"
+      },
+      "scale_check": {
+        "projected_steps_full_span": 27016885
+      }
+    },
+    "B2": {
+      "role": "usable_baseline",
+      "scheme": "node-based conservative flux form + scipy solve_ivp BDF",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "ok on a 1 h window",
+        "success": true,
+        "nfev": 4000,
+        "center_T_C": 40.38156915075865
+      },
+      "data_coverage": {
+        "same_inputs_as_M2": true
+      },
+      "assumption_checks": {
+        "distinct_spatial_discretisation": true,
+        "wall_s_for_1h": 28.74,
+        "simulated_seconds_per_wall_second": 125.3
+      },
+      "output_degeneracy": {
+        "note": "evaluated only over the window it can cover; see scale_check"
+      },
+      "perturbation_sensitivity": {
+        "rtol": 1e-09,
+        "atol": 1e-11
+      },
+      "scale_check": {
+        "wall_s_for_1h_window": 28.74,
+        "projected_wall_s_for_full_span": 1650.8,
+        "feasible_as_full_span_baseline": true,
+        "note": "if infeasible the baseline validity is limited to representative windows; recorded in the method card"
+      }
+    }
+  },
+  "elapsed_s": 231.03
+}

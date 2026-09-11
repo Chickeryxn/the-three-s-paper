@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "problem_source": [
+    "workspace/papers/A题.md (题目原文；已同步副本 workspace/problem.txt)",
+    "workspace/data_raw/附件1.xlsx",
+    "workspace/data_raw/附件2.xlsx",
+    "workspace/data_raw/result1.xlsx",
+    "workspace/data_raw/result2.xlsx",
+    "workspace/data_raw/result3.xlsx",
+    "workspace/data_raw/result4.xlsx"
+  ],
+  "global_goal": "建立圆柱形中药材热风烘干过程中药材内部温度场与水分浓度（干基含水率）场的时空演化数学模型，刻画预热平衡阶段与恒温干燥阶段的变化规律，预测烘干进程，确定达到干燥要求所需的烘干时长，并按题目表1-表6与 result1-result4.xlsx 模板给出结果（四位小数）。",
+  "objects": [
+    "圆柱形中药材：长 25 cm、半径 2 cm；问题4中半径随水分流失收缩，由附件2给出（2.000 -> 1.198 cm）",
+    "烘房热风环境：温度 T_inf(t) (°C) 与水分浓度 C_inf(t) (kg/kg)，由附件1给出（0-14400 s，步长 60 s）",
+    "药材内部温度场 T(r,t) (°C)",
+    "药材内部水分浓度场 C(r,t) (kg/kg，干基含水率)",
+    "空间坐标：到药材中心的径向距离 r (cm)；问题1-3取值 0-2.0 cm，问题4上界随收缩变化"
+  ],
+  "data_inventory": [
+    {
+      "file": "workspace/data_raw/附件1.xlsx",
+      "sheets": [
+        "Sheet1"
+      ],
+      "mapped_to": "Q1",
+      "shared_with": [
+        "Q2",
+        "Q3",
+        "Q4"
+      ],
+      "content": "表头：时间(s)、温度(°C)、水分浓度(kg/kg)；241 个数据行，t=0..14400 s，步长 60 s。温度 28.000 -> 50.246 °C（约 9000 s 后稳定在 50 °C 附近）；水分浓度 0.01963 -> 0.05025 kg/kg，单调上升。",
+      "role": "烘房环境边界条件（随时间变化的第三类边界驱动量）"
+    },
+    {
+      "file": "workspace/data_raw/附件2.xlsx",
+      "sheets": [
+        "Sheet1"
+      ],
+      "mapped_to": "Q4",
+      "content": "表头：时间(s)、半径(cm)；145 个数据行，t=0..259200 s（72 h），步长 1800 s。半径 2.000 -> 1.198 cm，前 24 h 收缩最快（24 h 时 1.204 cm），之后基本不变。",
+      "role": "问题4的收缩几何数据（域边界随时间变化）"
+    },
+    {
+      "file": "workspace/data_raw/result1.xlsx",
+      "sheets": [
+        "温度",
+        "水分浓度"
+      ],
+      "mapped_to": "Q1",
+      "content": "模板：A1 为 '时间\\到药材中心的距离'，第 1 行为距离 0,0.1,0.2,...,2.0 (cm)，A 列为时间 (s，模板示例 1,2,3,...)。"
+    },
+    {
+      "file": "workspace/data_raw/result2.xlsx",
+      "sheets": [
+        "温度",
+        "水分浓度"
+      ],
+      "mapped_to": "Q2",
+      "content": "模板同 result1（距离 0-2.0 cm 步长 0.1 cm；A 列时间为秒，模板示例 1,2,3,...）。"
+    },
+    {
+      "file": "workspace/data_raw/result3.xlsx",
+      "sheets": [
+        "Sheet1"
+      ],
+      "mapped_to": "Q3",
+      "content": "模板：A 列为时间(s，模板示例 60,120,180,...)；第 1 行为距离 0-2.0 cm 步长 0.1 cm。"
+    },
+    {
+      "file": "workspace/data_raw/result4.xlsx",
+      "sheets": [
+        "Sheet1"
+      ],
+      "mapped_to": "Q4",
+      "content": "模板：A 列为时间(s，模板示例 60,120,180,...)；第 1 行前段为距离 0,0.1,0.2,... (cm)，最后一列列名为 '药材表面'。"
+    }
+  ],
+  "global_constraints": [
+    {
+      "text": "所有输入与输出保持题目给定单位：长度 cm、时间 s（表5/表6要求 h）、温度 °C、水分浓度 kg/kg（干基）",
+      "kind": "hard"
+    },
+    {
+      "text": "结果保留四位小数（题目『所有结果保留四位小数（下同）』）",
+      "kind": "hard"
+    },
+    {
+      "text": "结果必须写入题目指定的 result1-result4.xlsx 模板结构（工作表名、A 列时间、首行距离）",
+      "kind": "hard"
+    },
+    {
+      "text": "问题1使用附录2参数；问题2、3统一使用附录3经验公式；问题4使用附录4经验公式",
+      "kind": "hard"
+    },
+    {
+      "text": "原始附件只读，清洗副本写入 workspace/data_clean/",
+      "kind": "hard"
+    },
+    {
+      "text": "初始条件：药材温度 28 °C、水分浓度 2.55 kg/kg（全局均匀）",
+      "kind": "hard"
+    },
+    {
+      "text": "问题3的干燥判据：药材各处水分浓度低于 0.15 kg/kg",
+      "kind": "hard"
+    }
+  ],
+  "subquestions": [
+    {
+      "id": "Q1",
+      "statement": "某中药材形状大致呈圆柱形，长为25 cm，半径为2 cm。烘干开始时，药材的温度为28°C，水分浓度（即干基含水率）为2.55 kg/kg，烘房的温度（单位：°C）和水分浓度（单位：kg/kg）的变化情况见附件1。请建立预热平衡阶段药材温度和水分浓度变化规律的数学模型（相关参数见附录2），在论文中按表1和表2的格式分别给出100、300、600、900、1200、1500、1800 s，到药材中心距离0、0.5、1、1.5、2 cm处的结果，并将1800 s内每隔1 s、到药材中心距离每隔0.1 cm的完整结果保存到文件result1.xlsx中。",
+      "goal": "刻画预热平衡阶段（0-1800 s）内药材温度场与水分浓度场随时间的演化，给出指定时刻指定径向位置的值，以及 0-1800 s 全时空网格上的完整结果。",
+      "inputs": [
+        "初始条件：T(r,0)=28 °C，C(r,0)=2.55 kg/kg",
+        "烘房环境时序 T_inf(t)、C_inf(t)（附件1，0-14400 s，步长 60 s）",
+        "附录2参数：密度 820 kg/m^3、比热容 2600 J/(kg·K)、热传导系数 0.36 W/(m·K)、对流换热系数 25 W/(m^2·K)、对流传质系数 8e-7 m/s",
+        "附录2扩散系数经验式：D=7e-9·exp(-0.89/C) m^2/s（仅依赖 C）"
+      ],
+      "unknowns_or_decisions": [
+        "T(r,t) 在 r∈[0,2] cm、t∈[0,1800] s 上的值",
+        "C(r,t) 在 r∈[0,2] cm、t∈[0,1800] s 上的值"
+      ],
+      "constraints": [
+        "几何：圆柱，长 25 cm、半径 2 cm（问题1中半径恒定）",
+        "参数固定为附录2给定常物性 + D(C) 经验式",
+        "输出时刻：100、300、600、900、1200、1500、1800 s；输出位置：0、0.5、1、1.5、2 cm"
+      ],
+      "required_outputs": [
+        "表1：7 个时刻 × 5 个径向位置的温度（°C，四位小数）",
+        "表2：7 个时刻 × 5 个径向位置的水分浓度（kg/kg，四位小数）",
+        "result1.xlsx『温度』工作表：t=0..1800 s（每 1 s）× r=0..2.0 cm（每 0.1 cm）的完整温度场",
+        "result1.xlsx『水分浓度』工作表：同网格的完整水分浓度场"
+      ],
+      "success_criteria": [
+        "药材温度由 28 °C 上升并趋于烘房温度，表面先于中心升温，中心-表面温差随时间减小",
+        "1800 s 内水分浓度场变化幅度小且合理（该阶段以预热升温为主）",
+        "结果对空间网格与时间步长收敛（网格/步长加密后指定点数值变化在给定精度内）",
+        "边界处满足给定的对流换热/对流传质条件（能量与质量通量一致）"
+      ],
+      "dependencies": [],
+      "proposed_relationships": [
+        {
+          "text": "药材内部热量传递以径向导热为主，轴向（长 25 cm）端面效应可忽略",
+          "status": "proposed"
+        },
+        {
+          "text": "水分在药材内部以浓度梯度驱动扩散，边界处由对流传质带走",
+          "status": "proposed"
+        },
+        {
+          "text": "能量方程中不考虑水分汽化潜热的显式汇项（题目未给汽化潜热）",
+          "status": "proposed"
+        },
+        {
+          "text": "局部热力学平衡：药材表面温度/水分浓度与环境驱动量通过对流关系耦合",
+          "status": "proposed"
+        }
+      ],
+      "ambiguities": [
+        "边界条件的介质属性用法未明确：质量通量式中是否需要密度因子（h_m 单位 m/s 与 D·∂C/∂r 单位 m/s 直接匹配，还是需乘干燥基密度）",
+        "烘房『水分浓度』0.01963-0.05 kg/kg 的物理含义（空气中含湿量 vs 平衡含水率）未明说",
+        "中心 r=0 处温度/浓度场的对称性处理方式（题目未声明，属建模假设）",
+        "预热平衡阶段的结束时刻（1800 s）是由题目给定的输出窗口，还是阶段转换判据，题目未定义"
+      ],
+      "caliber": {
+        "criterion_granularity": "条件式（已确认，decision_id=g_caliber_criterion_granularity）：先由 Q1/Q2 实算场核实中心是否为全域水分浓度最大；若是则按 C 分层/两级口径（表面与中心分别报告，以中心达标时间为准）；若不是则按 A 极值/最劣口径（全域最大值 <=0.15）。核实结论须写入论文。",
+        "service_relationship": "不适用（已确认，decision_id=g_caliber_service_relationship）：本题为连续场演化，不存在服务/指派/覆盖关系。",
+        "overall_indicator": "A. 最大值 max（已确认，decision_id=g_caliber_overall_indicator）：以全域 max C <= 0.15 判定烘干结束；另按建模者要求把 B（达标率）与体积加权平均含水率作为过程量一并报告。"
+      },
+      "framing_decision_ids": [
+        "g_caliber_criterion_granularity",
+        "g_caliber_service_relationship"
+      ]
+    },
+    {
+      "id": "Q2",
+      "statement": "烘干过程一般持续2-3天，预热平衡与恒温干燥阶段的参数有所不同。请建立整个烘干过程药材温度和水分浓度变化规律的数学模型（为简化问题，相关经验公式统一采用附录3中的公式），在论文中按表3和表4的格式分别给出3 h内每隔0.5 h、到药材中心距离0、0.5、1、1.5、2 cm处的结果，并将每隔1 s、到药材中心距离每隔0.1 cm的完整结果保存到文件result2.xlsx中。",
+      "goal": "建立覆盖预热平衡与恒温干燥两个阶段的完整烘干过程温湿场模型，给出 3 h 内每 0.5 h 的指定点结果，以及全过程全时空网格上的完整结果。",
+      "inputs": [
+        "初始条件：T=28 °C，C=2.55 kg/kg",
+        "烘房环境时序（附件1，仅覆盖 0-14400 s = 4 h）",
+        "附录3经验公式：ρ=650+128C；c_p=1450+2736·C/(C+1)；k=0.21+0.38·C/(C+1)；D=2.4e-3·exp(-0.45/C)·exp(-3850/T)"
+      ],
+      "unknowns_or_decisions": [
+        "全过程 T(r,t)、C(r,t)",
+        "恒温干燥阶段的环境条件设定（T_inf、C_inf 在 4 h 之后如何取值）",
+        "两阶段的分界与参数切换方式"
+      ],
+      "constraints": [
+        "问题2统一采用附录3经验公式（物性随 C 与 T 变化）",
+        "输出时刻（表3/表4）：0.5、1.0、1.5、2.0、2.5、3.0 h",
+        "输出位置：0、0.5、1、1.5、2 cm"
+      ],
+      "required_outputs": [
+        "表3：6 个时刻 × 5 个径向位置的温度",
+        "表4：6 个时刻 × 5 个径向位置的水分浓度",
+        "result2.xlsx『温度』与『水分浓度』工作表：每 1 s × 每 0.1 cm 的完整结果（时间跨度按『整个烘干过程』确定）"
+      ],
+      "success_criteria": [
+        "覆盖预热平衡与恒温干燥两个阶段，阶段间过渡连续",
+        "长时间极限下水分浓度趋于合理平衡值，温度趋于环境温度",
+        "全过程质量守恒（药材失去的水分与环境水分浓度上升相容）",
+        "结果对网格与步长收敛"
+      ],
+      "dependencies": [
+        "Q1"
+      ],
+      "proposed_relationships": [
+        {
+          "text": "恒温干燥阶段烘房温度保持恒定（约 50 °C），水分浓度由烘干过程质量平衡决定或维持恒定",
+          "status": "proposed"
+        },
+        {
+          "text": "物性随 C 与 T 变化，扩散系数 D 强依赖 C 与 T",
+          "status": "proposed"
+        },
+        {
+          "text": "两阶段仅表现为参数/经验公式切换，控制方程形式不变",
+          "status": "proposed"
+        }
+      ],
+      "ambiguities": [
+        "附件1只覆盖 0-14400 s（4 h），而烘干持续 2-3 天：4 h 之后烘房温度与水分浓度如何设定，题目未给出",
+        "问题2未给出对流换热系数 h 与对流传质系数 h_m（附录3只给 ρ/c_p/k/D），是否沿用附录2的 25 W/(m^2·K) 与 8e-7 m/s",
+        "『整个烘干过程』的时长口径：2 天、3 天还是到水分达到某阈值",
+        "result2.xlsx 按『每隔1 s』×『每隔0.1 cm』填写时，若覆盖 72 h 则约 259201 行 × 21 列，输出规模口径需确认"
+      ],
+      "caliber": {
+        "criterion_granularity": "条件式（已确认，decision_id=g_caliber_criterion_granularity）：先由 Q1/Q2 实算场核实中心是否为全域水分浓度最大；若是则按 C 分层/两级口径（表面与中心分别报告，以中心达标时间为准）；若不是则按 A 极值/最劣口径（全域最大值 <=0.15）。核实结论须写入论文。",
+        "service_relationship": "不适用（已确认，decision_id=g_caliber_service_relationship）：本题为连续场演化，不存在服务/指派/覆盖关系。",
+        "overall_indicator": "A. 最大值 max（已确认，decision_id=g_caliber_overall_indicator）：以全域 max C <= 0.15 判定烘干结束；另按建模者要求把 B（达标率）与体积加权平均含水率作为过程量一并报告。"
+      },
+      "framing_decision_ids": [
+        "g_caliber_criterion_granularity",
+        "g_caliber_service_relationship"
+      ]
+    },
+    {
+      "id": "Q3",
+      "statement": "按照烘干要求，药材各处的水分浓度应低于0.15 kg/kg，请确定药材烘干所需要的时间（单位：h）。在论文中按表5的格式给出每隔6 h、到药材中心距离每隔0.5 cm的水分浓度，并将药材内部水分浓度每隔60 s、到药材中心距离每隔0.1 cm的完整结果保存到文件result3.xlsx中。",
+      "goal": "以『药材各处水分浓度低于 0.15 kg/kg』为干燥判据，确定烘干所需时间（h），并给出该过程中的水分浓度场。",
+      "inputs": [
+        "Q2 的完整烘干过程模型",
+        "附录3经验公式",
+        "干燥判据阈值 0.15 kg/kg",
+        "烘房环境条件（同 Q2 的设定）"
+      ],
+      "unknowns_or_decisions": [
+        "烘干结束时刻 t_dry（h）",
+        "C(r,t) 直到 t_dry 的完整场"
+      ],
+      "constraints": [
+        "判据为『各处』水分浓度低于 0.15 kg/kg",
+        "表5输出：每 6 h × 每 0.5 cm，最后一行给出烘干结束时间",
+        "result3.xlsx 输出：每 60 s × 每 0.1 cm"
+      ],
+      "required_outputs": [
+        "烘干所需时间（h）",
+        "表5：每 6 h × 每 0.5 cm 的水分浓度，含烘干结束时间行",
+        "result3.xlsx：每 60 s × 每 0.1 cm 的完整水分浓度结果"
+      ],
+      "success_criteria": [
+        "用『各处均低于 0.15』的最劣位置判定烘干结束，而非用平均值",
+        "烘干时长与附件2给出的 2-3 天尺度相容",
+        "结果对网格与步长收敛，且判据在加密网格下仍成立"
+      ],
+      "dependencies": [
+        "Q2"
+      ],
+      "proposed_relationships": [
+        {
+          "text": "干燥后期由药材中心（最慢位置）控制烘干结束时间",
+          "status": "proposed"
+        },
+        {
+          "text": "随着 C 降低，D 显著减小，干燥速率下降（拖尾效应）",
+          "status": "proposed"
+        }
+      ],
+      "ambiguities": [
+        "『各处』的判定位置口径：解析上界 vs 离散网格取最大值 vs 表面/中心",
+        "0.15 kg/kg 是干基含水率口径，与初始 2.55 kg/kg 同一口径（需确认）",
+        "达到判据后是否需要继续输出（表5中最后的『烘干结束时间』行的位置取值口径）"
+      ],
+      "caliber": {
+        "criterion_granularity": "条件式（已确认，decision_id=g_caliber_criterion_granularity）：先由 Q1/Q2 实算场核实中心是否为全域水分浓度最大；若是则按 C 分层/两级口径（表面与中心分别报告，以中心达标时间为准）；若不是则按 A 极值/最劣口径（全域最大值 <=0.15）。核实结论须写入论文。",
+        "service_relationship": "不适用（已确认，decision_id=g_caliber_service_relationship）：本题为连续场演化，不存在服务/指派/覆盖关系。",
+        "overall_indicator": "A. 最大值 max（已确认，decision_id=g_caliber_overall_indicator）：以全域 max C <= 0.15 判定烘干结束；另按建模者要求把 B（达标率）与体积加权平均含水率作为过程量一并报告。"
+      },
+      "framing_decision_ids": [
+        "g_caliber_criterion_granularity",
+        "g_caliber_service_relationship"
+      ]
+    },
+    {
+      "id": "Q4",
+      "statement": "在实际烘干过程中，药材会因水分流失发生尺寸变化。请根据附件2，确定药材的烘干时长（相关经验公式见附录4）。在论文中按表6的格式给出每隔6 h、到药材中心距离每隔0.5 cm的水分浓度，并将药材内部水分浓度每隔60 s时间、0.1 cm距离的完整结果保存到文件result4.xlsx中。",
+      "goal": "在药材半径随水分流失收缩（附件2）的条件下建立水分浓度场模型，确定烘干时长，并按表6（含『药材表面』列）与 result4.xlsx 输出结果。",
+      "inputs": [
+        "附件2：半径 R(t)，0-259200 s，步长 1800 s，2.000 -> 1.198 cm",
+        "附录4经验公式：ρ=760+90C；c_p=1850+2150·C/(C+1)；k=0.12+0.20·C/(C+1)；D=4.2e-4·exp(-0.30/C)·exp(-3850/T)",
+        "初始条件与烘房环境条件（同 Q2/Q3）"
+      ],
+      "unknowns_or_decisions": [
+        "收缩域上的 C(r,t)",
+        "考虑收缩后的烘干时长",
+        "『到药材中心的距离』在收缩过程中的坐标口径"
+      ],
+      "constraints": [
+        "使用附录4经验公式",
+        "半径严格按附件2给出的时序变化",
+        "表6输出：每 6 h × 每 0.5 cm + 『药材表面』列"
+      ],
+      "required_outputs": [
+        "考虑收缩后的烘干时长",
+        "表6：每 6 h × 每 0.5 cm 的水分浓度 + 药材表面列",
+        "result4.xlsx：每 60 s × 每 0.1 cm 的完整水分浓度结果"
+      ],
+      "success_criteria": [
+        "半径演化与附件2一致",
+        "收缩过程中水分浓度场连续、无质量凭空产生或消失",
+        "烘干时长的判定口径与 Q3 一致（各处低于 0.15 kg/kg）"
+      ],
+      "dependencies": [
+        "Q3"
+      ],
+      "proposed_relationships": [
+        {
+          "text": "收缩各向同性，半径按附件2变化，长度方向同步收缩",
+          "status": "proposed"
+        },
+        {
+          "text": "收缩通过表观对流项/移动网格影响水分输运",
+          "status": "proposed"
+        },
+        {
+          "text": "收缩不改变水分浓度的干基定义（干基含水率以干物质质量为基准）",
+          "status": "proposed"
+        }
+      ],
+      "ambiguities": [
+        "result4.xlsx 中距离列 0-2.0 cm 步长 0.1 cm 与『药材表面』列并存时，超出当前半径的位置如何填写",
+        "问题4的干燥判据与结束时刻判据（题目未重复给出，但表6有『烘干结束时间』行）",
+        "问题4的对流换热系数 h 与对流传质系数 h_m 取值（附录4同样未给）",
+        "收缩是否伴随密度/孔隙结构变化从而影响 c_p、k、D 的经验式适用性"
+      ],
+      "caliber": {
+        "criterion_granularity": "条件式（已确认，decision_id=g_caliber_criterion_granularity）：先由 Q1/Q2 实算场核实中心是否为全域水分浓度最大；若是则按 C 分层/两级口径（表面与中心分别报告，以中心达标时间为准）；若不是则按 A 极值/最劣口径（全域最大值 <=0.15）。核实结论须写入论文。",
+        "service_relationship": "不适用（已确认，decision_id=g_caliber_service_relationship）：本题为连续场演化，不存在服务/指派/覆盖关系。",
+        "overall_indicator": "A. 最大值 max（已确认，decision_id=g_caliber_overall_indicator）：以全域 max C <= 0.15 判定烘干结束；另按建模者要求把 B（达标率）与体积加权平均含水率作为过程量一并报告。"
+      },
+      "framing_decision_ids": [
+        "g_caliber_criterion_granularity",
+        "g_caliber_service_relationship"
+      ],
+      "coordinate_caliber": "T1 欧拉/当前物理坐标（已确认，decision_id=g_framing_q4_coordinate_caliber）：按该时刻真实径向距离取值，r > R(t) 处留空；内部计算坐标不限，可用归一化 xi=r/R(t)。"
+    }
+  ],
+  "missing_material": [
+    "问题2、3、4 的对流换热系数 h 与对流传质系数 h_m：附录3、附录4 均未给出，仅附录2给出 25 W/(m^2·K) 与 8e-7 m/s",
+    "4 h 之后（恒温干燥阶段与 2-3 天烘干周期内）的烘房温度与水分浓度时序：附件1 只覆盖 0-14400 s",
+    "药材的汽化潜热（若需在能量方程中显式计入水分蒸发吸热，本题未提供）",
+    "问题2『整个烘干过程』的明确时长与问题3/4烘干结束时刻的判据在问题4中的重复表述",
+    "附件2 收缩数据在 0-1800 s 内的取值（附件2 步长为 1800 s，而问题4需要每 60 s 的结果）"
+  ],
+  "human_decisions_needed": [
+    "口径轴1 判据粒度：Q3/Q4 的『药材各处水分浓度低于 0.15 kg/kg』按哪种粒度判定（极值/最劣 vs 整体平均 vs 逐层）",
+    "口径轴2 服务关系：本题为物理场演化问题，是否存在服务/指派关系（预期为不适用）",
+    "口径轴3 总指标：把空间上多个位置的水分浓度合并为『是否达到干燥要求』时的聚合方式（最大值 vs 平均值等）",
+    "环境条件外推：附件1（0-4 h）之外，恒温干燥阶段的 T_inf 与 C_inf 如何设定",
+    "问题2/3/4 的 h 与 h_m 取值口径",
+    "空间维度假设：一维径向轴对称，还是二维轴对称（含 25 cm 长度方向的端面效应）",
+    "问题4 收缩域的坐标口径（物理坐标 vs 归一化坐标）与超出当前半径的位置如何填写",
+    "问题2 result2.xlsx 的时间跨度与输出规模口径",
+    "是否显式计入水分蒸发潜热对能量方程的影响"
+  ],
+  "confirmed_framing_decisions": {
+    "decisions_file": "planning/framing_decisions.jsonl",
+    "confirmed_at": "2026-09-10",
+    "items": {
+      "criterion_granularity": "g_caliber_criterion_granularity（条件式：先核实中心是否为全域最大）",
+      "service_relationship": "g_caliber_service_relationship（不适用）",
+      "overall_indicator": "g_caliber_overall_indicator（判据取 A 最大值；B 达标率与体积加权平均含水率作为过程量报告）",
+      "env_extrapolation": "g_framing_env_extrapolation（T_inf=50 C, C_inf=0.05 kg/kg，已由附件1 稳定段核实）",
+      "convective_coefficients": "g_framing_convective_coefficients（Q2/3/4 沿用 h=25, h_m=8e-7）",
+      "spatial_dimension": "g_framing_spatial_dimension（一维径向轴对称）",
+      "q4_coordinate_caliber": "g_framing_q4_coordinate_caliber（T1 当前物理坐标，半径外留空；内部可用归一化）",
+      "result2_span": "g_framing_result2_span（覆盖整个烘干过程）"
+    }
+  },
+  "resolved_by_human": [
+    "Q2/Q3/Q4 恒温阶段环境条件：T_inf=50 °C 平台、C_inf=0.05 kg/kg（已确认）",
+    "Q2/Q3/Q4 对流系数：h=25 W/(m^2·K)、h_m=8e-7 m/s（已确认）",
+    "空间维度：一维径向轴对称（已确认）",
+    "result2.xlsx 时间跨度：覆盖整个烘干过程（已确认）"
+  ]
+}

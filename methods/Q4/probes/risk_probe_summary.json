@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "profile": "lean",
+  "generated_at": "2026-09-11T14:22:54+0800",
+  "methods": {
+    "M4": {
+      "role": "main_candidate",
+      "scheme": "vertex-centred finite volume in xi = r/R(t) + Crank-Nicolson + Rannacher startup",
+      "verdict": "PASS",
+      "executability": {
+        "status": "ok",
+        "runs": {
+          "60.0": true,
+          "10.0": true
+        },
+        "T_range_C": [
+          50.00000000002473,
+          50.00000000005076
+        ],
+        "drying_time_hours": 52.63333333333333,
+        "lands_in_expected_band": true
+      },
+      "data_coverage": {
+        "attachment2_points": 145,
+        "attachment2_step_s": 1800.0,
+        "radius_range_cm": [
+          2.0,
+          1.198
+        ],
+        "note": "the radius is prescribed data; the dry-basis moisture is unaffected by the geometric shrinkage itself"
+      },
+      "assumption_checks": {
+        "moving_boundary_consistency": {
+          "test": "switch off surface mass transfer and shrink the domain",
+          "observed_max_abs_deviation_of_C_from_C0": 1.638689184346731e-13,
+          "threshold": 1e-08,
+          "pass": true,
+          "interpretation": "if the apparent-convection term were wrong the shrinking domain would create or destroy dry-basis moisture"
+        },
+        "apparent_convection": "xi*Rdot/R, fully known from attachment 2; coefficients lagged one level",
+        "radius_interpolation": {
+          "scheme_used": "PCHIP (monotone, smooth derivative)",
+          "linear_alternative_t_dry_h": 52.638888888888886,
+          "difference_hours": 0.005555555555552871
+        }
+      },
+      "output_degeneracy": {
+        "drying_time_hours": 52.63333333333333,
+        "criterion_crossed_once": true,
+        "center_is_argmax_C": true,
+        "radius_monotone_decreasing": true
+      },
+      "perturbation_sensitivity": {
+        "internal_step_s": [
+          60.0,
+          10.0
+        ],
+        "t_dry_by_step_h": {
+          "60.0": 52.61666666666667,
+          "10.0": 52.63333333333333
+        },
+        "threshold": "predeclared: |shift| < 0.05 h"
+      },
+      "scale_check": {
+        "wall_s_by_step": {
+          "60.0": 1.0,
+          "10.0": 6.3
+        },
+        "steps_by_step": {
+          "60.0": 3157,
+          "10.0": 18948
+        },
+        "result4_grid": {
+          "rows": 3159,
+          "cols": 22,
+          "sheets": 1
+        }
+      }
+    },
+    "B4": {
+      "role": "usable_baseline",
+      "scheme": "cell-centred finite volume in xi (to be implemented at G3)",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "planned; the fixed-domain analogue is already cross-validated in Q1-Q3"
+      },
+      "data_coverage": {
+        "same_inputs_as_M4": true
+      },
+      "assumption_checks": {
+        "distinct_spatial_discretisation": true,
+        "surface_value": "recovered from the convective boundary relation instead of a native node"
+      },
+      "output_degeneracy": {
+        "note": "evaluated at G3"
+      },
+      "perturbation_sensitivity": {
+        "note": "evaluated at G3"
+      },
+      "scale_check": {
+        "note": "evaluated at G3"
+      }
+    },
+    "F4": {
+      "role": "conditional_fallback",
+      "scheme": "explicit FTCS",
+      "verdict": "CONDITIONAL",
+      "executability": {
+        "status": "not activated in this probe"
+      },
+      "data_coverage": {
+        "same_inputs_as_M4": true
+      },
+      "assumption_checks": {
+        "explicit_heat_limit_s": 0.014645833333333334
+      },
+      "output_degeneracy": {
+        "not_evaluated": "fallback not activated"
+      },
+      "perturbation_sensitivity": {
+        "not_evaluated": "fallback not activated"
+      },
+      "scale_check": {
+        "note": "explicit stepping is infeasible over the full span"
+      }
+    }
+  },
+  "elapsed_s": 13.46
+}

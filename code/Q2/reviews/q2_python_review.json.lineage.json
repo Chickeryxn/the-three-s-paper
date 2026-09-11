@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "artifact": "code/Q2/reviews/q2_python_review.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "code/Q2/q2_main.py",
+      "exists": true,
+      "sha256": "41db771cf8c3006a2ac0d403f7db0e6938a4dc33686c12f81c6ce0f9e9effcc9"
+    },
+    {
+      "path": "code/Q2/q2_baseline.py",
+      "exists": true,
+      "sha256": "7d33d623699665d526209d1cb16b68492e500a04e52f614919eb73b42d837625"
+    },
+    {
+      "path": "code/Q2/q2_verifier.py",
+      "exists": true,
+      "sha256": "39c1b04c805fab63b7bfb22b366501d437b4036eb5419df31bc7659a5a4aef3e"
+    },
+    {
+      "path": "results/Q2/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "f8acbd6fa51071db3815903a5d94572bb1005a5f5bde0fb704a350d18f637c99"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q2/q2_code_review.py": "df7031abd7de067de4c1e60800446f6fa2dd8894c665958451d576c56059889b"
+  },
+  "created_at": "2026-09-11T17:34:02+0800"
+}

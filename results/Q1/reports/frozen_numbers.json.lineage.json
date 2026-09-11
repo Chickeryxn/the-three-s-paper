@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q1/reports/frozen_numbers.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q1/reports/q1_solution_package_for_writer.md",
+      "exists": true,
+      "sha256": "917ece6d1d3530eef430da60ed68a70da3a2aa883e15e0cd8941ca97357eba4e"
+    },
+    {
+      "path": "methods/Q1/q1_final_method_explanation.md",
+      "exists": true,
+      "sha256": "c7e4d6d7f25ac08d5ad0bb1bc46c61934835e16afd0cd7b622ed21e3741f9ba5"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "267baee2a426a1f820bc9cb179e2c4f0cfdc309ca48ccb85aaf072ec9efccb1a"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "bd3b6dd8441834f837eda7381518fe0d324a39e1cbc80759d690578e4dc1932e"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/verifier_validation.json",
+      "exists": true,
+      "sha256": "9e57c1fe4dab6fd77b3b54cf6d7fa252c8c6458dff5a280800237d5552c085f1"
+    },
+    {
+      "path": "robustness/Q1/q1_robustness_summary.json",
+      "exists": true,
+      "sha256": "bce7293667797c1350cc38fa78d392769e5d0b9d69a9794fe4593f1afac05adf"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer"
+  ],
+  "decision_ids": [
+    "q1_package_signoff"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/freeze_q1q3.py": "41ac031ab312a03a8acbe2af011e476b20fffaac27b716ecbf4e0bb0f765004e"
+  },
+  "created_at": "2026-09-11T17:34:07+0800"
+}

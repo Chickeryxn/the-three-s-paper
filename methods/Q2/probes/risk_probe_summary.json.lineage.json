@@ -1,0 +1,28 @@
+{
+  "schema_version": 2,
+  "artifact": "methods/Q2/probes/risk_probe_summary.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q2/q2_method_card.md",
+      "exists": true,
+      "sha256": "1d484cd62e612f4786cf01ec60bc398ba2c366b98bbdb1a6a12014a0e6e27724"
+    },
+    {
+      "path": "workspace/data_clean/attachment1_env.csv",
+      "exists": true,
+      "sha256": "fd24486a112e5eec32a0884ec0c0e0007de52bc43504513eccdc0bf0194f06ff"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "model-code-analyzer"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q2/risk_probe_q2.py": "378f9d9a5d48e5eee99c95b772a3ef7d2f029344a2e4699a5020677192e27f8d"
+  },
+  "created_at": "2026-09-11T17:34:03+0800"
+}

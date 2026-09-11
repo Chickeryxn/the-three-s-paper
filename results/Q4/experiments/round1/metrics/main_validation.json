@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "M4",
+  "time_refinement_full_span": {
+    "dt_s": [
+      10.0,
+      5.0
+    ],
+    "t_dry_hours": {
+      "10.0": 52.63611111111111,
+      "5.0": 52.63611111111111
+    },
+    "abs_diff_hours": 0.0,
+    "max_abs_diff_surface_C_at_6h": 1.7974024143052603e-05,
+    "reported_4dp_stable": true
+  },
+  "time_order_evidence": {
+    "note": "the nonlinear coefficients are lagged one time level, so the scheme is first order in dt; the sequence below is the surface value at t = 6 h, N = 800",
+    "surface_C_at_6h_by_dt": {
+      "20": 0.5654343763400412,
+      "10": 0.5654216075965883,
+      "5": 0.5654348732436543,
+      "2.5": 0.5654412152026034
+    },
+    "observed_order": 1,
+    "richardson_limit_at_dt0": 0.5654475571615525
+  },
+  "grid_refinement_6h": {
+    "N": [
+      400,
+      800
+    ],
+    "dt_s": 5.0,
+    "max_abs_diff_C": 2.116968417231746e-06,
+    "reported_4dp_stable": true
+  },
+  "radius_interpolation": {
+    "pchip_t_dry_h": 52.63611111111111,
+    "linear_t_dry_h": 52.638888888888886,
+    "abs_diff_hours": 0.002777777777772883,
+    "reported_4dp_stable": true
+  },
+  "moving_boundary_invariance": {
+    "test": "switch surface mass transfer off and let the domain shrink",
+    "observed_max_abs_deviation_of_C_from_C0": 1.4166445794216997e-13,
+    "threshold": 1e-08,
+    "pass": true,
+    "interpretation": "a wrong apparent-convection term would create or destroy dry-basis moisture as the domain shrinks"
+  },
+  "mass_balance": {
+    "water_change_xi": -1.2157982246201235,
+    "balance_rhs": -1.2157982246201546,
+    "abs_residual": 3.108624468950438e-14,
+    "rel_residual": 2.556858865229655e-14,
+    "geometric_water_drop": 0.0005014749443452914,
+    "note": "sum_j w_j dC_j/dt = -2(Rdot/R) sum_j w_j C_j + (Rdot/R) C_N - (h_m/R)(C_N - C_inf), exact per step"
+  },
+  "invariants": {
+    "C_monotone_decreasing": true,
+    "center_is_argmax_C": true,
+    "criterion_crossed_once": true,
+    "drying_time_within_stated_band": true,
+    "radius_monotone_decreasing": true
+  },
+  "reference_wall_s": 39.4,
+  "solver_wall_s": 25.9
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "question": "Q4",
+  "method_id": "V4",
+  "reference_vs_analytical": {
+    "where": "radius frozen at 2 cm, D = 1e-9 m^2/s, t = 6 h",
+    "max_abs_err": 1.153605800663371e-06,
+    "tolerance": 5e-05,
+    "pass": true
+  },
+  "moving_boundary_analytic_invariance": {
+    "reference": "with the surface mass transfer switched off the dry-basis moisture is exactly invariant, C == C0, for any radius history",
+    "observed_max_abs_deviation": 1.4166445794216997e-13,
+    "tolerance": 1e-08,
+    "pass": true
+  },
+  "main_vs_baseline_table6": {
+    "compared_values": 32,
+    "max_abs_diff": 0.00040000000000006697,
+    "tolerance": 0.0005,
+    "tolerance_note": "the baseline reconstructs the surface column by a first-order half-cell Robin relation whose own grid dependence is 4.1e-4; the main is grid-converged to 2.1e-6",
+    "pass": true
+  },
+  "main_vs_baseline_end_row": {
+    "max_abs_diff": 0.0,
+    "tolerance": 0.0005,
+    "pass": true
+  },
+  "drying_time": {
+    "main_h": 52.63611111111111,
+    "baseline_h": 52.63194444444444,
+    "abs_diff_hours": 0.0041666666666699825,
+    "abs_diff_seconds": 15.000000000011937,
+    "tolerance_hours": 0.1,
+    "pass": true,
+    "note": "the crossing time inherits the flatness of the drying tail"
+  },
+  "invariants": {
+    "header_columns_ok": true,
+    "time_axis_step_60s": true,
+    "rows": 3159,
+    "blank_rule_exact": true,
+    "surface_column_always_present": true,
+    "drying_end_row_below_criterion": true,
+    "radius_monotone_decreasing": true,
+    "reference_profile_monotone": true
+  },
+  "independence_statement": "V4 computes the analytical reference itself and reads main/baseline outputs only for the comparison.",
+  "elapsed_s": 1.267
+}

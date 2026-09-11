@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q4/reports/q4_solution_package_for_writer.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q4/q4_final_method_explanation.md",
+      "exists": true,
+      "sha256": "a088d182b279579f62a2982bd9d8e9f49b0e642cb83dbd62ebdd7fc6cad76fbf"
+    },
+    {
+      "path": "results/Q4/reports/q4_final_result_analysis.md",
+      "exists": true,
+      "sha256": "5363a9f0c394ed801ec307c0c9a75c5cacc6b56673112db35a8ca901b8f7104e"
+    },
+    {
+      "path": "robustness/Q4/q4_robustness_summary.json",
+      "exists": true,
+      "sha256": "55bcc750e8ead5191f292b3058c5a24f315aaf2d73f180bfa8eda3d57a95e23a"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer"
+  ],
+  "decision_ids": [
+    "q4_method_choice"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:10+0800"
+}

@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "rendered_at": "2026-09-11T20:31:39+0800",
+  "checks": {
+    "procedural": [
+      "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
+      "no overlapping labels obscuring values",
+      "font size readable at final column width",
+      "units present on every axis label",
+      "no empty or unintended subplot",
+      "series distinguished by colour AND line style or marker (survives grayscale)",
+      "data drawn opaque (alpha=1.0), no grid, white background",
+      "caption and visual support the same claim",
+      "plotted values agree with the canonical data artifact recorded in source"
+    ],
+    "measured": {
+      "no_text_outside_saved_canvas": {
+        "pass": true,
+        "offenders": [],
+        "texts_checked": 23
+      },
+      "no_overlapping_text": {
+        "pass": true,
+        "offenders": []
+      },
+      "no_empty_panel": {
+        "pass": true,
+        "offenders": []
+      },
+      "data_opaque": {
+        "pass": true,
+        "alphas": [
+          1.0
+        ]
+      },
+      "no_grid": {
+        "pass": true
+      }
+    }
+  },
+  "source": {
+    "data": "results/Q3/experiments/round1/result3.xlsx (Q2 shares the same model)",
+    "robustness": "robustness/Q3/q3_robustness_summary.json",
+    "claims": [
+      "q2_drying_time",
+      "q3_drying_time",
+      "q2_sens_h_m_plus5pct",
+      "q2_sens_D_plus5pct",
+      "q2_sens_T_inf_plus2C",
+      "q2_sens_mass_equation_form"
+    ]
+  },
+  "outputs": [
+    "paper/figures/fig03_drying_curve_and_sensitivity.png",
+    "paper/figures/fig03_drying_curve_and_sensitivity.pdf"
+  ],
+  "dpi": 400,
+  "style": "topjournal-style (opaque data, no grid, white background)"
+}

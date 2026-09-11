@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "question": "Q1",
+  "round": "round1",
+  "implementation_target": "python",
+  "reviewer": "python-code-reviewer",
+  "reviewed_scripts": {
+    "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58",
+    "code/Q1/q1_main.py": "402711291f0dca77b206c96e9af6e18eb2b3de0cbce8c6890befe491bea55d0c",
+    "code/Q1/q1_baseline.py": "0aecae157edfb0ed19b96f5ba63a7184b94f18cb0a2bba36f3ddc1b053010a3f",
+    "code/Q1/q1_verifier.py": "6b8ece2b1142e61cf4c318541e6ca8468cc94d3888e6bf4e2ef2bd6828153c6c"
+  },
+  "checks": {
+    "syntax": {
+      "status": "PASS",
+      "detail": {
+        "code/Q1/q1_common.py": "ok",
+        "code/Q1/q1_main.py": "ok",
+        "code/Q1/q1_baseline.py": "ok",
+        "code/Q1/q1_verifier.py": "ok"
+      }
+    },
+    "input_contract": {
+      "status": "PASS",
+      "constants_match_model_contract": {
+        "R": true,
+        "T0": true,
+        "C0": true,
+        "RHO": true,
+        "CP": true,
+        "K": true,
+        "H": true,
+        "HM": true
+      },
+      "constants_found": {
+        "R": 0.02,
+        "T0": 28.0,
+        "C0": 2.55,
+        "RHO": 820.0,
+        "CP": 2600.0,
+        "K": 0.36,
+        "H": 25.0,
+        "HM": 8e-07
+      },
+      "reads_declared_input": true,
+      "units_si_with_report_conversion": true,
+      "declared_inputs": [
+        "T_inf",
+        "C_inf",
+        "R_of_t",
+        "rho",
+        "cp",
+        "k_cond",
+        "h_conv",
+        "h_mass",
+        "D_coef",
+        "initial_state"
+      ]
+    },
+    "method_alignment": {
+      "status": "PASS",
+      "detail": {
+        "main_vertex_conservative_flux_form": true,
+        "main_uses_adaptive_bdf": true,
+        "main_surface_is_a_solution_node": true,
+        "baseline_uses_crank_nicolson": true,
+        "baseline_cell_centred_finite_volume": true,
+        "verifier_uses_bessel": true,
+        "approved_decisions_recorded": true,
+        "role_swap_guard_executed": true,
+        "role_swap_guard_checks": {
+          "main_reproduces_archived_baseline_reported_values": "PASS",
+          "main_reproduces_archived_baseline_validation_core": "PASS",
+          "baseline_reproduces_archived_main_reported_values": "PASS",
+          "baseline_reproduces_archived_main_validation_core": "PASS",
+          "solve_M2_body_matches_archived_solve_B1": "PASS",
+          "solve_B2_body_identical_to_archived_solve_M1": "PASS",
+          "deliverable_t1800_row_unchanged": "PASS",
+          "deliverable_delta_bounded_to_one_ulp": "PASS",
+          "independent_implementations_still_agree": "PASS"
+        },
+        "main_analytical_err_within_tol": true,
+        "baseline_analytical_err_within_tol": true,
+        "verifier_cross_check_pass": true
+      },
+      "approved_main": "M2",
+      "approved_baseline": "B2",
+      "note": "roles follow the human decision q1_method_role_swap: the vertex-centred node form (M2) was promoted to the main role and the cell-centred finite volume + Crank-Nicolson form (B2) to the baseline role; the time scheme of the cell-centred form follows the earlier human amendment q1_time_scheme_amendment",
+      "role_swap_evidence": "methods/Q1/probes/role_swap_evidence/"
+    },
+    "reproducibility": {
+      "status": "PASS",
+      "deterministic": true,
+      "random_seed": 2026,
+      "snapshot_result_hashes_match_current": true,
+      "snapshots": {
+        "main": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "267baee2a426a1f820bc9cb179e2c4f0cfdc309ca48ccb85aaf072ec9efccb1a",
+          "validation_hash": "bd3b6dd8441834f837eda7381518fe0d324a39e1cbc80759d690578e4dc1932e",
+          "code_manifest": {
+            "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58",
+            "code/Q1/q1_main.py": "402711291f0dca77b206c96e9af6e18eb2b3de0cbce8c6890befe491bea55d0c"
+          }
+        },
+        "baseline": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "14f41b853c12d85c3a4146bb21a715ba7eb8a3dfd681f5c9892780d0fdb538f3",
+          "validation_hash": "6f56113ae3b2d2264543fb35d85659865bdda83dcebd458a281158b2781aa1aa",
+          "code_manifest": {
+            "code/Q1/q1_baseline.py": "0aecae157edfb0ed19b96f5ba63a7184b94f18cb0a2bba36f3ddc1b053010a3f",
+            "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58"
+          }
+        },
+        "verifier": {
+          "status": "SUCCESS",
+          "executed_by_runner": true,
+          "return_code": 0,
+          "result_hash": "fd0883d59a2807c370f6cf4be9da336b882af594716a425d2e163f311b152b87",
+          "validation_hash": "9e57c1fe4dab6fd77b3b54cf6d7fa252c8c6458dff5a280800237d5552c085f1",
+          "code_manifest": {
+            "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58",
+            "code/Q1/q1_verifier.py": "6b8ece2b1142e61cf4c318541e6ca8468cc94d3888e6bf4e2ef2bd6828153c6c"
+          }
+        }
+      }
+    },
+    "output_contract": {
+      "status": "PASS",
+      "deliverable": "results/Q1/experiments/round1/result1.xlsx",
+      "detail": {
+        "sheets": [
+          "温度",
+          "水分浓度"
+        ],
+        "rows_temperature": 1801,
+        "cols_temperature": 22,
+        "rows_moisture": 1801,
+        "cols_moisture": 22,
+        "header_ok": true,
+        "time_axis_1_to_1800": true,
+        "distance_axis_0_to_2cm": true,
+        "decimals_le_4": true
+      },
+      "tables": [
+        "table1_baseline.csv",
+        "table1_main.csv",
+        "table2_baseline.csv",
+        "table2_main.csv"
+      ],
+      "kpi_tables_present": true
+    }
+  },
+  "overall_status": "PASS"
+}

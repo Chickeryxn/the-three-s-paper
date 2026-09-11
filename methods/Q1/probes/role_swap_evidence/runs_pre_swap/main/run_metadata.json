@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "run_id": "main",
+  "planned_budget": {
+    "wall_seconds": 420,
+    "grid_cells": 800
+  },
+  "actual_budget": {
+    "wall_seconds": 420,
+    "grid_cells": 800
+  },
+  "budget_delta": {},
+  "degraded": false,
+  "degradation_reason": null,
+  "acceptance_impact": [],
+  "claim_restrictions": [],
+  "input_manifest": {
+    "planning/model_contract.json": "f6ef7af5819f339c4676d271a52ab59ff379239d8ee7999de215d0239ee6acba",
+    "workspace/data_clean/attachment1_env.csv": "fd24486a112e5eec32a0884ec0c0e0007de52bc43504513eccdc0bf0194f06ff"
+  },
+  "code_manifest": {
+    "code/Q1/q1_common.py": "bc46c55d37c88583d5c60143d4586974e3b2b379071b73b60b04d6a831d56e58",
+    "code/Q1/q1_main.py": "bd002ac8743a0c86887aef00f1b3ef033e9551d7b65f40859929dbaa87d708ca"
+  },
+  "config_manifest": {
+    "planning/session_config.json": "4dc1f55332ec6127f4411a2828502e4615086ecf7bde16d9cfabd95259b3afdc"
+  },
+  "config_hash": "182e31f48b8a55b5b7e6665a6572465ce1c5b85cf5c9aae921e6593999b6c6ae",
+  "command": "python code/Q1/q1_main.py",
+  "environment": {
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cwd": "D:\\数学建模实战v1"
+  },
+  "vcs": {
+    "available": true,
+    "head": "b9d15507af45e1a921fcea792e606bd6bcbf12a4",
+    "dirty": [
+      " M records/README.md",
+      "?? planning/model_contract.json.lineage.json",
+      "?? records/sessions/2026-09-10-001.md",
+      "?? workspace/code/"
+    ],
+    "dirty_count": 4
+  },
+  "status": "SUCCESS",
+  "started_at": "2026-09-11T00:44:11+0800",
+  "return_code": 0,
+  "result_ref": "results/Q1/experiments/round1/metrics/main.json",
+  "validation_ref": "results/Q1/experiments/round1/metrics/main_validation.json",
+  "result_hash": "683fa13514065dee2ef9c8ae44ea2afab6b9c7d67ca0297e5d8b5ead339f8f68",
+  "validation_hash": "9f9f61e44be8430dc4abebdcac2a28c77f9854ed6fd17d335d1c932ece28a6f0",
+  "executed_by_runner": true,
+  "elapsed_seconds": 312.4359166622162,
+  "process_return_code": 0,
+  "finished_at": "2026-09-11T00:49:23+0800"
+}

@@ -1,0 +1,204 @@
+{
+  "claims": [
+    {
+      "claim_id": "q4_drying_time_hours",
+      "value": 52.6361,
+      "unit": "h",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.drying_time_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_R_at_drying_end_cm",
+      "value": 1.2,
+      "unit": "cm",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.radius.R_at_drying_end_cm",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_shrinkage_percent",
+      "value": 40.1,
+      "unit": "%",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.radius.shrinkage_percent",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_table6_t6_center",
+      "value": 1.9473,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.table6_moisture_kg_per_kg['6'][0]",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_table6_t6_surface",
+      "value": 0.5654,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.table6_moisture_kg_per_kg['6'][4]",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_table6_end_center",
+      "value": 0.15,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.table6_end_row.C[0]",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_table6_end_surface",
+      "value": 0.0526,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.table6_end_row.C[4]",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_reference_max_abs_err",
+      "value": 1.15e-06,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/verifier_validation.json",
+      "source_locator": "$.reference_vs_analytical.max_abs_err",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_moving_boundary_dev",
+      "value": 1.42e-13,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.moving_boundary_invariance.observed_max_abs_deviation_of_C_from_C0",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_mass_balance_rel",
+      "value": 2.56e-14,
+      "unit": "",
+      "source_file": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.mass_balance.rel_residual",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_grid_refinement_diff",
+      "value": 2.12e-06,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.grid_refinement_6h.max_abs_diff_C",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_time_refinement_hours",
+      "value": 0.0,
+      "unit": "h",
+      "source_file": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.time_refinement_full_span.abs_diff_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_radius_interp_hours",
+      "value": 0.0028,
+      "unit": "h",
+      "source_file": "results/Q4/experiments/round1/metrics/main_validation.json",
+      "source_locator": "$.radius_interpolation.abs_diff_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_baseline_table6_diff",
+      "value": 0.0004,
+      "unit": "kg/kg",
+      "source_file": "results/Q4/experiments/round1/metrics/verifier_validation.json",
+      "source_locator": "$.main_vs_baseline_table6.max_abs_diff",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_baseline_drying_time_seconds",
+      "value": 15.0,
+      "unit": "s",
+      "source_file": "results/Q4/experiments/round1/metrics/verifier_validation.json",
+      "source_locator": "$.drying_time.abs_diff_seconds",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_sens_h_m_plus5pct_hours",
+      "value": -0.1278,
+      "unit": "h",
+      "source_file": "robustness/Q4/q4_robustness_summary.json",
+      "source_locator": "$.checks.h_m_perturbation.plus5pct.observed.t_dry_shift_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_sens_D_plus5pct_hours",
+      "value": -2.1722,
+      "unit": "h",
+      "source_file": "robustness/Q4/q4_robustness_summary.json",
+      "source_locator": "$.checks.D_perturbation.observed.t_dry_shift_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_sens_T_inf_plus2C_hours",
+      "value": -3.1306,
+      "unit": "h",
+      "source_file": "robustness/Q4/q4_robustness_summary.json",
+      "source_locator": "$.checks.env_extrapolation_t_inf_52.observed.t_dry_shift_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_sens_mass_equation_form_hours",
+      "value": -9.225,
+      "unit": "h",
+      "source_file": "robustness/Q4/q4_robustness_summary.json",
+      "source_locator": "$.checks.mass_equation_form.observed.t_dry_shift_hours",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    },
+    {
+      "claim_id": "q4_vs_q3_drying_time_hours",
+      "value": -4.8286,
+      "unit": "h",
+      "source_file": "results/Q4/experiments/round1/metrics/main.json",
+      "source_locator": "$.drying_time_hours (minus results/Q3/.../main.json $.drying_time_hours)",
+      "frozen_at": "2026-09-11T17:34:18+0800",
+      "frozen_by_skill": "solution-package-builder",
+      "decision_id": "q4_package_signoff"
+    }
+  ]
+}

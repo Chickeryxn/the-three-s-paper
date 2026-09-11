@@ -1,0 +1,17 @@
+\begin{table}[H]
+  \centering
+  \caption{四问的检验量汇总}\label{tab:verify}
+  \footnotesize
+  \begin{tabularx}{\textwidth}{l *{5}{>{\centering\arraybackslash}X}}
+    \toprule
+    问题 & 解析对照/(kg/kg) & 网格加密/(kg/kg) & 时间加密 & 独立实现差 & 离散守恒 \\
+    \midrule
+    第 (1) 问 & \qoneanalyticalmaxabserr & \qonegridrefinementdiff & \qonetimeaccuracytolerancediff & \qoneindependentimplementationsdiff & \qonemassbalancerel \\
+    第 (2) 问 & \qtwoanalyticalmaxabserr & \qtwogridrefinementdiff & \qtwotimerefinementdiff & \qtwodryingtimespread & \qtwomassbalancerel \\
+    第 (3) 问 & \qthreedryingtime & \qthreegridrefinementdiff & \qthreetimerefinementdiff & \qthreeconsistencywithQtwo & \qthreemassbalancerel \\
+    第 (4) 问 & \qfourreferencemaxabserr & \qfourgridrefinementdiff & \qfourtimerefinementhours & \qfourbaselinedryingtimeseconds & \qfourmassbalancerel \\
+    \bottomrule
+  \end{tabularx}
+  \par\smallskip\footnotesize 第 (3) 问的解析对照取与其同模型的第 (2) 问结果；
+  第 (4) 问的时间加密一列为内部步长减半引起的烘干时长变化。
+\end{table}

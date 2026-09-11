@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q1/reports/q1_final_result_analysis.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "methods/Q1/q1_final_method_explanation.md",
+      "exists": true,
+      "sha256": "c7e4d6d7f25ac08d5ad0bb1bc46c61934835e16afd0cd7b622ed21e3741f9ba5"
+    },
+    {
+      "path": "results/Q1/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "a650ec52f1c4fc7512f800bf57f3254e1843c58bedc1f62986217dd2bc93851c"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "267baee2a426a1f820bc9cb179e2c4f0cfdc309ca48ccb85aaf072ec9efccb1a"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/main_validation.json",
+      "exists": true,
+      "sha256": "bd3b6dd8441834f837eda7381518fe0d324a39e1cbc80759d690578e4dc1932e"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/baseline.json",
+      "exists": true,
+      "sha256": "14f41b853c12d85c3a4146bb21a715ba7eb8a3dfd681f5c9892780d0fdb538f3"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/baseline_validation.json",
+      "exists": true,
+      "sha256": "6f56113ae3b2d2264543fb35d85659865bdda83dcebd458a281158b2781aa1aa"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/verifier_validation.json",
+      "exists": true,
+      "sha256": "9e57c1fe4dab6fd77b3b54cf6d7fa252c8c6458dff5a280800237d5552c085f1"
+    },
+    {
+      "path": "results/Q1/experiments/round1/metrics/sensitivity.json",
+      "exists": true,
+      "sha256": "a438131c0fc15e0616bafed2c1406eb40e75d38370cb22e739db1372e1507c43"
+    },
+    {
+      "path": "robustness/Q1/q1_robustness_summary.json",
+      "exists": true,
+      "sha256": "bce7293667797c1350cc38fa78d392769e5d0b9d69a9794fe4593f1afac05adf"
+    },
+    {
+      "path": "methods/Q1/probes/role_swap_evidence/role_swap_check.json",
+      "exists": true,
+      "sha256": "473f16aa91d05717520f26e2de03f52b1f28a8efa0c9867cbfead6deb9b3bbd9"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "solution-package-builder",
+    "paper-section-writer"
+  ],
+  "decision_ids": [
+    "q1_method_role_swap"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:07+0800"
+}

@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "question": "Q2",
+  "profile": "lean",
+  "generated_at": "2026-09-11T12:16:13+0800",
+  "tested_sources": {
+    "main": "results/Q2/experiments/round1/metrics/main.json",
+    "baseline": "results/Q2/experiments/round1/metrics/baseline.json",
+    "verifier": "results/Q2/experiments/round1/metrics/verifier_validation.json"
+  },
+  "checks": {
+    "h_m_perturbation": {
+      "plus5pct": {
+        "claim": "h_m = 8e-7 m/s as supplied in appendix 2",
+        "perturbation": "h_m x 1.05",
+        "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+        "threshold": "predeclared: |drying-time shift| < 1.0 h",
+        "observed": {
+          "t_dry_hours": 57.15833333333333,
+          "t_dry_shift_hours": -0.3063888888888897,
+          "t_dry_shift_percent": -0.5331773600228173,
+          "max_abs_diff_table_C": 0.036492379979807366,
+          "wall_s": 28.6
+        },
+        "status": "PASS"
+      },
+      "minus5pct": {
+        "claim": "h_m = 8e-7 m/s as supplied in appendix 2",
+        "perturbation": "h_m x 0.95",
+        "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+        "threshold": "predeclared: |drying-time shift| < 1.0 h",
+        "observed": {
+          "t_dry_hours": 57.809444444444445,
+          "t_dry_shift_hours": 0.3447222222222237,
+          "t_dry_shift_percent": 0.5998849535705507,
+          "max_abs_diff_table_C": 0.03866948792661229,
+          "wall_s": 28.6
+        },
+        "status": "PASS"
+      }
+    },
+    "h_conv_perturbation": {
+      "plus5pct": {
+        "claim": "h = 25 W/(m2 K) as supplied in appendix 2",
+        "perturbation": "h x 1.05; in Q2 h feeds back into moisture through D(C,T)",
+        "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+        "threshold": "predeclared: |drying-time shift| < 1.0 h",
+        "observed": {
+          "t_dry_hours": 57.46055555555556,
+          "t_dry_shift_hours": -0.004166666666662877,
+          "t_dry_shift_percent": -0.007250825385616469,
+          "max_abs_diff_table_C": 0.002973288426015852,
+          "wall_s": 27.6
+        },
+        "status": "PASS"
+      }
+    },
+    "D_perturbation": {
+      "claim": "D = 2.4e-3 exp(-0.45/C) exp(-3850/T) from appendix 3",
+      "perturbation": "D x 1.05",
+      "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+      "threshold": "predeclared: |drying-time shift| < 1.0 h",
+      "observed": {
+        "t_dry_hours": 55.04944444444445,
+        "t_dry_shift_hours": -2.4152777777777743,
+        "t_dry_shift_percent": -4.203061781866163,
+        "max_abs_diff_table_C": 0.026477917082166513,
+        "wall_s": 26.7
+      },
+      "status": "CONDITIONAL"
+    },
+    "mass_equation_form": {
+      "claim": "the Fick form given by the problem (decision g_assumption_mass_equation_form)",
+      "perturbation": "wet-basis self-consistent form, effective diffusivity (1+C) times larger",
+      "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+      "threshold": "predeclared: |drying-time shift| < 1.0 h",
+      "observed": {
+        "t_dry_hours": 49.00333333333333,
+        "t_dry_shift_hours": -8.46138888888889,
+        "t_dry_shift_percent": -14.72449280476428,
+        "max_abs_diff_table_C": 0.4250331820239448,
+        "wall_s": 33.9
+      },
+      "status": "CONDITIONAL"
+    },
+    "env_extrapolation_c_inf_0.045": {
+      "claim": "T_inf = 50 degC and C_inf = 0.05 kg/kg after 14400 s (g_framing_env_extrapolation)",
+      "perturbation": "C_inf = 0.045 kg/kg",
+      "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+      "threshold": "predeclared: |drying-time shift| < 1.0 h",
+      "observed": {
+        "t_dry_hours": 57.367777777777775,
+        "t_dry_shift_hours": -0.09694444444444628,
+        "t_dry_shift_percent": -0.1687025373054998,
+        "max_abs_diff_table_C": 2.6394802898899172e-05,
+        "wall_s": 33.5
+      },
+      "status": "PASS"
+    },
+    "env_extrapolation_c_inf_0.055": {
+      "claim": "T_inf = 50 degC and C_inf = 0.05 kg/kg after 14400 s (g_framing_env_extrapolation)",
+      "perturbation": "C_inf = 0.055 kg/kg",
+      "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+      "threshold": "predeclared: |drying-time shift| < 1.0 h",
+      "observed": {
+        "t_dry_hours": 57.577777777777776,
+        "t_dry_shift_hours": 0.11305555555555458,
+        "t_dry_shift_percent": 0.19673906212990408,
+        "max_abs_diff_table_C": 2.6394802898899172e-05,
+        "wall_s": 28.2
+      },
+      "status": "PASS"
+    },
+    "env_extrapolation_t_inf_52": {
+      "claim": "T_inf = 50 degC after 14400 s (g_framing_env_extrapolation)",
+      "perturbation": "T_inf = 52 degC",
+      "metric": "drying time shift (h) and max abs change of the 18 reported moisture values",
+      "threshold": "predeclared: |drying-time shift| < 1.0 h",
+      "observed": {
+        "t_dry_hours": 53.97222222222222,
+        "t_dry_shift_hours": -3.4924999999999997,
+        "t_dry_shift_percent": -6.077641838229252,
+        "max_abs_diff_table_C": 2.6394802898899172e-05,
+        "wall_s": 26.2
+      },
+      "status": "CONDITIONAL"
+    },
+    "numerical_discretisation": {
+      "claim": "the reported four-decimal values are grid- and step-independent",
+      "perturbation": "full-span dt 2 vs 1 s; grid 400 vs 800 cells over 6 h",
+      "metric": "drying-time shift and max profile change",
+      "observed": {
+        "dt_full_span_shift_hours": 0.00027777777777515666,
+        "grid_6h_max_abs_diff_C": 3.201593784529777e-07
+      },
+      "threshold": "predeclared: < 5e-5 (values) and < 1 h (time)",
+      "status": "PASS"
+    },
+    "independent_implementation": {
+      "claim": "an independently written cell-centred implementation reproduces the result",
+      "perturbation": "different spatial discretisation (cell-centred vs vertex-centred)",
+      "metric": "max abs difference of the reported tables and the drying-time spread",
+      "observed": {
+        "max_abs_diff_C": 0.0,
+        "max_abs_diff_T_C": 0.0,
+        "drying_time_spread_seconds": 25.99999999998488
+      },
+      "threshold": "predeclared: < 5e-5 and < 120 s",
+      "status": "PASS"
+    },
+    "mass_balance": {
+      "claim": "the discretisation conserves moisture",
+      "perturbation": "none",
+      "metric": "relative residual of the discrete global balance",
+      "observed": 4.368715325335407e-13,
+      "threshold": 1e-06,
+      "status": "PASS"
+    },
+    "output_degeneracy": {
+      "claim": "the outputs are not degenerate",
+      "perturbation": "none",
+      "metric": "monotonicity, extremum location, unique values",
+      "observed": {
+        "C_monotone_decreasing": true,
+        "center_is_global_max": true,
+        "drying_time_inside_stated_band": true,
+        "final_profile_C": [
+          0.15,
+          0.1499,
+          0.1496,
+          0.1492,
+          0.1485,
+          0.1477,
+          0.1466,
+          0.1454,
+          0.1439,
+          0.1422,
+          0.1402,
+          0.1379,
+          0.1353,
+          0.1323,
+          0.1289,
+          0.1249,
+          0.1202,
+          0.1143,
+          0.1068,
+          0.0956,
+          0.0527
+        ]
+      },
+      "threshold": "qualitative",
+      "status": "PASS"
+    },
+    "end_face_neglect": {
+      "claim": "one-dimensional radial symmetry (g_framing_spatial_dimension)",
+      "perturbation": "not a numerical perturbation; magnitude of the ignored axial transport over the full span",
+      "metric": "axial penetration depth per end as a share of the 25 cm length",
+      "observed": {
+        "span_hours": 57.46472222222222,
+        "axial_heat_penetration_cm": 18.690010976961712,
+        "axial_mass_penetration_cm_early": 3.416301133988247,
+        "axial_mass_penetration_cm_late": 1.2865589504264732,
+        "length_cm": 25.0,
+        "mass_share_of_length_percent_early": 13.665204535952988
+      },
+      "threshold": "qualitative",
+      "status": "CONDITIONAL",
+      "interpretation": "over 57 h the axial mass penetration reaches several centimetres per end, far larger than the sub-2 percent seen in the 30 min Q1 window; the radial assumption is a material limitation for the multi-day questions and must be stated in the paper"
+    }
+  },
+  "limitations": [
+    "h_m, h and the appendix-3 closures are problem-supplied inputs; the reported drying time is conditional on them",
+    "the constant-rate environment (50 degC / 0.05 kg/kg after 14400 s) is a human-decided framing assumption, not measured data",
+    "the drying time inherits the flatness of the drying tail: two independent implementations agreeing pointwise to 1e-4 still differ by ~26 s in the crossing time",
+    "axial end-face transport is ignored; over the full span its penetration is far larger than in the Q1 window"
+  ],
+  "fallback_trigger_relevance": {
+    "fallback_id": "F2",
+    "trigger": "M2 and B2 disagree beyond the reported tolerance and the disagreement cannot be attributed",
+    "observed": false,
+    "evidence": "results/Q2/experiments/round1/metrics/verifier_validation.json"
+  },
+  "baseline": {
+    "t_dry_hours": 57.46472222222222,
+    "dt_s": 1.0,
+    "steps": 206873
+  },
+  "elapsed_s": 289.01,
+  "overall_status": "CONDITIONAL"
+}

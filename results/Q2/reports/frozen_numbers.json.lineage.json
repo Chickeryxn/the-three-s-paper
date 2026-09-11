@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q2/reports/frozen_numbers.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q2/reports/q2_solution_package_for_writer.md",
+      "exists": true,
+      "sha256": "8e56b2812aad3b957bcd420bfb690b3bba6f2fbdb10f0579f554f949e4648254"
+    },
+    {
+      "path": "results/Q2/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "ee46c19c9bfa06515bfea780212f4d5e2bedc9e9a276e5b533b892ac39a0f9ad"
+    },
+    {
+      "path": "methods/Q2/q2_decisions.jsonl",
+      "exists": true,
+      "sha256": "b0d33999944c5feed4f6385f29ee269dde3b096b3ed11296a2c7d9bbe88950ae"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "paper-section-writer"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/freeze_q1q3.py": "41ac031ab312a03a8acbe2af011e476b20fffaac27b716ecbf4e0bb0f765004e"
+  },
+  "created_at": "2026-09-11T17:34:08+0800"
+}

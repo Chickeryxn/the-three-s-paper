@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "status": "ADVISORY_NOT_CANONICAL",
+  "purpose": "estimate how strongly the multi-day drying time depends on h_m, for the Q1 stability verdict",
+  "configuration": {
+    "properties": "appendix 3",
+    "T_inf_C": 50.0,
+    "C_inf": 0.05,
+    "h_m": 8e-07,
+    "h": 25.0,
+    "target_max_C": 0.15,
+    "N": 200,
+    "dt_s": 2.0,
+    "horizon_h": 200.0,
+    "time_scheme": "backward Euler (L-stable)",
+    "T_inf_ramp": "attachment 1 for t <= 14400 s, then held at 50 degC",
+    "C_inf_ramp": "attachment 1 for t <= 14400 s, then held at 0.05 kg/kg"
+  },
+  "h_m_base": {
+    "t_dry_h": 57.37722222222222,
+    "reached": true,
+    "marks": {
+      "6": {
+        "max_C": 1.0170167842374465,
+        "center_C": 1.0170167842374465,
+        "center_T_C": 49.99998128287689
+      },
+      "12": {
+        "max_C": 0.45616051286907694,
+        "center_C": 0.45616051286907694,
+        "center_T_C": 50.00000000000483
+      },
+      "24": {
+        "max_C": 0.23773932759465727,
+        "center_C": 0.23773932759465727,
+        "center_T_C": 50.000000000005
+      },
+      "48": {
+        "max_C": 0.1617244777591058,
+        "center_C": 0.1617244777591058,
+        "center_T_C": 49.999999999993065
+      }
+    },
+    "final_max_C": 0.14999993640096393,
+    "final_center_C": 0.14999993640096393
+  },
+  "h_m_plus5pct": {
+    "t_dry_h": 57.06944444444444,
+    "reached": true,
+    "marks": {
+      "6": {
+        "max_C": 0.9917906660075977,
+        "center_C": 0.9917906660075977,
+        "center_T_C": 49.99998312446229
+      },
+      "12": {
+        "max_C": 0.4446066520295521,
+        "center_C": 0.4446066520295521,
+        "center_T_C": 50.000000000001194
+      },
+      "24": {
+        "max_C": 0.23565344144314504,
+        "center_C": 0.23565344144314504,
+        "center_T_C": 49.99999999999534
+      },
+      "48": {
+        "max_C": 0.16126895294449956,
+        "center_C": 0.16126895294449956,
+        "center_T_C": 50.0000000000004
+      }
+    },
+    "final_max_C": 0.14999957034900308,
+    "final_center_C": 0.14999957034900308
+  },
+  "timestep_check_N200_dt2_5": {
+    "t_dry_h": 57.37722222222222,
+    "reached": true,
+    "marks": {
+      "6": {
+        "max_C": 1.0169889653821902,
+        "center_C": 1.0169889653821902,
+        "center_T_C": 49.999981199736
+      },
+      "12": {
+        "max_C": 0.45615113550143455,
+        "center_C": 0.45615113550143455,
+        "center_T_C": 49.9999999999971
+      },
+      "24": {
+        "max_C": 0.23773818186983386,
+        "center_C": 0.23773818186983386,
+        "center_T_C": 50.000000000002046
+      },
+      "48": {
+        "max_C": 0.16172433130113228,
+        "center_C": 0.16172433130113228,
+        "center_T_C": 50.00000000000273
+      }
+    },
+    "final_max_C": 0.1499998516696079,
+    "final_center_C": 0.1499998516696079
+  },
+  "note": "Q2/Q3 have not passed G2/G2.5; this annex is exploratory and will be replaced by the canonical Q3 robustness check",
+  "sensitivity": {
+    "t_dry_h_base": 57.37722222222222,
+    "t_dry_h_plus5pct": 57.06944444444444,
+    "shift_h": -0.3077777777777797,
+    "shift_pct": -0.5364110806649982
+  },
+  "elapsed_s": 77.8
+}

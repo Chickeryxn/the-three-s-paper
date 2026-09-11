@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "artifact": "code/Q4/reviews/q4_python_review.json",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "code/Q4/q4_main.py",
+      "exists": true,
+      "sha256": "5a82a31538f46ef8638763afa01986884ec68ba31e48ac602896214583e5b353"
+    },
+    {
+      "path": "code/Q4/q4_baseline.py",
+      "exists": true,
+      "sha256": "8cb54a01150c97bdbd0d5bca64a836e36675cdd766f49efb457f1d74b2621233"
+    },
+    {
+      "path": "code/Q4/q4_verifier.py",
+      "exists": true,
+      "sha256": "c6e2be36a84c78a7fdb24966d2337f1547f6cf79ae48786a8b8eccab345509b1"
+    },
+    {
+      "path": "methods/Q4/q4_decisions.jsonl",
+      "exists": true,
+      "sha256": "8fbfb202a91e62cd2fe14ba5fc427b25d1d12ea598d4dff8c79acbb6bef983bb"
+    },
+    {
+      "path": "results/Q4/experiments/round1/run_summary.json",
+      "exists": true,
+      "sha256": "2541ff3f2da3ee36be906af01b7c18ac11aaf6caa93ceb359712ba0665178769"
+    },
+    {
+      "path": "results/Q4/experiments/round1/result4.xlsx",
+      "exists": true,
+      "sha256": "6e1354f09c36ce55bf3ac6b567e99cdf052e9c8d681ac3ecedb8e90244386a0e"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "workflow-orchestrator"
+  ],
+  "decision_ids": [
+    "q4_method_choice"
+  ],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {
+    "code/Q4/q4_code_review.py": "6d54c7497dde517b9ff07e71e25664431cb06a157331a3be86b6d12582c4e6c5"
+  },
+  "created_at": "2026-09-11T17:34:02+0800"
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "artifact": "results/Q3/reports/q3_final_result_analysis.md",
+  "status": "CURRENT",
+  "created_from": [
+    {
+      "path": "results/Q3/experiments/round1/metrics/main.json",
+      "exists": true,
+      "sha256": "e2faf0cca6ee73ce95fa3dc97fef501e1ba59506d38bdca7cbcac255d9a70731"
+    },
+    {
+      "path": "methods/Q3/q3_final_method_explanation.md",
+      "exists": true,
+      "sha256": "632979ceda0e03d0f0ba638f01a633d3a47df4c1fa17cbcfb240b6502bfb4c94"
+    }
+  ],
+  "validated_by": [],
+  "consumed_by": [
+    "solution-package-builder",
+    "paper-section-writer"
+  ],
+  "decision_ids": [],
+  "input_hash": {},
+  "config_hash": {},
+  "code_hash": {},
+  "created_at": "2026-09-11T17:34:09+0800"
+}
