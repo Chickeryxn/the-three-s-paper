@@ -29,22 +29,116 @@
 
 ## 1. 快速开始
 
+### 1.1 克隆后先确认能编译
+
 ```bash
 git clone https://github.com/Chickeryxn/the-three-s-paper.git
 cd the-three-s-paper
-
-# 编译论文（务必两遍，第二遍才解析交叉引用与页码）
-xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex
-xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex
 ```
 
-Windows 双击 `build.ps1`；macOS / Linux 用 `./build.sh`。
+然后（Windows PowerShell）：
 
-**预期输出**：`paper/main.pdf`，**45 页，3.33 MB，0 个 LaTeX 错误，0 个 overfull hbox**。
+```powershell
+.\build.ps1
+```
 
-> `main.tex` 中的路径（`\input{paper/sections/…}`、`\lstinputlisting{code/Q1/…}`、
-> `\graphicspath{{paper/figures/}}`）全部相对**仓库根目录**书写，因此必须从根目录编译。
-> 把 `main.tex` 单独拷到别处会立刻大量报"File not found"。
+macOS / Linux：
+
+```sh
+sh build.sh
+```
+
+预期看到：
+
+```
+[1/4] 跳过表格与图形（需要时用 -Full）
+[2/4] 组装 paper/main.tex ...
+[3/4] 编译两遍 ...
+[4/4] 检查日志 ...
+
+  页数       : 45
+  LaTeX 错误 : 0
+  overfull   : 0
+
+  完成 -> paper/main.pdf
+```
+
+### 1.2 日常流程：改内容 → 出 PDF → 推送
+
+只有三步。**平时只动 `paper/sections/*.tex`（文字）和 `paper/main_template.tex`（版面）**：
+
+```powershell
+# ① 改内容
+#    paper/sections/01…07*.tex    ← 正文文字
+#    paper/main_template.tex      ← 版面、宏包、样式
+
+# ② 生成 PDF
+.\build.ps1
+
+# ③ 提交并推送（先构建，编译有错就不提交）
+.\publish.ps1 -Message '改写第 5.2 节的推导'
+```
+
+macOS / Linux 对应 `sh build.sh` 与 `sh publish.sh '提交信息'`。
+
+`publish.ps1` 的行为是：**先构建 → 构建不通过就中止 → 通过才 commit + push**。
+这样不会把无法编译的中间状态推给协作者。提交信息省略时自动生成带时间戳的一条。
+
+### 1.3 你改了什么 → 该跑什么
+
+| 你改动的地方 | 命令 | 大约耗时 |
+|---|---|---|
+| `paper/sections/*.tex`、`paper/main_template.tex`（正文与版面） | `.\build.ps1` | 约 1 分钟 |
+| `code/figures/*.py`（绘图脚本） | `.\build.ps1 -Full` | 约 2–5 分钟 |
+| `code/paper_tables*.py`（表格生成脚本） | `.\build.ps1 -Full` | 约 2–5 分钟 |
+| `code/Q*/q*_main.py` 等模型代码、`results/` 下的数值 | 先重跑模型并重新冻结，再 `.\build.ps1 -Full`，见 §11 | 数分钟起 |
+
+`-Full` 会读 `results/Q*/…/result1|3|4.xlsx` 作为绘图输入；这三个文件（共 0.9 MB）在仓库里，
+所以克隆后直接可用。脚本在缺失时会明确报出缺哪个文件并中止，不会跑到一半才崩。
+（问题二的 `result2.xlsx` 约 28 MB，没有纳入版本库，但论文管线并不读它。）
+
+**只改文字就用普通 `build`。** 加 `-Full` 会把 `paper/tables/table1…9*.tex` 与 `paper/figures/*` 全部重新生成，
+没必要就别开——它会重画所有图并刷新渲染记录，产生大量无意义的 diff。
+
+### 1.4 两个脚本各做了什么
+
+`build.ps1` / `build.sh` 依次执行六件事：
+
+1. 检查 `python` 与 `xelatex` 是否在 PATH 中，缺失则给出明确提示；
+2. 检查 `paper/main.pdf` 是否被 PDF 阅读器占用——占用时直接提示"请关闭后重试"，
+   而不是让 `dvipdfmx` 抛一句难懂的 `Unable to open`（见 §9.8）；
+3. `-Full` 时先重新生成表格与图形；
+4. `python scripts/latex_assembly.py . --template paper/main_template.tex` 组装 `main.tex`；
+5. 编译两遍；
+6. 从 `paper/main.log` 读出页数 / 错误数 / overfull 并打印；**有编译错误则退出码为 1**。
+
+> 第 6 步的页数解析有个坑：TeX 会把长路径的日志行折行，甚至把 `(45` 拆成 `(4` + 换行 + `5`。
+> 所以脚本先删掉日志里的全部空白再匹配，直接对原日志做行匹配会静默返回空值。
+
+### 1.5 重跑生成脚本后，git 为什么会显示一堆改动
+
+跑完 `-Full` 后 `git status` 通常会出现几十个改动，**其中大部分是噪声，属正常现象**：
+
+| 现象 | 原因 | 要不要提交 |
+|---|---|---|
+| `paper/figures/*.pdf` 显示为已修改，且字节数完全相同 | Matplotlib 会在 PDF 里写入生成时间戳 | 可不提交；内容视觉上一致 |
+| `paper/figures/*.render.json` 的 `rendered_at` 变了 | 渲染自检记录的时间戳 | 同上 |
+| `paper/main.pdf` 字节数小幅变化 | 编译时间戳 | 同上 |
+| 大量文本文件显示为已修改，但 `git diff` 看不出内容差异 | Windows 上 `core.autocrlf=true` 的行尾差异 | 会被 `git add` 自动消解，不产生真实提交 |
+
+`.gitattributes` 已设置 `* text=auto eol=lf`，把最后一类噪声压到最低。
+判断到底有没有真实改动，用：
+
+```bash
+git diff --ignore-cr-at-eol --stat
+```
+
+### 1.6 两条必须知道的约定
+
+1. **`main.tex` 是生成物**，由模板 + 各节 + 冻结数字拼出来。直接改它，下次生成就丢。
+2. **路径一律相对仓库根目录**（`\input{paper/sections/…}`、`\lstinputlisting{code/Q1/…}`、
+   `\graphicspath{{paper/figures/}}`），所以必须从根目录编译；
+   把 `main.tex` 单独拷到别处会立刻大量报 File not found。
 
 ## 2. PDF 生成链：四个阶段
 
@@ -517,5 +611,13 @@ workspace/data_clean/     清洗后的模型输入（运行代码所必需）
 （`workspace/problem.txt`、`workspace/data_raw/`）。
 运行代码所需的清洗后输入（`workspace/data_clean/`）已包含，克隆后即可复现全部计算与图形。
 
-问题二的完整计算场 `result2.xlsx`（约 28 MB）与图形 SVG（约 40 MB）同样未纳入版本管理，
-前者运行 `python code/Q2/q2_main.py` 重新生成，后者运行 `python code/figures/make_paper_figures.py` 重新导出。
+**纳入**版本库的交付表：`result1.xlsx`、`result3.xlsx`、`result4.xlsx`（共 0.9 MB）——
+它们是绘图脚本的输入，缺了 `-Full` 就跑不起来。
+
+**未纳入**版本库：
+
+| 文件 | 大小 | 原因 | 怎么重新生成 |
+|---|---|---|---|
+| `results/Q2/…/result2.xlsx` | 约 28 MB | 体积大，且论文管线不读它 | `python code/Q2/q2_main.py` |
+| `paper/figures/*.svg` | 约 40 MB | LaTeX 用的是 PDF 矢量版 | `python code/figures/make_paper_figures.py` |
+| `results/**/runs/` | 小 | 每次运行的快照，属过程记录 | 重跑模型自动生成 |

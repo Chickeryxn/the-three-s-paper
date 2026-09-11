@@ -23,11 +23,16 @@ FILES = ["scripts/latex_assembly.py"]
 DATA_IN = ["workspace/data_clean"]
 
 SKIP_SUFFIX = (".svg", ".pyc", ".aux", ".log", ".out", ".toc", ".synctex.gz",
-               ".fls", ".fdb_latexmk", ".xlsx", ".gitkeep")
+               ".fls", ".fdb_latexmk", ".gitkeep")
+# result1/3/4.xlsx (0.9 MB total) are inputs of the figure scripts, so they ship;
+# result2.xlsx is a 28 MB deliverable that nothing in the paper pipeline reads.
+SKIP_EXACT = {"results/Q2/experiments/round1/result2.xlsx"}
 SKIP_PARTS = {"__pycache__", ".ipynb_checkpoints", "runs"}
 
 
 def keep(rel: Path) -> bool:
+    if rel.as_posix() in SKIP_EXACT:
+        return False
     if any(p in SKIP_PARTS for p in rel.parts):
         return False                    # per-run console logs, no reproduction value
     return not rel.name.endswith(SKIP_SUFFIX)
@@ -67,9 +72,23 @@ def main():
     rels += [Path(f) for f in FILES]
 
     n = copy_tree(ROOT, out, rels)
-    for name in ("README.md", ".gitignore", ".gitattributes", "编译说明.md"):
-        src = ROOT / "code/paper_repo_templates" / name
-        shutil.copy2(src, out / name)
+    # every file under code/paper_repo_templates/ is a repository-level artefact
+    # (README, .gitignore, .gitattributes, build/publish scripts)
+    tpl = ROOT / "code/paper_repo_templates"
+    for src in sorted(tpl.iterdir()):
+        if not src.is_file():
+            continue
+        dst = out / src.name
+        if src.suffix == ".ps1":
+            # Windows PowerShell 5.1 reads a BOM-less file as ANSI/GBK and mangles
+            # both the Chinese messages and, as a side effect, string terminators.
+            # Always publish .ps1 with a UTF-8 BOM.
+            body = src.read_bytes()
+            if body[:3] != b"\xef\xbb\xbf":
+                body = b"\xef\xbb\xbf" + body
+            dst.write_bytes(body)
+        else:
+            shutil.copy2(src, dst)
         n += 1
     print("staged %d files into %s" % (n, out))
     return 0

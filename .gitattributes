@@ -1,13 +1,18 @@
-# 跨平台换行与二进制识别：避免 Windows / macOS 协作时整文件显示为已修改
-* text=auto
+# 跨平台换行与二进制识别。
+# eol=lf 让工作区也统一用 LF：否则 Windows 上 core.autocrlf=true 会把几乎所有
+# 文件显示为已修改（git add 后虽会自动消解，但每次 git status 都很吵）。
+* text=auto eol=lf
 
-*.tex   text
-*.py    text
-*.md    text
-*.bib   text
-*.json  text
-*.csv   text
+*.tex   text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.bib   text eol=lf
+*.json  text eol=lf
+*.csv   text eol=lf
+*.ps1   text eol=lf
+*.sh    text eol=lf
 
+# 二进制：不做任何换行转换
 *.pdf   binary
 *.png   binary
 *.xlsx  binary

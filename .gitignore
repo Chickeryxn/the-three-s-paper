@@ -16,7 +16,9 @@ __pycache__/
 
 # 大体积或可再生的二进制
 paper/figures/*.svg
-results/**/*.xlsx
+# 问题二的完整计算场约 28 MB，不进版本库；跑 python code/Q2/q2_main.py 可重新生成。
+# result1/3/4.xlsx 只有 0.9 MB 且绘图脚本需要读，因此保留在库内。
+results/Q2/experiments/round1/result2.xlsx
 dist/
 
 # 编辑器
