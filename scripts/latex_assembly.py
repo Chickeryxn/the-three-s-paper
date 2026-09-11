@@ -476,11 +476,13 @@ def main():
                 return 2
             return 0
         main_tex = root / "paper" / "main.tex"
-        main_tex.write_text(render_main(template, root, sections, frozen, ai_blocks, bibitems),
-                            encoding="utf-8", newline="\n")
-        (root / "paper" / "build_report.json").write_text(
-            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
-            newline="\n")
+        # 用 open(newline=) 而不是 Path.write_text(newline=)：后者是 Python 3.10
+        # 才有的参数，而 macOS 自带的 python3 是 3.9，会直接 TypeError。
+        with open(main_tex, "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(render_main(template, root, sections, frozen, ai_blocks, bibitems))
+        with open(root / "paper" / "build_report.json", "w",
+                  encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
         print(json.dumps({"status": "PASS", "main_tex": str(main_tex.relative_to(root)),
                           **report}, ensure_ascii=False, indent=2))
         return 0

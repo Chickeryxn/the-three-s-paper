@@ -93,7 +93,9 @@ def main():
         (stage / "编译说明.md").write_text(
             readme.replace("{HEAVY}", "包含" if heavy else "不含"), encoding="utf-8")
         (stage / "build.ps1").write_text(build_ps1, encoding="utf-8")
-        (stage / "build.sh").write_text(build_sh, encoding="utf-8", newline=chr(10))
+        # open(newline=) 而不是 Path.write_text(newline=)：后者是 Python 3.10 才有的参数
+        with open(stage / "build.sh", "w", encoding="utf-8", newline=chr(10)) as fh:
+            fh.write(build_sh)
         out = zip_tree(stage, DIST / (NAME + suffix + ".zip"))
         mb = out.stat().st_size / 1048576
         print("wrote %-52s %.1f MB" % (out.relative_to(ROOT).as_posix(), mb))

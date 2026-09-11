@@ -6,23 +6,30 @@ set -e
 cd "$(dirname "$0")"
 
 full=0
-[ "$1" = "--full" ] && full=1
+[ "${1:-}" = "--full" ] && full=1
 
-command -v python  >/dev/null 2>&1 || { echo '  [失败] 找不到 python'; exit 1; }
+# macOS 12.3 起系统不再自带 `python`，只有 `python3`；优先 python3 并回退到 python。
+if command -v python3 >/dev/null 2>&1; then
+  PY=python3
+elif command -v python >/dev/null 2>&1; then
+  PY=python
+else
+  echo '  [失败] 找不到 python3 / python，请先安装 Python 3 并加入 PATH'; exit 1
+fi
 command -v xelatex >/dev/null 2>&1 || { echo '  [失败] 找不到 xelatex，请安装 TeX Live 或 MiKTeX 完整版'; exit 1; }
 
 if [ $full -eq 1 ]; then
   echo '[1/4] 重新生成表格与图形 ...'
-  python code/paper_tables.py
-  python code/paper_tables_extra.py
-  python code/figures/make_paper_figures.py
-  python code/figures/make_appendix_figures.py
+  "$PY" code/paper_tables.py
+  "$PY" code/paper_tables_extra.py
+  "$PY" code/figures/make_paper_figures.py
+  "$PY" code/figures/make_appendix_figures.py
 else
   echo '[1/4] 跳过表格与图形（需要时用 --full）'
 fi
 
 echo '[2/4] 组装 paper/main.tex ...'
-python scripts/latex_assembly.py . --template paper/main_template.tex >/dev/null
+"$PY" scripts/latex_assembly.py . --template paper/main_template.tex >/dev/null
 
 echo '[3/4] 编译两遍 ...'
 xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex >/dev/null
