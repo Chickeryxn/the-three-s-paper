@@ -85,6 +85,16 @@
 \subsection{检验结论}
 
 四类证据一致表明：本文报告的数值已达到所要求的精度，且其不确定性的主要来源已被识别并量化。
-表~\ref{tab:verify} 汇总了四问的全部检验量。
+表~\ref{tab:verify} 汇总了四问的全部检验量，图~\ref{fig:verify} 给出四类证据的图形汇总。
 
 \input{paper/tables/table9_verification.tex}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{fig05_numerical_verification.pdf}
+  \caption{数值可信度的四类证据。(a) 网格加密残差与解析解对照残差；
+  (b) 问题四的冻结半径算例与 Bessel 级数解析解的对照；
+  (c) 主方法与独立实现的逐点最大差，虚线为一个末位单位对应的容差；
+  (d) 问题四关闭表面传质后干基含水率的偏移量与其阈值。}
+  \label{fig:verify}
+\end{figure}

@@ -77,8 +77,8 @@ $w_j\,\mathrm{d}C_j/\mathrm{d}t$，其中权重 $w_j=\int_{V_j}r\,\mathrm{d}r$ �
 
 \begin{equation}
 w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
-=\xi_{j+\frac12}\frac{D_{j+\frac12}}{\Delta r^2 R^2}\left(C_{j+1}-C_j\right)
--\xi_{j-\frac12}\frac{D_{j-\frac12}}{\Delta r^2 R^2}\left(C_j-C_{j-1}\right).
+=r_{j+\frac12}D_{j+\frac12}\frac{C_{j+1}-C_j}{\Delta r}
+-r_{j-\frac12}D_{j-\frac12}\frac{C_j-C_{j-1}}{\Delta r}.
 \label{eq:semi}
 \end{equation}
 
@@ -90,8 +90,8 @@ w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
 
 \begin{equation}
 w_N\frac{\mathrm{d}C_N}{\mathrm{d}t}
-=\xi_{N-\frac12}\frac{D_{N-\frac12}}{\Delta r^2R^2}\left(C_{N-1}-C_N\right)
--\frac{h_m}{R}\left(C_N-C_\infty\right).
+=r_{N-\frac12}D_{N-\frac12}\frac{C_{N-1}-C_N}{\Delta r}
+-R\,h_m\left(C_N-C_\infty\right).
 \label{eq:surf}
 \end{equation}
 
@@ -146,11 +146,13 @@ $\frac{\mathrm{d}}{\mathrm{d}t}\int_0^1\xi\tilde C\,\mathrm{d}\xi$（$\xi$ 域�
 右端第一项按分部积分给出界面项 $\left[\xi D\,\partial_\xi\tilde C/R^2\right]_0^1
 =-\frac{h_m}{R}(C_N-C_\infty)$，第二项给出
 $\frac{\dot R}{R}\int_0^1\xi^2\partial_\xi\tilde C\,\mathrm{d}\xi
-=\frac{\dot R}{R}\left(C_N-2\int_0^1\xi\tilde C\,\mathrm{d}\xi\right)$。整理得
+=\frac{\dot R}{R}\left(C_N-2\int_0^1\xi\tilde C\,\mathrm{d}\xi\right)$。
+把两个积分用归一化坐标下对偶控制体的权重 $\omega_j=\int_{\text{cell}}\xi\,\mathrm{d}\xi$ 离散
+（它与式~\eqref{eq:fv} 中的 $w_j$ 相差常数因子 $R^2$），整理得
 
 \begin{equation}
-\frac{\mathrm{d}}{\mathrm{d}t}\sum_j w_jC_j
-=-2\frac{\dot R}{R}\sum_j w_jC_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}\left(C_N-C_\infty\right).
+\frac{\mathrm{d}}{\mathrm{d}t}\sum_j \omega_jC_j
+=-2\frac{\dot R}{R}\sum_j \omega_jC_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}\left(C_N-C_\infty\right).
 \label{eq:conservation}
 \end{equation}
 
@@ -266,7 +268,7 @@ $h=25$~W/(m$^2\cdot$K)、$h_m=8\times10^{-7}$~m/s、$D=7\times10^{-9}e^{-0.89/C}
 
 恒温干燥阶段与预热阶段共用同一控制方程骨架，差别在两点：物性改按附录~3 取为
 $\rho=650+128C$、$c_p=1450+2736C/(C+1)$、$k=0.21+0.38C/(C+1)$、
-$D=2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$，于是温度与含水率\textbf{双向耦合}——
+$D=2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$（式中温度按附录原式取开尔文），于是温度与含水率\textbf{双向耦合}——
 温度通过扩散系数影响失水、含水率又通过 $\rho$、$c_p$、$k$ 影响升温；
 以及环境驱动在 $14400$~s 之后按已确认口径维持 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg
 （该设定的数值经附件~1 稳定段核实：温度均值 $50.005$~$^\circ$C、水分浓度均值 $0.050$~kg/kg）。
@@ -370,7 +372,7 @@ $h_m$、$h$、附录~3 经验式与恒温段口径下成立；一维径向假设
 \qfourRatdryingendcm 附近的完整过程，总收缩量为 \qfourshrinkagepercent；
 前 $24$~h 完成全部收缩量的 $99.4\%$，此后半径基本不变。物性改按附录~4 取为
 $\rho=760+90C$、$c_p=1850+2150C/(C+1)$、$k=0.12+0.20C/(C+1)$、
-$D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$。
+$D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$（式中温度按附录原式取开尔文）。
 
 域边界随时间内移，若仍在固定网格上求解会在边界处引入人工质量源。
 因此引入\textbf{归一化坐标} $\xi=r/R(t)$，把移动边界化为固定域 $\xi\in[0,1]$：
@@ -430,7 +432,7 @@ $r>R(t)$ 的位置\textbf{留空}；末列“药材表面”取 $\xi=1$ 处的�
 \subsection{检验与适用边界}
 
 移动边界下的守恒性用一条精确的离散恒等式核验：
-$\frac{d}{dt}\sum_j w_j C_j=-2\frac{\dot R}{R}\sum_j w_j C_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}(C_N-C_\infty)$，
+$\frac{d}{dt}\sum_j \omega_j C_j=-2\frac{\dot R}{R}\sum_j \omega_j C_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}(C_N-C_\infty)$，
 实测残差为 \qfourmassbalancerel。更强的判据是：\textbf{关闭表面传质后让域收缩，
 干基含水率必须严格不变}，实测最大偏离为 \qfourmovingboundarydev。
 
