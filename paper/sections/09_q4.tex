@@ -32,8 +32,7 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.90\textwidth]{fig09_flow_q4.pdf}
-  \caption{问题四的求解流程。由附件 2 求出半径及其变化率，经归一化坐标把移动域映射为固定域，
-  在固定网格上叠加表观对流项后逐时步推进，最后映射回物理坐标输出。}
+  \caption{问题四的求解流程}
   \label{fig:flowq4}
 \end{figure}
 
@@ -56,10 +55,7 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.98\textwidth]{fig04_shrinkage_effect.pdf}
-  \caption{尺寸收缩对烘干时长的影响。(a) 半径按附件 2 由 $2.000$~cm 收缩到
-  \qfourRatdryingendcm（\qfourshrinkagepercent）。(b) 同判据线下，考虑收缩
-  （\qfourdryingtimehours）比不考虑收缩（\qthreedryingtime）提前 \qfourvsqthreedryingtimehours。
-  (c) 表面含水率对比。}
+  \caption{尺寸收缩对烘干时长的影响}
   \label{fig:q4}
 \end{figure}
 
@@ -84,8 +80,7 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{figA3_q4_shrinking_field.pdf}
-  \caption{问题四收缩域内的含水率场（附录图，物理坐标）。(a) 径向--时间分布，白线为 $R(t)$，
-  域外留空；(b) 四个时刻的径向剖面，圆点为该时刻的表面位置。}
+  \caption{问题四收缩域含水率场（附录图）}
   \label{fig:q4map}
 \end{figure}
 
@@ -115,10 +110,7 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.92\textwidth]{fig05_numerical_verification.pdf}
-  \caption{数值可信度的四类证据。(a) 网格加密残差与解析解对照残差；
-  (b) 问题四的固定半径算例与 Bessel 级数解析解的对照；
-  (c) 本文方法与独立实现的逐点最大差，虚线为一个末位单位对应的容差；
-  (d) 问题四关闭表面传质后干基含水率的偏移量与其阈值。}
+  \caption{数值可信度的四类证据}
   \label{fig:verify}
 \end{figure}
 

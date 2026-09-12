@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-11T17:42:18+0800",
+  "rendered_at": "2026-09-12T16:38:02+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -17,7 +17,7 @@
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 9
+        "texts_checked": 7
       },
       "no_overlapping_text": {
         "pass": true,

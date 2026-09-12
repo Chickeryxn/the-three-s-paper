@@ -69,7 +69,9 @@ def main():
     cols3 = ["$r=0$", "$0.5$~cm", "$1.0$~cm", "$1.5$~cm", "$2.0$~cm（表面）"]
     t5 = d3["table5_moisture_kg_per_kg"]
     rows = [[k] + [cell(v) for v in t5[k]] for k in sorted(t5, key=float)]
-    rows.append(["烘干结束时间"] + [cell(v) for v in d3["table5_end_row"]["C"]])
+    # 与表 6（问题四）保持一致：末行不写“烘干结束时间”，在时间列直接给出确切烘干时长并整行加粗
+    rows.append([r"\textbf{%.4f}" % float(d3["drying_time_hours"])]
+                + [r"\textbf{%s}" % cell(v) for v in d3["table5_end_row"]["C"]])
     (OUT / "table5_q3.tex").write_text(
         wide("时间/h", cols3, rows, "烘干过程中每隔 $6$~h 的干基水分浓度（kg/kg）", "", "tab:table5_q3"),
         encoding="utf-8")
@@ -80,7 +82,10 @@ def main():
     cols4 = ["$r=0$", "$0.5$~cm", "$1.0$~cm", "$1.5$~cm", "药材表面"]
     t6 = d4["table6_moisture_kg_per_kg"]
     rows = [[k] + [cell(v) for v in t6[k]] for k in sorted(t6, key=float)]
-    rows.append(["烘干结束时间"] + [cell(v) for v in d4["table6_end_row"]["C"]])
+    # 末行不再写“烘干结束时间”这类文字，而是在时间列直接给出确切烘干时长，并整行加粗，
+    # 读者可以据此直接读表取值；数值仍取自 metrics，不手写。
+    rows.append([r"\textbf{%.4f}" % float(d4["drying_time_hours"])]
+                + [r"\textbf{%s}" % cell(v) for v in d4["table6_end_row"]["C"]])
     (OUT / "table6_q4.tex").write_text(
         wide("时间/h", cols4, rows,
              "考虑尺寸变化时烘干过程的干基水分浓度（kg/kg）",

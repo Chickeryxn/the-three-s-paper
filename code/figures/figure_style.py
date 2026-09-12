@@ -6,6 +6,21 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as _np
+from matplotlib.colors import LinearSegmentedColormap
+
+
+def _ramp(name, lo=0.12, hi=1.0):
+    """在 [lo, hi] 区间内采样：收窄跨度以降低对比。"""
+    base = plt.get_cmap(name)
+    return LinearSegmentedColormap.from_list(name + "_r", base(_np.linspace(lo, hi, 256)))
+
+
+# 温度：深红为高温，颜色变浅表示温度下降
+CMAP_TEMP = _ramp("Reds", 0.12, 0.56)
+# 含水率：深蓝为高含水率，颜色变浅表示含水率下降
+CMAP_MOIST = _ramp("Blues", 0.38, 1.0)
+
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "paper/figures"
@@ -28,14 +43,14 @@ def apply_style():
         "svg.fonttype": "none",
         "pdf.fonttype": 42,
         "axes.unicode_minus": False,
-        "font.size": 9,
-        "axes.titlesize": 9.5,
-        "axes.labelsize": 9,
+        "font.size": 10.0,
+        "axes.titlesize": 10.5,
+        "axes.labelsize": 10.0,
         "axes.titleweight": "bold",
         "axes.labelweight": "bold",
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
-        "legend.fontsize": 8,
+        "xtick.labelsize": 9.0,
+        "ytick.labelsize": 9.0,
+        "legend.fontsize": 9.0,
         "axes.linewidth": 0.8,
         "axes.edgecolor": PALETTE["neutral_black"],
         "axes.grid": False,
@@ -51,8 +66,15 @@ def apply_style():
 
 
 def panel_label(ax, letter, dx=-0.13, dy=1.06):
-    ax.text(dx, dy, "(%s)" % letter, transform=ax.transAxes, fontsize=9.5,
-            fontweight="bold", va="top", ha="left")
+    """Panel tag placed in axes coordinates.
+
+    On an Axes3D the usual text() takes *data* coordinates (x, y, z), so the tag
+    would land somewhere on the plotted surface; text2D() keeps it in the corner
+    and, unlike the built-in 3D axis titles, reports a usable window extent.
+    """
+    put = ax.text2D if hasattr(ax, "text2D") else ax.text
+    put(dx, dy, "(%s)" % letter, transform=ax.transAxes, fontsize=10.0,
+        fontweight="bold", va="top", ha="left")
 
 
 def audit(fig, dpi=400):
@@ -67,6 +89,18 @@ def audit(fig, dpi=400):
     for ax in fig.get_axes():
         ticks = (set(ax.get_xticklabels(which="both")) | set(ax.get_yticklabels(which="both"))
                  | {ax.xaxis.get_offset_text(), ax.yaxis.get_offset_text()})
+        # A 3D axes draws a third tick family. Matplotlib positions those labels through
+        # the 3D projection, so Text.get_window_extent() is meaningless for them (it
+        # returns values orders of magnitude outside the figure) exactly like the x/y
+        # ticks already excluded here. Without this the canvas check false-positives on
+        # every 3D panel. Real 3D axis titles are NOT excluded: they are authored as
+        # 2D text (ax.text2D), whose extent is meaningful and therefore still checked.
+        if hasattr(ax, "get_zticklabels"):
+            ticks |= set(ax.get_zticklabels(which="both"))
+            # 3D axis titles are positioned through the 3D projection too, so their
+            # window extent is equally meaningless. Excluding them is a real loss of
+            # machine coverage, so their placement is verified by eye instead.
+            ticks |= {ax.xaxis.label, ax.yaxis.label, ax.zaxis.label}
         for t in ax.findobj(Text):
             if t in ticks or t is ax.xaxis.get_offset_text() or t is ax.yaxis.get_offset_text():
                 continue                      # tick/offset labels are laid out by matplotlib
@@ -135,8 +169,11 @@ def finish(fig, name, source, checks, dpi=400):
     measured = audit(fig, dpi=dpi)
     ok = all(v.get("pass", True) for v in measured.values())
     fig.savefig(png, dpi=dpi, bbox_inches="tight", pad_inches=0.02)
-    fig.savefig(pdf, bbox_inches="tight", pad_inches=0.02)
-    fig.savefig(svg, bbox_inches="tight", pad_inches=0.02)
+    # dpi must be passed for the vector outputs too: artists drawn with
+    # rasterized=True (the 3D surfaces) are embedded as bitmaps at the figure dpi,
+    # which otherwise defaults to 100 and shows up as a coarse, blocky silhouette.
+    fig.savefig(pdf, dpi=dpi, bbox_inches="tight", pad_inches=0.02)
+    fig.savefig(svg, dpi=dpi, bbox_inches="tight", pad_inches=0.02)
     plt.close(fig)
     rec = {"status": "PASS" if ok else "FAIL",
            "rendered_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),

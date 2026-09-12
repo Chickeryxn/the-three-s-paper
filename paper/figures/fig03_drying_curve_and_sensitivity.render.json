@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-11T20:31:39+0800",
+  "rendered_at": "2026-09-12T16:37:43+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -17,7 +17,7 @@
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 23
+        "texts_checked": 15
       },
       "no_overlapping_text": {
         "pass": true,
@@ -46,8 +46,7 @@
       "q3_drying_time",
       "q2_sens_h_m_plus5pct",
       "q2_sens_D_plus5pct",
-      "q2_sens_T_inf_plus2C",
-      "q2_sens_mass_equation_form"
+      "q2_sens_T_inf_plus2C"
     ]
   },
   "outputs": [

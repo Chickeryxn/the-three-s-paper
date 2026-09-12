@@ -9,11 +9,6 @@
 这样处理既免去重复推导，也使四问的结果具有直接可比性。本节先给出控制方程与定解条件，
 再给出统一的数值方法，各问的具体参数与求解结果分别见第六章至第九章。
 
-设药材半径为 $R$，内部温度记为 $T(r,t)$，干基水分浓度（每千克干物质所含的水分质量）记为 $C(r,t)$，
-其中 $r$ 为到药材中心的径向距离。四问所用的物性取值与经验式汇总于表~\ref{tab:params}。
-
-\input{paper/tables/table7_parameters.tex}
-
 \subsection{控制方程的建立}
 
 \subsubsection{由守恒律导出控制方程}
@@ -108,6 +103,17 @@ w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
 -r_{j-\frac12}D_{j-\frac12}\frac{C_j-C_{j-1}}{\Delta r}.
 \label{eq:semi}
 \end{equation}
+
+图~\ref{fig:mesh} 给出这一离散的几何含义：左侧在圆柱截面上取一行径向节点，
+右侧放大后可以看到节点、对偶控制体与界面通量的相对位置。
+本文取 $R=2.0$~cm、$N=800$ 个节点，故 $\Delta r=R/N=25$~$\mu$m。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig00_mesh_schematic.pdf}
+  \caption{顶点型有限体积离散示意}
+  \label{fig:mesh}
+\end{figure}
 
 \subsubsection{两个端点的处理}
 
@@ -218,8 +224,7 @@ $\frac{\dot R}{R}\int_0^1\xi^2\partial_\xi\tilde C\,\mathrm{d}\xi
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.94\textwidth]{fig07_solution_flow.pdf}
-  \caption{统一求解流程。由环境序列与几何数据出发，经控制体权重与界面系数构造，
-  按问题选取物性经验式与时间格式，最后由追赶法逐时步推进并输出报告值。}
+  \caption{统一求解流程}
   \label{fig:flow}
 \end{figure}
 

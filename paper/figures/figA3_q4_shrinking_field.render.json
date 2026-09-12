@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-11T17:42:40+0800",
+  "rendered_at": "2026-09-12T16:38:28+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -17,7 +17,7 @@
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 14
+        "texts_checked": 6
       },
       "no_overlapping_text": {
         "pass": true,
@@ -43,7 +43,7 @@
       "results/Q4/experiments/round1/result4.xlsx",
       "workspace/data_clean/attachment2_radius.csv"
     ],
-    "note": "Type 4 appendix: full-field view behind figure 4; the boundary R(t) is drawn on top and cells with r > R(t) are blank in the deliverable"
+    "note": "Type 4 appendix: full-diameter view behind figure 4; the field is clipped at R(t) and mirrored about r = 0"
   },
   "outputs": [
     "paper/figures/figA3_q4_shrinking_field.png",

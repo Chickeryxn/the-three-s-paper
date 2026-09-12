@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-11T17:42:29+0800",
+  "rendered_at": "2026-09-12T16:38:19+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -17,7 +17,7 @@
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 15
+        "texts_checked": 5
       },
       "no_overlapping_text": {
         "pass": true,
@@ -40,7 +40,7 @@
   },
   "source": {
     "data": "results/Q3/experiments/round1/result3.xlsx",
-    "note": "Type 4 appendix: full-field view behind figure 3; Q2 shares the model"
+    "note": "Type 4 appendix: full-field view behind figure 3; mirrored about r = 0 to show the whole diameter"
   },
   "outputs": [
     "paper/figures/figA2_q3_full_field.png",

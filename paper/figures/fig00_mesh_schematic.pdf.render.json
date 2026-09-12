@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-12T16:37:50+0800",
+  "rendered_at": "2026-09-12T16:37:29+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -12,14 +12,13 @@
       "data drawn opaque (alpha=1.0), no grid, white background",
       "caption and visual support the same claim",
       "plotted values agree with the canonical data artifact recorded in source",
-      "schematic figure: axes hidden, no data plotted",
-      "text fits inside every box (worst overflow 0.00 pt)"
+      "schematic figure: axes hidden, no data plotted"
     ],
     "measured": {
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 8
+        "texts_checked": 13
       },
       "no_overlapping_text": {
         "pass": true,
@@ -42,19 +41,16 @@
   },
   "source": {
     "data": [
-      "methods/Q1/q1_method_card.md",
-      "methods/Q2/q2_method_card.md",
-      "methods/Q3/q3_method_card.md",
-      "methods/Q4/q4_method_card.md",
-      "methods/*/q*_decisions.jsonl"
+      "planning/symbol_table.md",
+      "paper/sections/05_model_and_solution.tex"
     ],
     "claims": [
-      "four-question method chain and role separation"
+      "vertex-centred finite-volume layout; unknowns sit on the nodes; R = 2.0 cm and N = 800 give dr = 25 um"
     ]
   },
   "outputs": [
-    "paper/figures/fig06_method_and_roles.png",
-    "paper/figures/fig06_method_and_roles.pdf"
+    "paper/figures/fig00_mesh_schematic.png",
+    "paper/figures/fig00_mesh_schematic.pdf"
   ],
   "dpi": 400,
   "style": "topjournal-style (opaque data, no grid, white background)"

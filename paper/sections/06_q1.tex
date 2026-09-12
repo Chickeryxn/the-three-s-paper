@@ -29,9 +29,7 @@ $h=25$~W/(m$^2\cdot$K)、$h_m=8\times10^{-7}$~m/s、$D=7\times10^{-9}e^{-0.89/C}
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{fig01_model_setup_and_environment.pdf}
-  \caption{模型几何与边界驱动。(a) 药材按一维径向轴对称处理，$r=0$ 处对称、$r=R(t)$ 处第三类对流；
-  (b) 预热阶段的环境温湿度取附件 1 实测序列（线性插值），$14400$~s 之后取稳定段实测均值，
-  维持 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg。该外推为\textbf{模型设定}，并非实测数据。}
+  \caption{模型几何与环境驱动}
   \label{fig:setup}
 \end{figure}
 
@@ -53,8 +51,7 @@ $r=R$ 本身就是节点，报告的表面值是直接的解变量，不经过�
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.90\textwidth]{fig08_flow_q1.pdf}
-  \caption{问题一的求解流程。温度场与水分场因物性为常数而相互独立，可分别推进；
-  两场共用同一套控制体权重与界面系数。}
+  \caption{问题一的求解流程}
   \label{fig:flowq1}
 \end{figure}
 
@@ -72,9 +69,7 @@ $r=R$ 本身就是节点，报告的表面值是直接的解变量，不经过�
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.98\textwidth]{fig02_preheat_fields.pdf}
-  \caption{预热平衡阶段（$0\sim1800$~s）的温度与水分场。(a)、(b) 为七个报告时刻的径向剖面；
-  (c) 为中心与表面时程。$1800$~s 时中心温度 \qoneTcenteroneeightzerozeros、
-  表面 \qoneTsurfaceoneeightzerozeros；干基含水率中心仍为 \qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros。}
+  \caption{预热阶段的温度与水分场}
   \label{fig:q1}
 \end{figure}
 
@@ -89,7 +84,7 @@ $r=R$ 本身就是节点，报告的表面值是直接的解变量，不经过�
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{figA1_q1_field_map.pdf}
-  \caption{预热阶段温湿场的完整时空分布（附录图）。左：温度；右：干基含水率。}
+  \caption{预热阶段温湿场（附录图）}
   \label{fig:q1map}
 \end{figure}
 
