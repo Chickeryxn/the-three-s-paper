@@ -1,0 +1,133 @@
+\section{问题二：恒温干燥阶段的温湿场与完整烘干过程}
+
+\subsection{模型的建立}
+
+恒温干燥阶段与预热阶段共用同一控制方程骨架（式~\eqref{eq:energy}、式~\eqref{eq:mass}
+与式~\eqref{eq:bc}），差别只在两处。第一处是物性：改按附录 3 取为
+$\rho=650+128C$、$c_p=1450+2736C/(C+1)$、$k=0.21+0.38C/(C+1)$、
+$D=2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$（式中温度按附录原式取开尔文），
+于是温度与含水率\textbf{双向耦合}——温度通过扩散系数影响失水，含水率又通过 $\rho$、$c_p$、$k$ 影响升温，
+两个方程必须联立求解，不能再像问题一那样分开计算。
+
+第二处是环境驱动：$14400$~s 之后按附件 1 稳定段实测均值维持 $T_\infty=50$~$^\circ$C、
+$C_\infty=0.05$~kg/kg，该均值经核实为温度 $50.005$~$^\circ$C、水分浓度 $0.050$~kg/kg。
+本问的烘干判据取\textbf{全域最大干基含水率}降至 $0.15$~kg/kg 以下，即要求药材内部各点都达到干燥要求，
+而不是只看表面或平均值。
+
+\subsection{模型的求解}
+
+空间上沿用问题一的顶点有限体积格式，时间上则需作一处调整：
+预热向恒温切换时环境温度发生跃变，初值处的这一突变会在纯 Crank--Nicolson 格式下
+激起随时间衰减的振荡，因此我们以前 $3$ 步后向 Euler 作 Rannacher 启动，其后转为 Crank--Nicolson，
+内部步长取 $1$~s。由于本问要积分到两三天，显式格式的稳定步长过小，必须采用上述无条件稳定的隐式格式。
+交付物 \texttt{result2.xlsx} 给出全程每隔 $1$~s、径向每隔 $0.1$~cm 的完整温湿场。
+
+本问的求解流程见图~\ref{fig:flowq2}。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig10_flow_q2.pdf}
+  \caption{问题二的求解流程。与问题一的差别在于物性改为温度与含水率双向耦合的经验式，
+  时间推进需以三步后向 Euler 启动，以抑制环境跃变引起的振荡。}
+  \label{fig:flowq2}
+\end{figure}
+
+\subsection{结果与分析}
+
+\textbf{全域最大干基含水率于 \qtwodryingtime 首次降至 $0.15$~kg/kg 以下，即本题的烘干时长为 \qtwodryingtime。}
+$3$~h 时中心温度为 \qtwoTcenterthreeh、表面温度为 \qtwoTsurfacethreeh，
+中心与表面的干基含水率分别为 \qtwoCcenterthreeh 与 \qtwoCsurfacethreeh。
+表~\ref{tab:table3_q2_temperature} 与表~\ref{tab:table4_q2_moisture} 给出题目要求的两张表。
+
+\input{paper/tables/table3_q2_temperature.tex}
+\input{paper/tables/table4_q2_moisture.tex}
+
+图~\ref{fig:q23} 给出烘干曲线与参数敏感性。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig03_drying_curve_and_sensitivity.pdf}
+  \caption{长时程烘干过程与敏感性。(a) 全域最大干基含水率随时间的演化与 $0.15$~kg/kg 判据，
+  判据于 \qtwodryingtime 首次越过；(b) 三个位置的含水率时程；
+  (c) 单项扰动对烘干时长的影响。}
+  \label{fig:q23}
+\end{figure}
+
+从表~\ref{tab:table3_q2_temperature} 与表~\ref{tab:table4_q2_moisture} 可以看出，
+$3$~h 内含水率的径向梯度明显增大，中心为 \qtwoCcenterthreeh、
+表面已降至 \qtwoCsurfacethreeh；而温度已接近环境值 $50$~$^\circ$C，
+中心与表面只差 $0.1$~$^\circ$C 左右。
+可见此时\textbf{传热已基本达到准稳态，干燥则由内部水分扩散控制}，表面蒸发不是瓶颈。
+这一判断与第五章算得的传质 Biot 数约为 $20$ 相符，也解释了为什么烘干需要数十小时——
+水分必须从中心扩散到表面才能被带走，而这一过程的特征时间是小时量级。
+可见本文模型所反映的“先升温、后慢速失水”的过程与该阶段的实际情况是一致的。
+
+从图~\ref{fig:q23}(a) 还可以看到，含水率曲线在后期逐渐变平：
+判据附近曲线的斜率已经很小，这意味着穿越判据的时刻对微小的数值差异比较敏感。
+这一点将在本章第四节的检验中定量说明。
+
+\subsection{稳健性与适用性分析}
+
+\subsubsection{误差来源与收敛性}
+
+本问数值解的误差可以分解为四项：空间离散误差、时间离散误差、物性经验式本身的不确定性，
+以及与独立实现比对时暴露的实现差异。前三项通过加密实验与解析对照评估，第四项通过
+第二套实现交叉验证评估。首先是与解析解对照：在常物性、固定半径的极限下，
+本问实现与 Bessel 级数解析解的最大绝对误差为 \qtwoanalyticalmaxabserr。
+此外是两项加密实验：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qtwogridrefinementdiff；
+内部步长由 $2$~s 减半到 $1$~s，烘干时长的变化为 \qtwotimerefinementdiff。
+还有一条是守恒性：离散质量守恒的相对残差为 \qtwomassbalancerel。
+最后是独立复算：独立编写的格心实现（不含 Rannacher 启动）给出的烘干时长与本文方法
+相差 \qtwodryingtimespread。
+
+这个 $26$~s 的差异值得单独说明。两套实现在报告点上已经一致到四位小数的舍入边界，
+却仍带来数十秒的烘干时刻差。这不是实现缺陷，而是\textbf{判据位于含水率曲线平坦尾部}的必然结果：
+曲线在判据附近近乎水平，极小的数值差异即可换来可观的时间差。
+因此我们在给出烘干时长的同时，始终给出该量级的不确定度。就本题而言，
+半分钟的时长波动不影响以小时为单位的结论。
+
+\subsubsection{参数与模型设定灵敏度}
+
+灵敏度分析针对两类对象：一类是题目给定但数值本身带不确定性的参数（对流传热与传质系数、扩散系数），
+另一类是建模过程中必须做出选择的设定（恒温段环境的外推方式、质量方程的读法）。
+在恒温干燥工况下，各单项扰动对烘干时长的影响汇总于表~\ref{tab:sens}。
+
+\begin{table}[H]
+  \centering
+  \caption{单项扰动对烘干时长的影响（基准工况的烘干时长为 \qtwodryingtime）}
+  \label{tab:sens}
+  \small
+  \begin{tabular}{lccc}
+    \toprule
+    扰动项 & 问题二与问题三 & 问题四 & 结论 \\
+    \midrule
+    对流传质系数放大 $5\%$ & \qtwosenshmplusfivepct & \qfoursenshmplusfivepcthours & 影响很小 \\
+    扩散系数放大 $5\%$ & \qtwosensDplusfivepct & \qfoursensDplusfivepcthours & 中等影响 \\
+    环境温度升高 $2^\circ$C & \qtwosensTinfplustwoC & \qfoursensTinfplustwoChours & 较大影响 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+表~\ref{tab:sens} 给出的是一个反直觉但对结论至关重要的结果：\textbf{烘干时长对表面传质系数并不敏感}，
+在 $5\%$ 的扰动下只变化半个百分点，而对环境温度与扩散系数则明显更敏感。
+其原因仍在于本题的干燥由内部水分扩散控制，传质 Biot 数约为 $20$，表面传质阻力不是瓶颈——
+把表面“擦得更干”并不能加快内部水分向外迁移的速度。
+可见，主导烘干时长的不确定性并不是题目给定的传质系数，而是模型自身的设定。
+具体地，质量方程改用湿基自洽式会使烘干时长变化 \qtwosensmassequationform，
+环境温度升高 $2$~$^\circ$C 变化 \qtwosensTinfplustwoC，扩散系数放大 $5\%$ 变化 \qtwosensDplusfivepct，
+而表面传质系数放大 $5\%$ 只变化 \qtwosenshmplusfivepct。
+
+问题一的规律则不同：预热段的表面值对传质系数较为敏感，放大 $5\%$ 即使表面含水率变化
+\qonehmplusfivepctsurfaceshift，故该问的表面值只在题目给定值下成立。
+此外，$3$~h 表格区域内，环境水分浓度在 $0.045\sim0.055$~kg/kg 之间的表值最大差仅为
+\qtwotableregionenvinsensitivity，即短时表格几乎不受环境浓度取值的影响。
+
+\subsubsection{本问结论的适用范围}
+
+上述结果需要说明三点适用范围。第一，烘干时长依赖题目给定的 $h_m$、$h$ 与附录 3 经验式，
+其中物性经验式完全来自题目、未经独立验证，而扩散系数的强非线性使结果对经验式的形式较为敏感，
+这是模型本身无法回避的不确定性。第二，恒温段环境取稳定段实测均值外推，
+均值本身来自附件 1 的稳定段，但“稳定段之后仍维持该值”是一个设定而非实测，
+环境温度升高 $2$~$^\circ$C 即带来 \qtwosensTinfplustwoC 的变化，可见该设定的影响不可忽略。
+第三，一维径向轴对称模型忽略了药材两端面的轴向输运，在数日的干燥时程内
+轴向渗透可达数厘米每端，该简化在长时程下的影响将在第十章作为模型的缺点说明。

@@ -1,0 +1,115 @@
+\section{问题一：预热平衡阶段的温湿耦合场}
+
+\subsection{模型的建立}
+
+中药材为半径 $R=2.0$~cm、长 $25$~cm 的圆柱。烘房热风沿轴向与周向均匀作用，
+而药材长径比超过 $12$，两端面的轴向输运相对于径向可以忽略，
+因此我们取\textbf{一维径向轴对称}模型，即第五章式~\eqref{eq:energy} 与式~\eqref{eq:mass}：
+
+\begin{equation}
+\rho c_p\frac{\partial T}{\partial t}=\frac{1}{r}\frac{\partial}{\partial r}
+\left(k\,r\,\frac{\partial T}{\partial r}\right),\qquad
+\frac{\partial C}{\partial t}=\frac{1}{r}\frac{\partial}{\partial r}
+\left(D\,r\,\frac{\partial C}{\partial r}\right).
+\label{eq:q1gov}
+\end{equation}
+
+边界取式~\eqref{eq:bc} 的第三类对流条件：在 $r=R$ 处有 $-k\,\partial T/\partial r=h(T-T_\infty)$
+与 $-D\,\partial C/\partial r=h_m(C-C_\infty)$；在 $r=0$ 处由轴对称性给出零梯度。
+初值取 $T=28$~$^\circ$C、$C=2.55$~kg/kg，且全域均匀。
+环境温湿度 $T_\infty(t)$、$C_\infty(t)$ 取附件 1 的实测序列并线性插值——
+题目要求的 $t=100$~s 不是附件 1 的采样点，必须插值才能得到。
+附录 2 给出本问物性：$\rho=820$~kg/m$^3$、$c_p=2600$~J/(kg$\cdot$K)、$k=0.36$~W/(m$\cdot$K)、
+$h=25$~W/(m$^2\cdot$K)、$h_m=8\times10^{-7}$~m/s、$D=7\times10^{-9}e^{-0.89/C}$~m$^2$/s。
+质量方程按题目明文采用 Fick 标准形式，$\rho$、$c_p$、$k$ 只进入能量方程。
+注意到本问物性为常数，温度不进入扩散系数、含水率也不进入热物性，
+因此式~\eqref{eq:q1gov} 的两个方程彼此独立，可以分别求解。
+模型几何与两阶段的环境驱动见图~\ref{fig:setup}。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig01_model_setup_and_environment.pdf}
+  \caption{模型几何与边界驱动。(a) 药材按一维径向轴对称处理，$r=0$ 处对称、$r=R(t)$ 处第三类对流；
+  (b) 预热阶段的环境温湿度取附件 1 实测序列（线性插值），$14400$~s 之后取稳定段实测均值，
+  维持 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg。该外推为\textbf{模型设定}，并非实测数据。}
+  \label{fig:setup}
+\end{figure}
+
+\subsection{模型的求解}
+
+空间上采用第五章的\textbf{顶点（节点）有限体积}守恒通量形式：节点为 $r_j=j\Delta r$，
+对偶控制体在 $r=0$ 处的面半径为零，轴对称条件由格式自动满足，无需对 $1/r$ 的奇点作特殊处理；
+$r=R$ 本身就是节点，报告的表面值是直接的解变量，不经过任何回算。
+时间推进交给自适应隐式多步 BDF（$\mathrm{rtol}=10^{-9}$、$\mathrm{atol}=10^{-11}$），
+其精度以求解器容差加密与常物性 Bessel 级数解析解对照共同认证。
+网格取 $801$ 个节点（$\Delta r=0.025$~mm），报告层每 $1$~s 记录一次。
+交付物 \texttt{result1.xlsx} 给出 $t=1\sim1800$~s 每隔 $1$~s、$r=0\sim2.0$~cm 每隔 $0.1$~cm 的完整温湿场。
+
+为交叉验证，我们另实现一套\textbf{格心有限体积}方案：单元体积按 $r^2$ 之差计算、
+表面值由 Robin 关系回算、时间用固定步长 Crank--Nicolson。两套实现的表面值来源与
+时间推进方式都不同，因此互为独立核算，而不是同一算法的重复实现。
+本问的求解流程见图~\ref{fig:flowq1}。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.90\textwidth]{fig08_flow_q1.pdf}
+  \caption{问题一的求解流程。温度场与水分场因物性为常数而相互独立，可分别推进；
+  两场共用同一套控制体权重与界面系数。}
+  \label{fig:flowq1}
+\end{figure}
+
+\subsection{结果与分析}
+
+\textbf{在 $1800$~s 时刻，中心温度为 \qoneTcenteroneeightzerozeros，表面温度为 \qoneTsurfaceoneeightzerozeros；
+中心干基含水率仍为 \qoneCcenteroneeightzerozeros，而表面已降至 \qoneCsurfaceoneeightzerozeros。}
+温度沿半径自内向外递增、含水率自内向外递减，中心即全域最大值。
+表~\ref{tab:table1_q1_temperature} 与表~\ref{tab:table2_q1_moisture} 给出题目要求的两张表，
+图~\ref{fig:q1} 给出剖面演化与中心、表面时程。
+
+\input{paper/tables/table1_q1_temperature.tex}
+\input{paper/tables/table2_q1_moisture.tex}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig02_preheat_fields.pdf}
+  \caption{预热平衡阶段（$0\sim1800$~s）的温度与水分场。(a)、(b) 为七个报告时刻的径向剖面；
+  (c) 为中心与表面时程。$1800$~s 时中心温度 \qoneTcenteroneeightzerozeros、
+  表面 \qoneTsurfaceoneeightzerozeros；干基含水率中心仍为 \qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros。}
+  \label{fig:q1}
+\end{figure}
+
+上述结果呈现出本阶段最基本的规律：\textbf{升温已经接近完成，而失水仍局限于很薄的一层}。
+从表~\ref{tab:table2_q1_moisture} 可见，含水率在距表面 $0.5$~cm 以内的范围内已明显下降，
+而在中心附近几乎没有变化。这一现象的原因在第五章已由特征时间给出：
+水分扩散的特征时间 $R^2/D\approx22$~h，远长于本阶段的 $30$~min，
+即本阶段只走完了全部扩散过程的约 $2\%$，水分的重新分布尚不足以影响内部。
+可见在这个时间尺度上，把内部含水率视为初值是合理的，这也说明本文建立的模型与
+该阶段的物理过程是相符的。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figA1_q1_field_map.pdf}
+  \caption{预热阶段温湿场的完整时空分布（附录图）。左：温度；右：干基含水率。}
+  \label{fig:q1map}
+\end{figure}
+
+\subsection{数值检验与模型适用性}
+
+结果的可信度由四类相互独立的证据确认。首先是与解析解的对照：
+在常物性、固定半径的极限下，本文实现与圆柱扩散问题的 Bessel 级数解析解相比，
+最大绝对误差仅为 \qoneanalyticalmaxabserr，说明离散格式本身是正确的。
+此外是两项加密实验：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qonegridrefinementdiff；
+求解器容差由 $10^{-8}$ 收紧到 $10^{-9}$，表值变化为 \qonetimeaccuracytolerancediff，
+两者都已低于题目要求的四位小数，可见所报数值已达到网格与步长无关的水平。
+还有一条是守恒性：把离散质量守恒写成式~\eqref{eq:conservation} 那样的恒等式后逐时步核验，
+本问的相对残差为 \qonemassbalancerel，达到机器精度量级。
+最后是独立复算：本文独立编写的格心实现与顶点格式在全部 $35$ 个报告点上的
+收敛极限相差 \qoneindependentimplementationsdiff，两法逐点一致到四位小数的舍入边界。
+\textbf{四类证据一致表明本问报告的数值是可信的}，完整的检验量汇总见表~\ref{tab:verify}。
+
+本问的适用性需要注意两点。其一，该阶段最敏感的参数是传质系数：
+$h_m$ 放大 $5\%$ 即使表面值变化 \qonehmplusfivepctsurfaceshift，是报告精度的一百倍以上，
+因此\textbf{本问的表面值只在题目给定的 $h_m$ 下成立}。
+其二，$1800$~s 内水分扩散的特征时间约 $22$~h，内部含水率几乎不变，
+本窗口不足以判别内部扩散模型；一维径向假设忽略的端面轴向输运在本窗口内
+渗透不足药材长度的 $2\%$，该量随时间增长，在多日时程下的影响将在第九、十章讨论。

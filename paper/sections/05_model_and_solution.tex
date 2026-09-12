@@ -1,19 +1,35 @@
-\section{模型的建立与求解}
+\section{模型的建立与数值方法}
 
-\subsection{控制方程的推导}
+\subsection{建模准备与总体框架}
 
-\subsubsection{从守恒律到控制方程}
+四个问题研究的是同一个对象，即圆柱形药材在热风中的升温与失水，控制方程、边界条件与初值完全一致。
+因此我们不逐问重复建模，而是先建立一套统一的径向轴对称模型，四个问题都在它上面求解，
+只在物性经验式、环境时程与计算区域三处分支：问题一取问题给定的常物性，
+问题二与问题三取附录 3 的温度—浓度双向耦合经验式，问题四再叠加由附件 2 决定的尺寸收缩。
+这样处理既免去重复推导，也使四问的结果具有直接可比性。本节先给出控制方程与定解条件，
+再给出统一的数值方法，各问的具体参数与求解结果分别见第六章至第九章。
 
-取药材内半径 $r$ 到 $r+\Delta r$ 的一层薄环，沿轴向取单位长度。由\textbf{能量守恒}，
-该薄环内热量的变化率等于两侧界面净导入的导热热流：
+设药材半径为 $R$，内部温度记为 $T(r,t)$，干基水分浓度（每千克干物质所含的水分质量）记为 $C(r,t)$，
+其中 $r$ 为到药材中心的径向距离。四问所用的物性取值与经验式汇总于表~\ref{tab:params}。
+
+\input{paper/tables/table7_parameters.tex}
+
+\subsection{控制方程的建立}
+
+\subsubsection{由守恒律导出控制方程}
+
+药材内部既无内热源也无化学反应，热量只靠导热传递，水分只由浓度梯度驱动。
+在药材内取半径由 $r$ 到 $r+\Delta r$ 的一层薄环，并沿轴向取单位长度，则环内热量的变化率应等于
+两侧界面净导入的导热热流，即
 
 \begin{equation}
 \rho c_p\frac{\partial T}{\partial t}\cdot 2\pi r\,\Delta r
 =\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r+\Delta r}
--\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r},
+-\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r}.
+\label{eq:energybalance}
 \end{equation}
 
-两端同除以 $2\pi r\,\Delta r$ 并令 $\Delta r\to 0$，右端成为散度形式，得
+两端同除以 $2\pi r\,\Delta r$，再令 $\Delta r\to 0$，右端即成为散度形式，于是得到能量方程
 
 \begin{equation}
 \rho c_p\frac{\partial T}{\partial t}
@@ -21,8 +37,8 @@
 \label{eq:energy}
 \end{equation}
 
-对水分做同样的守恒分析：体积元内水量的变化率等于两侧界面净导入的水分质量流，
-而质量流的本构关系即 Fick 定律（通量等于扩散系数乘浓度梯度的负值），于是
+对水分做同样的守恒分析：环内水量的变化率等于两侧界面净导入的水分质量流，
+而质量流的本构关系即 Fick 定律，即通量等于扩散系数乘以浓度梯度的负值，于是
 
 \begin{equation}
 \frac{\partial C}{\partial t}
@@ -30,40 +46,51 @@
 \label{eq:mass}
 \end{equation}
 
-需要强调的是，式~\eqref{eq:mass} 中不含密度：本文按题目明文的 Fick 形式建式，
-密度、比热容与导热系数只出现在能量方程中。这一读法决定了后文全部时长结论的口径。
+可见，只要物性 $k$、$D$ 与状态无关，式~\eqref{eq:energy} 与式~\eqref{eq:mass} 彼此独立，
+温度场与水分场可以分别求解——这正是问题一的情形。
+
+需要说明的是，式~\eqref{eq:mass} 中不含密度：本文按题目明文的 Fick 标准形式建立质量方程，
+密度、比热容与导热系数只出现在能量方程中。这一读法决定了后文全部时长结论的适用范围，
+其影响量级在灵敏度分析中定量给出。
 
 \subsubsection{边界条件与初值}
 
-在中心 $r=0$ 处由轴对称性给出零梯度；在表面 $r=R$ 处热流与质量流均由对流控制。
-把外法向通量写开，得到第三类（Robin）条件
+在中心 $r=0$ 处，由轴对称性给出零梯度条件；在表面 $r=R$ 处，热流与质量流均由对流控制。
+把外法向通量写开，即得第三类（Robin）边界条件
 
 \begin{equation}
 \left.-k\frac{\partial T}{\partial r}\right|_{r=R}=h\left(T(R,t)-T_\infty(t)\right),\qquad
-\left.-D\frac{\partial C}{\partial r}\right|_{r=R}=h_m\left(C(R,t)-C_\infty(t)\right).
+\left.-D\frac{\partial C}{\partial r}\right|_{r=R}=h_m\left(C(R,t)-C_\infty(t)\right),
 \label{eq:bc}
 \end{equation}
 
-初始时刻温度与含水率在全域均匀，即 $T(r,0)=T_0$、$C(r,0)=C_0$。
-环境温度与环境水分浓度由附件 1 的实测序列给出，在任意时刻按分段线性插值取值，
-恒温干燥段之后取已确认的定值。
+其中 $h$ 与 $h_m$ 分别为对流传热系数与对流传质系数，$T_\infty$ 与 $C_\infty$ 为烘房环境的
+温度与水分浓度。初始时刻温度与含水率在全域均匀，即 $T(r,0)=T_0$、$C(r,0)=C_0$。
+环境序列由附件 1 的实测数据给出，在任意时刻按分段线性插值取值；
+$14400$~s 之后附件数据进入稳定段，本文取该段的实测均值作为环境值。
 
 \subsubsection{特征时间与量级分析}
 
-把式~\eqref{eq:mass} 无量纲化，令 $\xi=r/R$、$\tau=Dt/R^2$，可得无量纲方程
-$\partial C/\partial \tau=\xi^{-1}\partial_\xi(\xi\,\partial_\xi C)$，
-其中 $\tau$ 即 Fourier 数。以附录 2 的扩散系数与半径估算，水分扩散的特征时间
-$R^2/D$ 约为 $22$~h——这解释了为什么预热阶段的 $30$~min 内失水只发生在表层。
-传质 Biot 数 $\text{Bi}_m=h_mR/D$ 约为 $20$，说明\textbf{表面传质阻力小于内部扩散阻力}，
-干燥过程由内部扩散控制；这一量级判断在灵敏度分析中被定量证实。
+在动手求解之前，先用特征时间判断两个阶段各自的物理主控机制。
+对式~\eqref{eq:mass} 作无量纲化，令 $\xi=r/R$、$\tau=Dt/R^2$，可得无量纲方程
+$\partial C/\partial\tau=\xi^{-1}\partial_\xi(\xi\,\partial_\xi C)$，
+其中 $\tau$ 称为 Fourier 数，它表示已过去的时间相当于多少个特征扩散时间。
+以附录 2 的扩散系数与半径估算，水分扩散的特征时间 $R^2/D$ 约为 $22$~h，
+而预热阶段只有 $30$~min——可见该阶段内水分来不及向内部深处迁移，\textbf{失水只能发生在表层}。
+再引入传质 Biot 数 $\text{Bi}_m=h_mR/D$，它表示表面传质阻力与内部扩散阻力之比，
+本题约为 $20$，说明\textbf{表面传质阻力小于内部扩散阻力}，干燥过程由内部扩散控制，
+表面蒸发不是瓶颈。这两个量级判断在第六、七章的灵敏度分析中都被定量证实。
 
-\subsection{顶点有限体积格式的推导}
+\subsection{顶点有限体积格式}
+
+有限体积法的思路很直接：把守恒律写在每个小控制体上，界面通量一进一出相互抵消，
+因此水分不会凭空产生或消失。下面按“取控制体—写通量—离散时间”三步构造格式。
 
 \subsubsection{对偶控制体与积分形式}
 
-把区间 $[0,R]$ 等分为 $N$ 段，节点 $r_j=j\Delta r$。以每个节点为中心取对偶控制体：
+把区间 $[0,R]$ 等分为 $N$ 段，节点为 $r_j=j\Delta r$。以每个节点为中心取对偶控制体：
 内部节点的控制体为 $[r_j-\Delta r/2,\;r_j+\Delta r/2]$，首尾节点各取半格。
-把式~\eqref{eq:mass} 在控制体上作径向加权积分（权为 $r$，即环面积因子），得
+把式~\eqref{eq:mass} 在每个控制体上作径向加权积分（权为 $r$，即环面积因子），得
 
 \begin{equation}
 \int_{V_j} r\frac{\partial C}{\partial t}\,dr
@@ -71,9 +98,9 @@ $R^2/D$ 约为 $22$~h——这解释了为什么预热阶段的 $30$~min 内失�
 \label{eq:fv}
 \end{equation}
 
-这正是有限体积法的出发点：\textbf{通量只在界面上出现}。把左端的积分近似为
+右端只出现界面上的通量，这正是有限体积法的出发点。把左端的积分近似为
 $w_j\,\mathrm{d}C_j/\mathrm{d}t$，其中权重 $w_j=\int_{V_j}r\,\mathrm{d}r$ 为对偶控制体上径向坐标的积分，
-把右端界面通量用相邻节点差商近似，即得半离散方程
+把右端的界面通量用相邻节点的差商近似，即得半离散方程
 
 \begin{equation}
 w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
@@ -84,9 +111,9 @@ w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
 
 \subsubsection{两个端点的处理}
 
-\textbf{在中心 $r=0$ 处}，对偶控制体的内侧界面半径为 $0$，式~\eqref{eq:semi} 中对应的通量项自动为零，
+在中心 $r=0$ 处，对偶控制体的内侧界面半径为 $0$，式~\eqref{eq:semi} 中对应的通量项自动为零，
 轴对称条件\textbf{由格式本身满足}，无需对 $1/r$ 的奇点作任何特殊处理。
-\textbf{在表面 $r=R$ 处}，节点本身就是边界点，把式~\eqref{eq:bc} 的通量代入式~\eqref{eq:fv} 的界面项，得
+在表面 $r=R$ 处，节点本身就是边界点，把式~\eqref{eq:bc} 的通量代入式~\eqref{eq:fv} 的界面项，得
 
 \begin{equation}
 w_N\frac{\mathrm{d}C_N}{\mathrm{d}t}
@@ -95,34 +122,48 @@ w_N\frac{\mathrm{d}C_N}{\mathrm{d}t}
 \label{eq:surf}
 \end{equation}
 
-式~\eqref{eq:surf} 说明：\textbf{报告的表面值就是解变量 $C_N$ 本身}，不需要由最外层单元中心回算，
-这避免了半单元重构引入的一阶误差，也解释了本文把顶点格式选作主方法的原因。
+式~\eqref{eq:surf} 说明：报告的表面值就是解变量 $C_N$ 本身，不需要由最外层单元中心回算。
+这避免了半单元重构引入的一阶误差，也正是我们选择顶点格式作为主要求解格式的原因。
 
 \subsubsection{时间离散与启动步}
 
-对半离散系统 $\mathbf{w}\,\mathrm{d}\mathbf{y}/\mathrm{d}t=\mathbf{Q}(\mathbf{y})$ 取 $\theta$ 加权，
-$\mathbf{y}^{n+1}-\mathbf{y}^{n}=\Delta t\left[\theta\,\mathbf{Q}^{n+1}+(1-\theta)\mathbf{Q}^{n}\right]$。
-当 $\theta=1$ 时为后向 Euler（一阶、强耗散），当 $\theta=1/2$ 时为 Crank--Nicolson（二阶、A 稳定）。
-本文取 $\theta=1/2$，但\textbf{前 $3$ 步改用 $\theta=1$}：初值处的温湿场与边界驱动之间存在突变，
-纯 Crank--Nicolson 会把这一突变转化为随时间衰减的振荡；以后向 Euler 启动可将其抹平，
-而三步之后解已充分光滑，再切换回二阶格式不影响整体精度。
+对半离散系统 $\mathbf{w}\,\mathrm{d}\mathbf{y}/\mathrm{d}t=\mathbf{Q}(\mathbf{y})$ 取 $\theta$ 加权，得
 
-由于物性依赖温度与含水率，每一步的系数取上一时间层的值（滞后系数），
-使每个时间步仍是形如 $a_jy_{j-1}+b_jy_j+c_jy_{j+1}=d_j$ 的\textbf{三对角方程组}，
-可用追赶法在 $O(N)$ 时间内求解。滞后带来的时间一阶误差由时间加密实验核验。
+\begin{equation}
+\mathbf{y}^{n+1}-\mathbf{y}^{n}
+=\Delta t\left[\theta\,\mathbf{Q}^{n+1}+(1-\theta)\mathbf{Q}^{n}\right].
+\label{eq:theta}
+\end{equation}
 
-\subsection{移动边界的坐标变换推导}
+当 $\theta=1$ 时为后向 Euler，精度一阶但耗散强、无条件稳定；当 $\theta=1/2$ 时为
+Crank--Nicolson，精度二阶且 A 稳定。本文取 $\theta=1/2$，但\textbf{前 $3$ 步改用 $\theta=1$}：
+初值处的温湿场与边界驱动之间存在突变，纯 Crank--Nicolson 会把这一突变转化为随时间衰减的振荡，
+以后向 Euler 启动即可将其抹平；三步之后解已充分光滑，再切回二阶格式不影响整体精度。
+
+由于物性依赖温度与含水率，每一步的系数取上一时间层的值，使每个时间步仍是一个形如
+
+\begin{equation}
+a_jy_{j-1}+b_jy_j+c_jy_{j+1}=d_j
+\label{eq:tridiag}
+\end{equation}
+
+的\textbf{三对角方程组}，可用追赶法在 $O(N)$ 时间内求解。系数滞后带来的时间一阶误差
+由时间加密实验核验（见第七、八章）。
+
+\subsection{移动边界的坐标变换}
 
 \subsubsection{归一化坐标与表观对流项}
 
-当半径随时间收缩为 $R(t)$ 时，固定网格无法贴合移动的边界。引入归一化坐标 $\xi=r/R(t)$，
-把未知的移动域 $[0,R(t)]$ 映射为固定的 $[0,1]$。设 $C(r,t)=\tilde C(\xi,t)$，由链式法则
+问题四中半径随时间收缩为 $R(t)$，固定网格无法贴合移动的边界。引入归一化坐标 $\xi=r/R(t)$，
+把未知的移动域 $[0,R(t)]$ 映射为固定的 $[0,1]$，这一步把“网格跟着边界走”转化为“边界不动、
+方程多一项”。设 $C(r,t)=\tilde C(\xi,t)$，由链式法则
 
 \begin{equation}
 \left.\frac{\partial C}{\partial t}\right|_r
 =\left.\frac{\partial \tilde C}{\partial t}\right|_\xi
 +\frac{\partial \tilde C}{\partial \xi}\cdot\left.\frac{\partial \xi}{\partial t}\right|_r,
 \qquad \left.\frac{\partial \xi}{\partial t}\right|_r=-\frac{r\dot R}{R^2}=-\frac{\xi\dot R}{R},
+\label{eq:chain}
 \end{equation}
 
 同时 $\partial/\partial r=R^{-1}\,\partial/\partial\xi$，代入式~\eqref{eq:mass} 即得
@@ -134,13 +175,14 @@ $\mathbf{y}^{n+1}-\mathbf{y}^{n}=\Delta t\left[\theta\,\mathbf{Q}^{n+1}+(1-\thet
 \label{eq:moving}
 \end{equation}
 
-\textbf{这一项的物理含义是清楚的}：干基含水率按定义不随几何收缩而改变，
-因此在固定于材料的归一化坐标下，收缩表现为一个把浓度剖面按 $\xi\dot R/R$ 平流的对流项，
-而不是一个凭空产生或消灭水分的源汇。$\dot R$ 由附件 2 的单调插值解析求导得到，
-是已知函数，因此式~\eqref{eq:moving} 仍是线性方程组，无需重构网格。
+这一项的物理含义是清楚的：干基含水率按定义不随几何收缩而改变，因此在固定于材料的归一化坐标下，
+收缩表现为一个把浓度剖面按 $\xi\dot R/R$ 平流的对流项，而不是一个凭空产生或消灭水分的源汇。
+$\dot R$ 由附件 2 的单调插值解析求导得到，是已知函数，因此式~\eqref{eq:moving} 仍是线性方程组，
+无需重构网格即可求解。
 
-\subsubsection{守恒恒等式的推导}
+\subsubsection{守恒恒等式的建立}
 
+移动边界下的守恒性不易目测，本文把它写成一个可以直接核验的离散恒等式。
 把式~\eqref{eq:moving} 两端同乘 $\xi$ 并在 $[0,1]$ 上积分，左端为
 $\frac{\mathrm{d}}{\mathrm{d}t}\int_0^1\xi\tilde C\,\mathrm{d}\xi$（$\xi$ 域固定，可移入导数）。
 右端第一项按分部积分给出界面项 $\left[\xi D\,\partial_\xi\tilde C/R^2\right]_0^1
@@ -158,296 +200,30 @@ $\frac{\dot R}{R}\int_0^1\xi^2\partial_\xi\tilde C\,\mathrm{d}\xi
 
 式~\eqref{eq:conservation} 是一个\textbf{可以直接逐时步核验的离散恒等式}：
 左端由数值解给出，右端由当步的系数给出，二者之差即格式的守恒性残差。
-它也是本文对移动边界项正确性的第一道证据。
 
-\subsubsection{解析不变量检验的构造}
+\subsubsection{解析不变量检验}
 
-令 $h_m=0$ 但保持收缩，则式~\eqref{eq:moving} 退化为纯平流方程，其解析解要求
-$\tilde C(\xi,t)\equiv C_0$ 恒成立。若表观对流项的符号或系数写错，收缩就会凭空改变干基含水率。
-该检验把一个难以直接验证的项转化为一个\textbf{可证伪}的命题，
-是本文验证设计中最有针对性的一条。
+再设一条更锋利的判据：令 $h_m=0$ 但保持收缩，则式~\eqref{eq:moving} 退化为纯平流方程，
+其解析解要求 $\tilde C(\xi,t)\equiv C_0$ 恒成立——因为干基含水率不随几何缩小而改变。
+若表观对流项的符号或系数写错，收缩就会凭空产生或消灭水分，该检验必然立刻暴露。
+这里我们把这条判据称为\textbf{解析不变量检验}，它是针对移动边界项最有针对性的一条验证设计，
+其结果见第九章。
 
-\subsection{求解流程与验证设计}
+\subsection{求解流程与统一验证设计}
 
 综合以上推导，四个问题共用同一套求解流程：读取环境序列与几何数据；构造对偶控制体权重与界面系数；
-按问题选择物性经验式与时间格式；组装三对角方程组并用追赶法推进；在报告时刻按题目要求的位置取值输出。
-其中问题四额外需要按 $\dot R$ 叠加表观对流项。
-
-每一问都配齐三条相互独立的实现路径：主方法（顶点有限体积）、可用基线（格心有限体积，
-其表面值由式~\eqref{eq:bc} 回算）与独立验证（常物性下的级数解析解与式~\eqref{eq:conservation}、
-第 5.4.3 节的不变量检验）。三条路径不共享数值输入，只在其结果上相互比对。
-
-\section{问题一：预热平衡阶段的温湿耦合场}
-
-\subsection{模型的建立}
-
-中药材为半径 $R=2.0$~cm、长 $25$~cm 的圆柱。烘房热风沿轴向与周向均匀作用，而药材长径比超过 $12$，
-故按已确认的口径取\textbf{一维径向轴对称}模型：
-
-\begin{equation}
-\rho c_p\frac{\partial T}{\partial t}=\frac{1}{r}\frac{\partial}{\partial r}
-\left(k\,r\,\frac{\partial T}{\partial r}\right),\qquad
-\frac{\partial C}{\partial t}=\frac{1}{r}\frac{\partial}{\partial r}
-\left(D\,r\,\frac{\partial C}{\partial r}\right).
-\end{equation}
-
-边界为第三类对流条件：$r=R$ 处 $-k\,\partial T/\partial r=h(T-T_\infty)$、
-$-D\,\partial C/\partial r=h_m(C-C_\infty)$；$r=0$ 处由轴对称给出零梯度。
-初值取 $T=28$~$^\circ$C、$C=2.55$~kg/kg，且全域均匀。
-环境温湿度 $T_\infty(t)$、$C_\infty(t)$ 取附件~1 的实测序列并线性插值——
-题目要求的 $t=100$~s 不是采样点，必须插值得到。附录~2 给出该问物性：
-$\rho=820$~kg/m$^3$、$c_p=2600$~J/(kg$\cdot$K)、$k=0.36$~W/(m$\cdot$K)、
-$h=25$~W/(m$^2\cdot$K)、$h_m=8\times10^{-7}$~m/s、$D=7\times10^{-9}e^{-0.89/C}$~m$^2$/s。
-质量方程按题目明文采用 Fick 标准形式，$\rho$、$c_p$、$k$ 只进入能量方程。
-模型几何与两阶段的环境驱动见图~\ref{fig:setup}。
+按问题选择物性经验式与时间格式；组装三对角方程组并用追赶法逐时步推进；在报告时刻按题目要求的
+位置取值输出。其中问题四额外按 $\dot R$ 叠加表观对流项。完整流程见图~\ref{fig:flow}。
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{fig01_model_setup_and_environment.pdf}
-  \caption{模型几何与边界驱动。(a) 药材按一维径向轴对称处理，$r=0$ 处对称、$r=R(t)$ 处第三类对流；
-  (b) 预热阶段的环境温湿度取附件~1 实测序列（线性插值），$14400$~s 之后按已确认口径维持
-  $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg。该外推为\textbf{建模口径}，并非实测数据。}
-  \label{fig:setup}
+  \includegraphics[width=0.94\textwidth]{fig07_solution_flow.pdf}
+  \caption{统一求解流程。由环境序列与几何数据出发，经控制体权重与界面系数构造，
+  按问题选取物性经验式与时间格式，最后由追赶法逐时步推进并输出报告值。}
+  \label{fig:flow}
 \end{figure}
 
-\subsection{求解方法}
-
-空间采用\textbf{顶点（节点）有限体积}的守恒通量形式：节点 $r_j=j\Delta r$，对偶控制体在 $r=0$ 处的面半径为零，
-轴对称条件\textbf{由格式自动满足}，无需对 $1/r$ 奇点作特殊处理；$r=R$ 本身就是节点，
-报告的表面值是\textbf{直接的解变量}，不经过任何回算。时间推进交给自适应隐式多步 BDF
-（$\mathrm{rtol}=10^{-9}$、$\mathrm{atol}=10^{-11}$），其精度以\textbf{求解器容差加密}
-与常物性 Bessel 级数解析解对照共同认证。网格取 $801$ 个节点（$\Delta r=0.025$~mm），报告层每 $1$~s 记录一次。
-交付物 \texttt{result1.xlsx} 给出 $t=1\sim1800$~s 每隔 $1$~s、$r=0\sim2.0$~cm 每隔 $0.1$~cm 的完整温湿场。
-
-为交叉验证，另实现\textbf{格心有限体积}方案：单元体积按 $r^2$ 之差计算、表面值由 Robin 关系回算、
-时间用固定步长 Crank--Nicolson。两套实现的表面值来源与时间推进方式都不同，因此互为独立核算而非重复实现。
-
-\subsection{结果与分析}
-
-在题目给定的参数与附录~2 经验式下，$1800$~s 时中心温度为 \qoneTcenteroneeightzerozeros、表面温度为 \qoneTsurfaceoneeightzerozeros；
-同一时刻中心干基含水率仍为 \qoneCcenteroneeightzerozeros，而表面已降至 \qoneCsurfaceoneeightzerozeros。
-温度沿半径自内向外递增、含水率自内向外递减，中心即全域最大值。
-表~\ref{tab:table1_q1_temperature} 与表~\ref{tab:table2_q1_moisture} 给出题目要求的两张表，图~\ref{fig:q1} 给出剖面演化与中心、表面时程。
-
-\input{paper/tables/table1_q1_temperature.tex}
-\input{paper/tables/table2_q1_moisture.tex}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.98\textwidth]{fig02_preheat_fields.pdf}
-  \caption{预热平衡阶段（$0\sim1800$~s）的温度与水分场。(a)、(b) 为七个报告时刻的径向剖面；
-  (c) 为中心与表面时程。在题目给定的 $h_m$ 与附录~2 经验式下，$1800$~s 时中心温度 \qoneTcenteroneeightzerozeros、
-  表面 \qoneTsurfaceoneeightzerozeros；干基含水率中心仍为 \qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros。}
-  \label{fig:q1}
-\end{figure}
-
-% 附录图（支撑材料）
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{figA1_q1_field_map.pdf}
-  \caption{预热阶段温湿场的完整时空分布（附录图）。左：温度；右：干基含水率。}
-  \label{fig:q1map}
-\end{figure}
-
-\subsection{检验与适用边界}
-
-数值可信度由四类证据确认：与常物性 Bessel 解析解的对照误差为 \qoneanalyticalmaxabserr；
-网格 $400\leftrightarrow800$ 的最大差为 \qonegridrefinementdiff；
-时间容差 $10^{-8}\leftrightarrow10^{-9}$ 的表值差为 \qonetimeaccuracytolerancediff；
-离散质量守恒的相对残差为 \qonemassbalancerel。独立编写的格心实现与主方法在全部 $35$ 个报告点上的
-收敛极限相差 \qoneindependentimplementationsdiff，两法逐点一致到四位小数的舍入边界。
-
-该阶段最敏感的参数是传质系数：$h_m$ 放大 $5\%$ 使表面值变化 \qonehmplusfivepctsurfaceshift，
-是报告精度的一百倍以上，故\textbf{本问的表面值只在题目给定的 $h_m$ 下成立}。
-此外，$1800$~s 内水分扩散的特征时间约 $22$~h，内部含水率几乎不变，
-本窗口\textbf{不足以判别内部扩散模型}；一维径向假设忽略了端面轴向输运
-（本窗口内轴向渗透不足长度的 $2\%$，但该量随时间增长，在多日时程下必须重新评估）。
-\section{问题二：恒温干燥阶段的温湿场与完整烘干过程}
-
-\subsection{模型的建立}
-
-恒温干燥阶段与预热阶段共用同一控制方程骨架，差别在两点：物性改按附录~3 取为
-$\rho=650+128C$、$c_p=1450+2736C/(C+1)$、$k=0.21+0.38C/(C+1)$、
-$D=2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$（式中温度按附录原式取开尔文），于是温度与含水率\textbf{双向耦合}——
-温度通过扩散系数影响失水、含水率又通过 $\rho$、$c_p$、$k$ 影响升温；
-以及环境驱动在 $14400$~s 之后按已确认口径维持 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg
-（该设定的数值经附件~1 稳定段核实：温度均值 $50.005$~$^\circ$C、水分浓度均值 $0.050$~kg/kg）。
-烘干判据取\textbf{全域最大干基含水率}降至 $0.15$~kg/kg 以下。
-
-\subsection{求解方法}
-
-空间与时间方案沿用问题一的顶点有限体积，但此处预热的温度跃变会在初值处引入刚性瞬态，
-故以前 $3$ 步后向 Euler 作 Rannacher 启动，其后转为 Crank--Nicolson，内部步长 $1$~s。
-交付物 \texttt{result2.xlsx} 给出全程每隔 $1$~s、径向每隔 $0.1$~cm 的完整温湿场。
-
-\subsection{结果与分析}
-
-在题目给定的 $h_m$、附录~3 经验式与恒温段环境口径下，全域最大干基含水率于
-\qtwodryingtime 首次越过判据。$3$~h 时中心温度为 \qtwoTcenterthreeh、表面温度为 \qtwoTsurfacethreeh，
-中心与表面的干基含水率分别为 \qtwoCcenterthreeh 与 \qtwoCsurfacethreeh——
-这一阶段温度已接近环境值而含水率的径向梯度显著增大，说明\textbf{干燥由内部扩散控制}，
-表面传质阻力不是瓶颈。表~\ref{tab:table3_q2_temperature} 与表~\ref{tab:table4_q2_moisture} 给出题目要求的两张表。
-
-\input{paper/tables/table3_q2_temperature.tex}
-\input{paper/tables/table4_q2_moisture.tex}
-
-图~\ref{fig:q23} 给出烘干曲线与参数敏感性。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.98\textwidth]{fig03_drying_curve_and_sensitivity.pdf}
-  \caption{长时程烘干过程与敏感性。(a) 全域最大干基含水率随时间的演化与 $0.15$~kg/kg 判据；
-  在题目给定的 $h_m$、附录~3 经验式与恒温段环境口径下，判据于 \qtwodryingtime 首次越过。
-  (b) 三个位置的含水率时程。(c) 单项扰动对烘干时长的影响。}
-  \label{fig:q23}
-\end{figure}
-
-\subsection{稳健性与适用边界}
-
-数值层面：与常物性 Bessel 解析解的对照误差为 \qtwoanalyticalmaxabserr，
-网格 $400\leftrightarrow800$ 的最大差为 \qtwogridrefinementdiff，
-内部步长 $2\leftrightarrow1$~s 引起的烘干时长差为 \qtwotimerefinementdiff，
-离散质量守恒相对残差 \qtwomassbalancerel。独立实现（格心有限体积、无 Rannacher 启动）
-给出的烘干时长相差 \qtwodryingtimespread——该量并非实现缺陷，而是\textbf{判据尾部平坦}的必然结果：
-含水率曲线在判据附近近乎水平，$4$ 位小数的表值差即可换来数十秒的穿越时刻差。
-
-参数与口径层面：质量方程改用湿基自洽式会使烘干时长变化 \qtwosensmassequationform；
-环境温度升高 $2$~$^\circ$C 变化 \qtwosensTinfplustwoC；扩散系数放大 $5\%$ 变化 \qtwosensDplusfivepct；
-而表面传质系数放大 $5\%$ 只变化 \qtwosenshmplusfivepct。$3$~h 表格区域内，
-环境水分浓度在 $0.045\sim0.055$~kg/kg 之间的表值最大差仅 \qtwotableregionenvinsensitivity，
-即短时表格几乎不受环境浓度口径影响。
-
-因此\textbf{本问的烘干时长对 $h_m$ 不敏感、对模型口径敏感}：主导不确定性不是给定的传质系数，
-而是质量方程的读法与恒温段的环境设定。上述结论均为条件式，只在题目给定的
-$h_m$、$h$、附录~3 经验式与恒温段口径下成立；一维径向假设忽略的端面轴向输运在多日时程下
-渗透可达数厘米/端，必须在论文中作为局限写明。
-\section{问题三：烘干时长的确定}
-
-\subsection{问题分析与模型}
-
-问题三与问题二共用同一套模型（附录~3 物性、同一环境口径、同一判据），
-差别只在输出形态：本问要求给出\textbf{烘干所需的时间}，并按每 $6$~h、径向每隔 $0.5$~cm 的水分浓度列表，
-末行为烘干结束时刻。由于两问的模型与参数完全相同，本问的求解不重复叙述，只说明其与问题二的一致性。
-
-\subsection{结果}
-
-在题目给定的 $h_m$、附录~3 经验式与恒温段环境口径下，全域最大干基含水率于 \qthreedryingtime
-首次降至判据以下，即\textbf{烘干时长为 \qthreedryingtime}。该值与问题二给出的
-\qthreeconsistencywithQtwo 完全一致——两问本应给出同一结果，这一致性同时构成一次跨问自检。
-
-烘干结束时中心干基含水率为 \qthreeCcenteratend，表面为 \qthreeCsurfaceatend；
-而判据越过前的最后一个 $6$~h 采样点（$54$~h）中心值仍为 \qthreeCcenterfivefourh，
-说明穿越判据是\textbf{一次性}的、不存在反复越界。表~\ref{tab:table5_q3} 给出题目要求的表格。
-
-\input{paper/tables/table5_q3.tex}
-
-图~\ref{fig:q23} 中的烘干曲线即为本问的判据穿越过程，完整的含水率时空分布见
-图~\ref{fig:q3map}。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{figA2_q3_full_field.pdf}
-  \caption{问题三完整含水率场（$0\sim57.46$~h，附录图）。(a) 径向--时间分布，虚线标出烘干结束时刻；
-  (b) 四个时刻的径向剖面。}
-  \label{fig:q3map}
-\end{figure}
-
-\subsection{检验与适用边界}
-
-数值层面：网格 $400\leftrightarrow800$ 的最大差为 \qthreegridrefinementdiff，
-内部步长 $10\leftrightarrow1$~s 引起的烘干时长差为 \qthreetimerefinementdiff，
-离散质量守恒相对残差 \qthreemassbalancerel。独立实现给出的烘干时长差为
-\qtwodryingtimespread，与问题二一致。
-
-本问的适用边界与问题二相同：结论以题目给定的 $h_m$、$h$ 与附录~3 经验式为条件；
-恒温段环境（$50$~$^\circ$C、$0.05$~kg/kg）为人为设定口径而非实测；
-质量方程取题目给定的 Fick 标准形式；一维径向轴对称忽略端面轴向输运。
-需要特别指出的是，\textbf{烘干时长对判据尾部的平坦性高度敏感}：两套独立实现的分歧
-（\qtwodryingtimespread）完全来自这一效应，因此论文引用烘干时长时应同时给出该量级。
-\section{问题四：考虑尺寸变化的烘干过程}
-
-\subsection{新增难点与模型}
-
-实际烘干中水分流失会引起药材收缩。附件~2 给出半径由 $2.000$~cm 单调收缩到
-\qfourRatdryingendcm 附近的完整过程，总收缩量为 \qfourshrinkagepercent；
-前 $24$~h 完成全部收缩量的 $99.4\%$，此后半径基本不变。物性改按附录~4 取为
-$\rho=760+90C$、$c_p=1850+2150C/(C+1)$、$k=0.12+0.20C/(C+1)$、
-$D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$（式中温度按附录原式取开尔文）。
-
-域边界随时间内移，若仍在固定网格上求解会在边界处引入人工质量源。
-因此引入\textbf{归一化坐标} $\xi=r/R(t)$，把移动边界化为固定域 $\xi\in[0,1]$：
-
-\begin{equation}
-\left.\frac{\partial C}{\partial t}\right|_{\xi}
-=\frac{1}{\xi R^{2}}\frac{\partial}{\partial \xi}
-\left(D\,\xi\,\frac{\partial C}{\partial \xi}\right)
-+\underbrace{\frac{\xi\dot R}{R}\frac{\partial C}{\partial \xi}}_{\text{表观对流项}} .
-\end{equation}
-
-能量方程同形，系数换成 $\alpha=k/(\rho c_p)$。表观对流项完全已知：$\dot R$ 由附件~2 的
-单调插值解析求导得到（改用线性插值只使烘干时长变化 \qfourradiusinterphours）。
-报告层按已确认口径取\textbf{当前物理距离}：每个时刻按 $r=\xi R(t)$ 映射回物理坐标，
-$r>R(t)$ 的位置\textbf{留空}；末列“药材表面”取 $\xi=1$ 处的原生解变量。
-
-\subsection{结果与分析}
-
-在题目给定的 $h_m$、附录~4 经验式与“收缩严格按附件~2”的口径下，全域最大干基含水率于
-\qfourdryingtimehours 降至判据以下，此时半径已收缩到 \qfourRatdryingendcm。
-表~\ref{tab:table6_q4} 给出题目要求的表~6。$6$~h 时中心与表面的干基含水率分别为
-\qfourtablesixtsixcenter 与 \qfourtablesixtsixsurface；烘干结束时分别为 \qfourtablesixendcenter
-与 \qfourtablesixendsurface。注意 $1.5$~cm 一列在 $6$~h 时已经为空——该时刻半径已小于 $1.5$~cm，
-按当前物理坐标口径该位置不在药材内。
-
-\input{paper/tables/table6_q4.tex}
-
-图~\ref{fig:q4} 给出收缩曲线、与不收缩情形的对比，以及表面含水率的对比。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.98\textwidth]{fig04_shrinkage_effect.pdf}
-  \caption{尺寸收缩对烘干时长的影响。(a) 半径按附件~2 由 $2.000$~cm 收缩到
-  \qfourRatdryingendcm（\qfourshrinkagepercent）。(b) 同判据线下，考虑收缩
-  （\qfourdryingtimehours）比不考虑收缩（\qthreedryingtime）提前 \qfourvsqthreedryingtimehours。
-  (c) 表面含水率对比。}
-  \label{fig:q4}
-\end{figure}
-
-\subsection{收缩为什么不可忽略}
-
-与问题三相比，本问的烘干时长 \qfourdryingtimehours 比不收缩的 \qthreedryingtime
-缩短 \qfourvsqthreedryingtimehours。这一结果初看反直觉：附录~4 的扩散系数前因子
-（$4.2\times10^{-4}$）比附录~3（$2.4\times10^{-3}$）小 $5.7$ 倍，仅替换物性应当\textbf{拉长}烘干时长；
-而收缩把扩散路径缩短到 $R_{\min}/R_0\approx0.599$，特征扩散时间按 $R^{2}$ 缩短，
-其效应压倒了扩散系数的下降。因此\textbf{收缩不可忽略，问题四的烘干时长不能由问题三直接推算}。
-完整的时空分布见图~\ref{fig:q4map}。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{figA3_q4_shrinking_field.pdf}
-  \caption{问题四收缩域内的含水率场（附录图，物理坐标）。(a) 径向--时间分布，白线为 $R(t)$，
-  域外留空；(b) 四个时刻的径向剖面，圆点为该时刻的表面位置。}
-  \label{fig:q4map}
-\end{figure}
-
-\subsection{检验与适用边界}
-
-移动边界下的守恒性用一条精确的离散恒等式核验：
-$\frac{d}{dt}\sum_j \omega_j C_j=-2\frac{\dot R}{R}\sum_j \omega_j C_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}(C_N-C_\infty)$，
-实测残差为 \qfourmassbalancerel。更强的判据是：\textbf{关闭表面传质后让域收缩，
-干基含水率必须严格不变}，实测最大偏离为 \qfourmovingboundarydev。
-
-数值层面：与常物性 Bessel 解析解（冻结半径、常数 $D$）的对照误差为 \qfourreferencemaxabserr，
-网格 $400\leftrightarrow800$ 的最大差为 \qfourgridrefinementdiff，
-内部步长 $10\leftrightarrow5$~s 引起的烘干时长差为 \qfourtimerefinementhours。
-独立实现（格心有限体积、表面值由 Robin 半单元关系回算、无启动）与主方法的表~6 最大差为
-\qfourbaselinetablesixdiff，烘干时长相差 \qfourbaselinedryingtimeseconds；
-该差异集中在早期表面列，是基线用一阶半单元关系回算表面值的代价。
-
-参数与口径层面：$h_m$ 放大 $5\%$ 使烘干时长变化 \qfoursenshmplusfivepcthours；
-扩散系数放大 $5\%$ 变化 \qfoursensDplusfivepcthours；
-环境温度升高 $2$~$^\circ$C 变化 \qfoursensTinfplustwoChours；
-质量方程改用湿基自洽式变化 \qfoursensmassequationformhours。
-与问题二、三一致，\textbf{本问的主导不确定性来自模型口径而非给定的传质系数}。
-上述结论均为条件式：以题目给定的 $h_m$、$h$、附录~4 经验式与“收缩严格按附件~2”为条件；
-质量方程取 Fick 标准形式（几何收缩在模型内不是质量汇）；一维径向假设忽略端面轴向输运；
-烘干时长继承判据尾部的平坦性。
+每一问都配齐三条相互独立的实现路径：本文方法（顶点有限体积）、对照方法（格心有限体积，
+其表面值由式~\eqref{eq:bc} 回算）与独立复算（常物性下的级数解析解，以及式~\eqref{eq:conservation}
+给出的守恒恒等式与本节的不变量检验）。三条路径不共享数值输入，只在其结果上相互比对，
+以保证“算对了”这一判断不是自证。各问的比对结果分别见第六至第九章。

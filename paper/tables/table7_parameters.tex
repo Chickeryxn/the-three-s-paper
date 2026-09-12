@@ -1,14 +1,14 @@
 \begin{table}[H]
   \centering
   \caption{四问所用的物性与经验式汇总}\label{tab:params}
-  \small
-  \begin{tabular}{llll}
+  \footnotesize
+  \begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
     \toprule
     参数 & 第 (1) 问（附录 2） & 第 (2)(3) 问（附录 3） & 第 (4) 问（附录 4） \\
     \midrule
     密度 / (kg/m$^3$) & $820$ & $650+128C$ & $760+90C$ \\
-    比热容 / (J/(kg$\cdot$K)) & $2600$ & $1450+\dfrac{2736C}{C+1}$ & $1850+\dfrac{2150C}{C+1}$ \\
-    导热系数 / (W/(m$\cdot$K)) & $0.36$ & $0.21+\dfrac{0.38C}{C+1}$ & $0.12+\dfrac{0.20C}{C+1}$ \\
+    比热容 / (J/(kg$\cdot$K)) & $2600$ & $1450+2736C/(C+1)$ & $1850+2150C/(C+1)$ \\
+    导热系数 / (W/(m$\cdot$K)) & $0.36$ & $0.21+0.38C/(C+1)$ & $0.12+0.20C/(C+1)$ \\
     扩散系数 / (m$^2$/s) & $7\times10^{-9}e^{-0.89/C}$ & $2.4\times10^{-3}e^{-0.45/C}e^{-3850/T}$ & $4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$ \\
     \midrule
     对流传热系数 $h$ / (W/(m$^2\cdot$K)) & \multicolumn{3}{c}{$25$} \\
@@ -17,6 +17,6 @@
     初始干基含水率 / (kg/kg) & \multicolumn{3}{c}{$2.55$} \\
     烘干判据 / (kg/kg) & \multicolumn{3}{c}{全域最大 $\le 0.15$} \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
   \par\smallskip\footnotesize 表中 $T$ 在经验式内为热力学温度，单位为 K；其余各处温度均为摄氏度。
 \end{table}

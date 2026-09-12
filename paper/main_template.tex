@@ -85,42 +85,47 @@ __FROZEN_MACROS__
 \maketitle
 
 \begin{abstract}
-本文研究圆柱形中药材在热风烘干过程中温度与水分浓度的时空演化规律，并确定烘干所需时长。
-针对题目给出的四个问题，本文建立\textbf{统一的一维径向轴对称耦合模型}，
-采用守恒型的顶点有限体积格式离散，并用四类相互独立的证据验证全部数值结果。
+% 往届获奖论文的摘要一律恰好一页；此处收紧摘要内部的段间距、行距与字号。
+% 字体必须在 \begin{abstract} 之内设置：ctex 的 abstract 环境会重置字号。
+% 表格 footnotesize 加行距乘子后与正文 12pt 的绝对高度相当，不显突兀。
+\begin{small}\linespread{1.22}\selectfont
+\setlength{\parskip}{1pt}
+本文研究圆柱形中药材热风烘干过程中温度与水分浓度的时空演化规律，并确定烘干所需时长。
+本文以\textbf{一维径向轴对称扩散模型}为基础，在第三类对流边界与给定物性经验式下，
+采用守恒型\textbf{顶点有限体积格式}离散、以\textbf{追赶法}求解三对角方程组，
+并对移动边界作\textbf{归一化坐标变换}，得到四问的温湿场与烘干时长，
+并用解析解对照、网格与时间加密、独立实现复算、守恒恒等式四类证据核验。
 
-\textbf{针对问题一}，建立预热平衡阶段的温湿耦合模型，以附件 1 的实测环境序列驱动边界。
-结果表明该阶段\textbf{以升温为主、失水仅限表层}：$1800$~s 时中心与表面温度分别为 
-\qoneTcenteroneeightzerozeros 与 \qoneTsurfaceoneeightzerozeros，
-而中心干基含水率仍保持初值 \qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros。
-其物理原因在于水分扩散的特征时间约为 $22$~h，远长于本阶段的三十分钟。
+\textbf{针对问题一}，建立预热平衡阶段的温湿耦合模型，以附件 1 实测环境序列驱动边界，
+结果表明该阶段\textbf{以升温为主、失水仅限表层}：$1800$~s 时中心与表面温度为
+\qoneTcenteroneeightzerozeros 与 \qoneTsurfaceoneeightzerozeros，中心干基含水率仍为初值
+\qoneCcenteroneeightzerozeros，仅表面降至 \qoneCsurfaceoneeightzerozeros，
+原因是水分扩散的特征时间约 $22$~h，远长于本阶段的三十分钟。
 
 \textbf{针对问题二和问题三}，改用温度与浓度相关的物性经验式，建立含双向耦合的全过程模型，
-并以三步后向 Euler 启动的 Crank--Nicolson 格式推进。结果表明烘干过程由\textbf{内部扩散控制}，
-全域最大干基含水率于 \qtwodryingtime 首次降至判据以下，即烘干时长为 \qtwodryingtime；
-问题三独立求解所得 \qthreedryingtime 与之完全一致，构成一次跨问自检。
+并以三步后向 Euler 启动的 Crank--Nicolson 格式推进。结果表明烘干由\textbf{内部扩散控制}，
+全域最大干基含水率于 \qtwodryingtime 首次降至判据以下，即烘干时长为 \qtwodryingtime，
+问题三所得 \qthreedryingtime 与之完全一致。
 
-\textbf{针对问题四}，药材在失水过程中会发生尺寸收缩。本文引入归一化径向坐标，
-把移动边界转化为已知的表观对流项，从而在固定网格上保持精确的守恒性。
-结果表明烘干时长为 \qfourdryingtimehours，此时半径已收缩至 \qfourRatdryingendcm（收缩 \qfourshrinkagepercent）。
-\textbf{这一结论揭示了一个反直觉的机理}：附录 4 给出的扩散系数前因子比附录 3 小 $5.7$ 倍，
-若只替换物性本应\textbf{延长}烘干时间；但收缩把扩散路径缩短到约 $0.6$ 倍，其效应压倒了扩散系数的下降，
-最终使烘干时长比不考虑收缩的情形缩短 \qfourvsqthreedryingtimehours。
+\textbf{针对问题四}，药材失水时尺寸收缩。本文引入归一化径向坐标，把移动边界转化为
+已知的表观对流项，从而在固定网格上保持精确的守恒性。结果表明\textbf{烘干时长为 \qfourdryingtimehours}，
+此时半径已收缩至 \qfourRatdryingendcm（收缩 \qfourshrinkagepercent）。
+\textbf{其机理是反直觉的}：附录 4 的扩散系数前因子比附录 3 小 $5.7$ 倍，若只换物性本应\textbf{延长}烘干时间，
+但收缩把扩散路径缩短到约 $0.6$ 倍，其效应压倒了扩散系数的下降，
+使烘干时长反比不考虑收缩时缩短 \qfourvsqthreedryingtimehours。
 \textbf{因此尺寸收缩不可忽略，问题四的烘干时长不能由问题三直接推算。}
 
-\textbf{模型检验}方面，本文不依赖先验论证，而给出四类证据：与常物性圆柱扩散的解析级数解对照，
-最大绝对误差达 \qfourreferencemaxabserr 量级；网格与时间的双向加密使报告值不再变化；
-另写一套空间离散与时间推进都不同的格心实现独立复算，报告点差异在一个末位单位以内；
-并把离散质量守恒写成可逐时步核验的恒等式，残差达 \qfourmassbalancerel。
-对问题四，本文进一步设计\textbf{解析不变量检验}——关闭表面传质后收缩不得改变干基含水率，
-实测偏离仅 \qfourmovingboundarydev，使移动边界项的正确性可以被证伪。
+\textbf{模型检验}给出四类证据：与常物性圆柱扩散的解析级数解对照，最大绝对误差为 \qfourreferencemaxabserr 量级；
+网格与时间加密后报告值不再变化；独立实现复算的差异在一个末位单位以内；离散守恒残差达 \qfourmassbalancerel。
+对问题四本文另设\textbf{解析不变量检验}：关闭表面传质后收缩不得改变干基含水率，偏离仅 \qfourmovingboundarydev。
 
-\textbf{灵敏度分析}给出了一个对结论表述至关重要的结果：烘干时长对题目给定的表面传质系数并不敏感
-（放大 $5\%$ 仅变化 \qtwosenshmplusfivepct），而主要由模型口径决定
-（质量方程读法变化 \qtwosensmassequationform，环境温度升高 $2^\circ$C 变化 \qtwosensTinfplustwoC）。
-因此本文的全部结论均以条件式给出，并显式列出恒温段环境为外推口径、端面轴向输运被忽略等局限。
+\textbf{灵敏度分析}表明：烘干时长对表面传质系数并不敏感（放大 $5\%$\ 时仅变化 \qtwosenshmplusfivepct），
+而主要由模型设定决定（质量方程读法变化 \qtwosensmassequationform，环境温度升高 $2^\circ$C 变化 \qtwosensTinfplustwoC）。
+因此本文同时给出烘干时长所依赖的设定与影响幅度；模型的局限在于忽略端面轴向输运、
+物性经验式未经检验，以及判据附近曲线平坦带来的约半分钟不确定度。
 
 \noindent\textbf{关键词}：热风烘干；径向轴对称；有限体积法；移动边界；归一化坐标；参数灵敏度
+\end{small}
 \end{abstract}
 
 \newpage
@@ -150,14 +155,14 @@ __REFERENCES__
     文件 & 对应问题 & 作用 \\
     \midrule
     \texttt{code/Q1/q1\_common.py} & 问题一 & 公共常数、输入读取、报告点映射与解析级数解 \\
-    \texttt{code/Q1/q1\_main.py} & 问题一 & 主方法：顶点有限体积 + 自适应隐式积分；产出结果表与完整场文件 \\
-    \texttt{code/Q1/q1\_baseline.py} & 问题一 & 可用基线：格心有限体积 + 固定步长 Crank--Nicolson \\
-    \texttt{code/Q1/q1\_verifier.py} & 问题一 & 独立验证：解析级数参照与不变量核验 \\
-    \texttt{code/Q2/q2\_main.py} 等 & 问题二 & 含双向耦合的全过程求解、基线与验证 \\
-    \texttt{code/Q3/q3\_main.py} 等 & 问题三 & 烘干时长的确定、基线与验证 \\
-    \texttt{code/Q4/q4\_main.py} & 问题四 & 主方法：归一化坐标下的移动边界求解，含表观对流项 \\
-    \texttt{code/Q4/q4\_baseline.py} & 问题四 & 可用基线：归一化坐标下的格心实现 \\
-    \texttt{code/Q4/q4\_verifier.py} & 问题四 & 独立验证：自建级数解与报告口径逐格核验 \\
+    \texttt{code/Q1/q1\_main.py} & 问题一 & 顶点有限体积离散 + 自适应隐式积分；产出结果表与完整场文件 \\
+    \texttt{code/Q1/q1\_baseline.py} & 问题一 & 格心有限体积 + 固定步长 Crank--Nicolson \\
+    \texttt{code/Q1/q1\_verifier.py} & 问题一 & 解析级数参照与不变量核验 \\
+    \texttt{code/Q2/q2\_main.py} 等 & 问题二 & 含双向耦合的全过程求解、对照实现与检验 \\
+    \texttt{code/Q3/q3\_main.py} 等 & 问题三 & 烘干时长的确定、对照实现与检验 \\
+    \texttt{code/Q4/q4\_main.py} & 问题四 & 归一化坐标下的移动边界求解，含表观对流项 \\
+    \texttt{code/Q4/q4\_baseline.py} & 问题四 & 归一化坐标下的格心有限体积实现 \\
+    \texttt{code/Q4/q4\_verifier.py} & 问题四 & 自建级数解与报告值逐格核验 \\
     \texttt{code/figures/} & 全部 & 论文图表的生成脚本（含统一的视觉系统与渲染自检） \\
     \bottomrule
   \end{tabularx}
@@ -174,20 +179,20 @@ __REFERENCES__
 \lstinputlisting[style=pycode, caption={问题一公共模块 \texttt{q1\_common.py}：常数、附件读取、报告点映射与解析级数参照}]
   {code/Q1/q1_common.py}
 
-\subsection{问题一主方法}
-\lstinputlisting[style=pycode, caption={问题一主方法 \texttt{q1\_main.py}：顶点有限体积离散与自适应 BDF 时间推进}]
+\subsection{问题一求解程序}
+\lstinputlisting[style=pycode, caption={问题一求解程序 \texttt{q1\_main.py}：顶点有限体积离散与自适应 BDF 时间推进}]
   {code/Q1/q1_main.py}
 
-\subsection{问题一独立验证}
-\lstinputlisting[style=pycode, caption={问题一独立验证 \texttt{q1\_verifier.py}：自建 Bessel 参照与契约不变量核验}]
+\subsection{问题一检验程序}
+\lstinputlisting[style=pycode, caption={问题一检验程序 \texttt{q1\_verifier.py}：Bessel 级数参照与不变量核验}]
   {code/Q1/q1_verifier.py}
 
-\subsection{问题四主方法}
-\lstinputlisting[style=pycode, caption={问题四主方法 \texttt{q4\_main.py}：\texorpdfstring{$\xi=r/R(t)$}{xi = r/R(t)} 归一化坐标下的移动边界有限体积求解}]
+\subsection{问题四求解程序}
+\lstinputlisting[style=pycode, caption={问题四求解程序 \texttt{q4\_main.py}：\texorpdfstring{$\xi=r/R(t)$}{xi = r/R(t)} 归一化坐标下的移动边界有限体积求解}]
   {code/Q4/q4_main.py}
 
-\subsection{问题四独立验证}
-\lstinputlisting[style=pycode, caption={问题四独立验证 \texttt{q4\_verifier.py}：自建级数参照、交付文件逐格核验}]
+\subsection{问题四检验程序}
+\lstinputlisting[style=pycode, caption={问题四检验程序 \texttt{q4\_verifier.py}：级数参照与交付文件逐格核验}]
   {code/Q4/q4_verifier.py}
 
 \end{document}
