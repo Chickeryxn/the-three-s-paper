@@ -63,21 +63,23 @@ C=2.55~\text{kg/kg}
 \subsection{模型的求解}
 
 本问沿用第五章的控制方程与顶点有限体积离散（$N=800$、$\Delta r=0.025$~mm，
-见式~\eqref{eq:semi} 与式~\eqref{eq:surf}），本节的增量只在时间推进。
+见式~\eqref{eq:semi} 与式~\eqref{eq:surf}），与第五章相比，需要新作的只有时间推进。
 
 \steptitle{时间推进：自适应隐式多步 BDF}
 
-$\theta$ 加权格式对本问同样适用，但本问物性为常数、两个方程都是常系数线性方程，
-Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨步复用，自适应步长几乎无额外代价。
-因此主方法采用自适应隐式多步 BDF（$\mathrm{rtol}=10^{-9}$、$\mathrm{atol}=10^{-11}$）：
-突变段自动降为一阶小步、平滑段升为高阶大步，既相当于自动完成后向 Euler 启动，
-又使时间误差由容差直接量化，本问的时间精度证据正是容差加密。
+$\theta$ 加权格式对本问同样适用。不同的是，本问物性为常数，两个方程都是常系数线性方程，
+即方程组左端的系数矩阵不随时间改变，所以 BDF（向后差分公式，一种隐式多步格式）每步只需解一次
+线性方程组，矩阵分解可以跨步复用，自适应步长几乎不增加额外代价。因此主方法取自适应隐式多步 BDF
+（$\mathrm{rtol}=10^{-9}$、$\mathrm{atol}=10^{-11}$）：环境突变处自动降为一阶小步，解已光滑处升为高阶大步，
+后向 Euler 启动由步长控制自动完成，时间误差也由容差直接给出。
+后文的容差加密实验正是据此评估本问的时间精度。
 
 \steptitle{独立复算：格心有限体积}
 
-按第五章的统一验证设计，本问另用一套\textbf{格心有限体积}实现独立复算（表面值由 Robin 关系回算、
-时间改用固定步长 Crank--Nicolson），与主方法在表面值来源与时间推进上均不相同，
-属于独立核算而非同一算法的重复实现；逐点对照见本章数值检验一节，求解流程见图~\ref{fig:flowq1}。
+按第五章的统一验证设计，本问另用一套\textbf{格心有限体积}实现独立复算：表面值由 Robin 条件
+（式~\eqref{eq:bcm} 的第三类对流条件）回算，时间推进改用固定步长的 Crank--Nicolson 格式，
+与主方法在表面值来源和时间离散两处都不同，两者不共用同一段代码，因此属于独立核算。
+两套实现的逐点对照见 6.4 节，求解流程见图~\ref{fig:flowq1}。
 
 \begin{figure}[H]
   \centering
@@ -94,12 +96,12 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
 \steptitle{报告时刻的读数}
 
 \textbf{在 $1800$~s 时刻，中心温度为 \qoneTcenteroneeightzerozeros，表面温度为 \qoneTsurfaceoneeightzerozeros；
-中心干基含水率仍为 \qoneCcenteroneeightzerozeros，而表面已降至 \qoneCsurfaceoneeightzerozeros。}
-表~\ref{tab:table1_q1_temperature} 与表~\ref{tab:table2_q1_moisture} 即题目要求的两张表，
-其最后一行给出这一时刻的读数：温度自中心向表面递增、含水率自中心向表面递减，中心为全域最大值。
-图~\ref{fig:q1} 进一步给出七个报告时刻的剖面演化与中心、表面时程：温度剖面随报告时刻整体上移、
-在靠近表面处才变陡，含水率的下凹则始终局限于表层，中心含水率在整个窗口内几乎不变。
-图~\ref{fig:q1map} 以附录图的形式给出预热阶段温湿场的完整时空分布。
+中心干基含水率仍为 \qoneCcenteroneeightzerozeros，表面已降至 \qoneCsurfaceoneeightzerozeros。}
+表~\ref{tab:table1_q1_temperature} 与表~\ref{tab:table2_q1_moisture} 是题目要求的两张表，
+最后一行即这一时刻的读数：温度自中心向表面递增，含水率自中心向表面递减，中心含水率最大。
+图~\ref{fig:q1} 给出七个报告时刻的剖面与中心、表面时程：温度随报告时刻逐渐升高；含水率的下凹始终局限在表层，
+中心含水率几乎不变。
+预热阶段温湿场的完整时空分布见附录图~\ref{fig:q1map}。
 
 
 
@@ -119,13 +121,11 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
 
 \steptitle{本阶段的基本规律}
 
-上述结果呈现出本阶段最基本的规律：\textbf{升温已经接近完成，而失水仍局限于很薄的一层}。
-从表~\ref{tab:table2_q1_moisture} 可见，含水率在距表面 $0.5$~cm 以内的范围内已明显下降，
-而在中心附近几乎没有变化。这一现象的原因在第五章已由特征时间给出：
-水分扩散的特征时间 $R^2/D\approx22$~h，远长于本阶段的 $30$~min，
-即本阶段只走完了全部扩散过程的约 $2\%$，水分的重新分布尚不足以影响内部。
-可见在这个时间尺度上，内部含水率约为初值是合理的，这也说明本文建立的模型与
-该阶段的物理过程是相符的。
+根据上述结果得出规律：\textbf{升温已接近完成，失水仍局限于很薄的一层}。
+由表~\ref{tab:table2_q1_moisture} 可见，距表面 $0.5$~cm 以内的含水率已明显下降，
+中心附近几乎没有变化。这一差别由第五章算出的特征时间决定：水分扩散的特征时间
+$R^2/D\approx22$~h，远长于本阶段的 $30$~min，本阶段只走完全部扩散过程的约 $2\%$，
+水分尚来不及重新分布到内部。
 
 
 
@@ -133,18 +133,16 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
 
 \steptitle{四类独立证据}
 
-结果的可信度由四类相互独立的证据确认，全部检验量汇总于表~\ref{tab:verify}。
+本文从四个互相独立的角度核验上述结果，各检验量汇总于表~\ref{tab:verify}。
 
 \begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
-  \item \textbf{与解析解对照}：在常物性、固定半径的极限下，本文实现与圆柱扩散问题的
-        Bessel 级数解析解相比，最大绝对误差仅为 \qoneanalyticalmaxabserr，说明离散格式本身是正确的。
-  \item \textbf{两项加密实验}：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qonegridrefinementdiff；
+  \item \textbf{与解析解对照}：在物性为常数、半径固定的极限下，本文程序与圆柱扩散问题的
+        Bessel 级数解析解相比，最大绝对误差为 \qoneanalyticalmaxabserr，可见离散格式本身没有写错。  
+  \item \textbf{两项加密实验}：网格由 $400$ 增加到 $800$，报告点上的最大差为 \qonegridrefinementdiff；
         求解器容差由 $10^{-8}$ 收紧到 $10^{-9}$，表值变化为 \qonetimeaccuracytolerancediff。
-        两者都已低于题目要求的四位小数，可见所报数值已达到网格与步长无关的水平。
-  \item \textbf{守恒性}：把离散质量守恒写成式~\eqref{eq:conservation} 那样的恒等式后逐时步核验，
-        本问的相对残差为 \qonemassbalancerel，达到机器精度量级。
-  \item \textbf{独立复算}：本文独立编写的格心实现与顶点格式在全部 $35$ 个报告点上的
-        收敛极限相差 \qoneindependentimplementationsdiff，两法逐点一致到四位小数的舍入边界。
+        两者都低于题目要求的四位小数，所报数值已达到与网格、步长无关的水平。
+  \item \textbf{守恒性}：把离散质量守恒写成式~\eqref{eq:conservation} 的恒等式后逐时步核验，
+        本问的相对残差为 \qonemassbalancerel，接近机器精度。
+  \item \textbf{独立复算}：另写的格心实现与顶点格式在全部 $35$ 个报告点上的
+        结果相差 \qoneindependentimplementationsdiff，两法一致到四位小数的舍入边界。
 \end{enumerate}
-
-\textbf{四类证据一致证明本问报告数值的可信度。}

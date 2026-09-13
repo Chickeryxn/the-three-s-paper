@@ -4,7 +4,7 @@
 
 \subsubsection{控制方程与边界}
 
-恒温干燥阶段与预热阶段共用同一控制方程骨架，即第五章式~\eqref{eq:energy} 与式~\eqref{eq:mass}：
+恒温干燥阶段与预热阶段共用同一套控制方程，即第五章式~\eqref{eq:energy} 与式~\eqref{eq:mass}：
 
 \[
 \begin{cases}
@@ -26,14 +26,14 @@
 \end{cases}
 \]
 
-而在中心 $r=0$ 处由轴对称性给出零梯度。与预热阶段相比，本问只在物性与环境驱动两处不同。
+而在中心 $r=0$ 处，由轴对称性可得其梯度为0。与预热阶段相比，本问只有物性和环境驱动两处不同。
 
 \subsubsection{物性：温度与含水率的双向耦合}
 
-物性按附录 3 改取为温度与含水率的经验式，其形式与单位见表~\ref{tab:q2props}。
-两个方程由此\textbf{双向耦合}：温度通过扩散系数影响失水，含水率又通过 $\rho$、$c_p$、$k$ 影响升温。
-含水率下降使密度与比热容降低，药材升温更快；而升温又使扩散系数增大，失水随之加快。
-二者必须联立求解，不能再像问题一那样分别计算。
+将物性修改为如~\ref{tab:q2props}的公式后，
+两个方程实现\textbf{双向耦合}：扩散系数由温度决定，
+而 $\rho$、$c_p$、$k$ 又都由含水率决定。含水率下降使密度与比热容降低，药材升温更快；
+升温又使扩散系数增大，失水随之加快。两个方程必须联立求解，不能再像问题一那样分别计算。
 
 \begin{table}[H]
   \centering
@@ -59,16 +59,14 @@
 
 \subsubsection{环境驱动}
 
-附件 1 的记录在 $14400$~s 终止，此后的环境值取末段（约 $t\ge9000$~s）稳定平台的实测均值
-并保持不变，即 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg。
+附件 1 的记录在 $14400$~s 终止。此后按末段（约 $t\ge9000$~s）稳定平台的实测均值取值并保持不变，
+即 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg。
 
 \subsection{模型的求解}
 
-\subsubsection{离散格式}
 
-空间离散沿用第五章的顶点有限体积格式，节点与表面的处理见式~\eqref{eq:semi} 与式~\eqref{eq:surf}，
-网格仍取 $N=800$（$\Delta r=0.025$~mm）。与问题一不同，本问物性不再是常数，
-界面系数随时间层变化，故时间推进采用固定步长的 $\theta$ 加权隐式格式
+空间离散沿用第五章的顶点有限体积格式，但是本问物性不再是常数，
+界面系数随时间层变化，故时间推进改用固定步长的 $\theta$ 加权隐式格式
 
 \[
 \begin{cases}
@@ -79,39 +77,6 @@
 \end{cases}
 \]
 
-\subsubsection{Rannacher 启动与步长选择}
-
-上式即前 $3$ 步取 $\theta=1$（后向 Euler）作 Rannacher 启动，其后转为 Crank--Nicolson
-（$\theta=1/2$）。这样安排的原因是：预热向恒温切换时环境温度发生跃变，初值处的这一突变
-在纯 Crank--Nicolson 下会激起随时间衰减的振荡，以后向 Euler 启动即可将其抹平；
-三步之后解已充分光滑，再切回二阶格式不影响整体精度。
-
-\steptitle{改用隐式格式的两点考虑}
-
-取隐式格式还有两点考虑。
-
-\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
-  \item 本问要积分两三天，显式格式的稳定步长远小于所需的报告精度，
-        而隐式格式无条件稳定；
-  \item 每个时间步归结为一个三对角方程组，可用追赶法在 $O(N)$ 时间内求解，
-        代价很低。
-\end{enumerate}
-
-内部步长取 $1$~s，交付物 \texttt{result2.xlsx} 给出全程每隔 $1$~s、
-径向每隔 $0.1$~cm 的完整温湿场。
-
-\subsubsection{独立复算}
-
-按第五章的统一验证设计，本问另用一套格心有限体积实现独立复算（表面值由 Robin 关系回算、
-不含 Rannacher 启动）：两套实现在本章报告点上的对照见第四节，在长时程量上的对照见第八章。
-本问的求解流程见图~\ref{fig:flowq2}。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{fig10_flow_q2.pdf}
-  \caption{问题二的求解流程}
-  \label{fig:flowq2}
-\end{figure}
 
 \subsection{结果与分析}
 
@@ -121,47 +86,32 @@
 \steptitle{传热与失水的对比}
 
 两张表反映出一个鲜明的对比：$3$~h 内温度已接近环境值 $50$~$^\circ$C，中心与表面只差
-$0.1$~$^\circ$C 左右，\textbf{传热已基本达到准稳态；含水率的径向梯度却在同一时段内明显增大}，
+$0.1$~$^\circ$C 左右，\textbf{传热已基本达到准稳态，含水率的径向梯度却在同一时段内明显增大}，
 中心仍为 \qtwoCcenterthreeh，表面已降至 \qtwoCsurfacethreeh。
 
 \steptitle{干燥的控制机制}
 
-这一对比说明\textbf{干燥由内部水分扩散控制}，表面蒸发不是瓶颈：水分必须先由中心扩散到表面，
-才能被热风带走，而该扩散过程的特征时间是小时量级。该判断与第五章算得的传质 Biot 数约为 $20$ 相符。
+这一对比说明\textbf{干燥由内部水分扩散控制，表面蒸发不是瓶颈}：水分必须先由中心扩散到表面，
+才能被热风带走，而这一扩散过程的特征时间是小时量级。
 
 \steptitle{短时表格对环境取值的敏感性}
 
 短时表格对环境取值并不敏感：在 $3$~h 表格区域内，环境水分浓度在 $0.045\sim0.055$~kg/kg
-之间变化时，表值最大差仅为 \qtwotableregionenvinsensitivity。
+之间变化时，表值的最大差仅为 \qtwotableregionenvinsensitivity。
 
 \subsection{数值检验与适用性分析}
 
 \subsubsection{误差来源}
 
-本问数值解的误差可分解为四项：空间离散误差、时间离散误差、物性经验式本身的不确定性，
-以及与独立实现比对时暴露的实现差异。前三项通过加密实验与解析对照评估，
-第四项通过第二套实现交叉验证评估。
+本问数值解的误差来自四项：空间离散误差、时间离散误差、物性经验式本身的不确定性，
+以及与独立实现比对时暴露的实现差异。前三项由加密实验与解析对照评估，第四项由第二套实现交叉验证评估。
 
 \subsubsection{收敛性与守恒性}
 
-在常物性、固定半径的极限下，本问实现与 Bessel 级数解析解的最大绝对误差为
-\qtwoanalyticalmaxabserr；网格由 $400$ 加密到 $800$，报告点上的最大差为 \qtwogridrefinementdiff；
-离散质量守恒按式~\eqref{eq:conservation} 的恒等式逐时步核验，相对残差为 \qtwomassbalancerel。
-三项都已低于题目要求的四位小数，说明本章报告的温湿场已达到网格与步长无关的水平。
+在物性为常数、半径固定的情况下，本问程序与 Bessel 级数解析解的最大绝对误差为
+\qtwoanalyticalmaxabserr；网格由 $400$ 增加到 $800$，报告点上的最大差为 \qtwogridrefinementdiff；
+离散质量守恒按式~\eqref{eq:conservation} 逐步核验，相对残差为 \qtwomassbalancerel。
+三项都低于题目要求的四位小数，本问报告的温湿场已达到与网格、步长无关的水平。
 
-时间推进与独立实现的对照涉及多日时程上的量，其数值一并列于表~\ref{tab:verify}，
-讨论见第八章。
 
-\subsubsection{本问结论的适用范围}
 
-上述结果需要说明三点。
-
-\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
-  \item 温湿场依赖题目给定的 $h$、$h_m$ 与附录 3 经验式。其中物性经验式完全来自题目、
-        未经独立验证，而扩散系数的强非线性使结果对经验式的形式较为敏感，
-        这是模型本身无法回避的不确定性。
-  \item 恒温段环境取附件 1 稳定段实测均值外推。均值来自实测，
-        但“稳定段之后仍维持该值”是模型设定而非实测，其影响在第八章定量给出。
-  \item 一维径向轴对称模型忽略了药材两端面的轴向输运。在数日的时程内轴向渗透可达数厘米每端，
-        该简化在长时程下的影响将在第十章作为模型的缺点说明。
-\end{enumerate}

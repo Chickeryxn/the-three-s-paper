@@ -1,3 +1,9 @@
+% !TEX root = main.tex
+% 本文件是**模板**，不能直接编译：正文里的四个占位符（冻结数值宏、章节引入、
+% AI 使用声明、参考文献）要由 scripts/latex_assembly.py 替换后才能生成可编译的 paper/main.tex。
+% 注意：本注释里**不能**写出那四个占位符的字面写法，否则装配脚本的朴素字符串替换
+% 会把注释本身也展开，生成的文件头部会被塞进整段宏定义，编译立刻失败。
+% 上一行的 !TEX root 就是为此：在任何编辑器里从本文件触发编译时，LaTeX Workshop 会改为编译 main.tex。
 % Clean-room contest paper baseline (self-written; no upstream template code is vendored).
 % Compile with XeLaTeX from the repository root:
 %   xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex   (twice)
@@ -326,36 +332,29 @@
 }
 
 \noindent
+下文给出五个核心程序全文。为便于对照正文，每段代码的注释均标出其论文对应位置
+（如“论文对应：5.2 节”）。问题二与问题三复用问题一、问题四的求解器，其差异仅在物性
+经验式与环境条件，故不重复列出；对应程序即上表 \texttt{code/Q2/}、\texttt{code/Q3/}
+两组文件。
 
-\section{模型核心源代码}
+\subsection{问题一公共模块}\label{app:q1common}
+\lstinputlisting[style=pycode, caption={问题一公共模块 \texttt{q1\_common.py}：常数、附件读取、报告点映射与解析级数参照}]
+  {code/Q1/q1_common.py}
 
-\subsection{q1\_common.py}\label{app:q1common}
+\subsection{问题一求解程序}\label{app:q1main}
+\lstinputlisting[style=pycode, caption={问题一求解程序 \texttt{q1\_main.py}：顶点有限体积离散与自适应 BDF 时间推进}]
+  {code/Q1/q1_main.py}
 
-\noindent\includegraphics[trim=0 4681 0 0, clip, width=\textwidth]{q1_common.png}
-\clearpage
-\noindent\includegraphics[trim=0 2339 0 2319, clip, width=\textwidth]{q1_common.png}
-\clearpage
-\noindent\includegraphics[trim=0 0 0 4661, clip, width=\textwidth]{q1_common.png}
-\clearpage
+\subsection{问题一检验程序}\label{app:q1verifier}
+\lstinputlisting[style=pycode, caption={问题一检验程序 \texttt{q1\_verifier.py}：Bessel 级数参照与不变量核验}]
+  {code/Q1/q1_verifier.py}
 
-\subsection{q1\_main.py}\label{app:q1main}
+\subsection{问题四求解程序}\label{app:q4main}
+\lstinputlisting[style=pycode, caption={问题四求解程序 \texttt{q4\_main.py}：\texorpdfstring{$\xi=r/R(t)$}{xi = r/R(t)} 归一化坐标下的移动边界有限体积求解}]
+  {code/Q4/q4_main.py}
 
-\noindent\includegraphics[trim=0 6032 0 0, clip, width=\textwidth]{q1_main.png}
-\clearpage
-\noindent\includegraphics[trim=0 3017 0 3006, clip, width=\textwidth]{q1_main.png}
-\clearpage
-\noindent\includegraphics[trim=0 0 0 6021, clip, width=\textwidth]{q1_main.png}
-\clearpage
-
-\subsection{q4\_main.py}\label{app:q4main}
-
-\noindent\includegraphics[trim=0 8243 0 0, clip, width=\textwidth]{q4_main.png}
-\clearpage
-\noindent\includegraphics[trim=0 5494 0 2745, clip, width=\textwidth]{q4_main.png}
-\clearpage
-\noindent\includegraphics[trim=0 2740 0 5494, clip, width=\textwidth]{q4_main.png}
-\clearpage
-\noindent\includegraphics[trim=0 0 0 8248, clip, width=\textwidth]{q4_main.png}
-\clearpage
+\subsection{问题四检验程序}\label{app:q4verifier}
+\lstinputlisting[style=pycode, caption={问题四检验程序 \texttt{q4\_verifier.py}：级数参照与交付文件逐格核验}]
+  {code/Q4/q4_verifier.py}
 
 \end{document}
