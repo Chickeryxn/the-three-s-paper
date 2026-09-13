@@ -166,57 +166,108 @@ __REFERENCES__
 \end{thebibliography}
 
 \clearpage
+
+\addcontentsline{toc}{section}{附录}  % 如果需要在目录中显示
+\begin{center}
+  \heiti\zihao{3} 附录
+\end{center}
+
 \appendix
-\section{支撑材料与程序代码}
+\section{支撑材料文件列表}
 
-\subsection{支撑材料清单}
 
-\begin{table}[H]
-  \centering
-  \caption{程序文件清单}\label{tab:code}
-  \small
-  \begin{tabularx}{\textwidth}{@{}llX@{}}
-    \toprule
-    文件 & 对应问题 & 作用 \\
-    \midrule
-    \texttt{code/Q1/q1\_common.py} & 问题一 & 公共常数、输入读取、报告点映射与解析级数解 \\
-    \texttt{code/Q1/q1\_main.py} & 问题一 & 顶点有限体积离散 + 自适应隐式积分；产出结果表与完整场文件 \\
-    \texttt{code/Q1/q1\_baseline.py} & 问题一 & 格心有限体积 + 固定步长 Crank--Nicolson \\
-    \texttt{code/Q1/q1\_verifier.py} & 问题一 & 解析级数参照与不变量核验 \\
-    \texttt{code/Q2/q2\_main.py} 等 & 问题二 & 含双向耦合的全过程求解、对照实现与检验 \\
-    \texttt{code/Q3/q3\_main.py} 等 & 问题三 & 烘干时长的确定、对照实现与检验 \\
-    \texttt{code/Q4/q4\_main.py} & 问题四 & 归一化坐标下的移动边界求解，含表观对流项 \\
-    \texttt{code/Q4/q4\_baseline.py} & 问题四 & 归一化坐标下的格心有限体积实现 \\
-    \texttt{code/Q4/q4\_verifier.py} & 问题四 & 自建级数解与报告值逐格核验 \\
-    \texttt{code/figures/} & 全部 & 论文图表的生成脚本（含统一的视觉系统与渲染自检） \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
+{\small\linespread{1.0}\selectfont\setlength{\parindent}{0pt}%
+\begin{longtable}{@{}p{0.925\textwidth}@{}}
+  \toprule
+  压缩包内文件（相对路径） \\
+  \midrule
+  \endfirsthead
+  \multicolumn{1}{@{}l}{\small\textit{（续）}}\\
+  \toprule
+  压缩包内文件（相对路径） \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{1}{r@{}}{\small\textit{接下页}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
 
-四个问题的完整计算文件为 \texttt{result1.xlsx}--\texttt{result4.xlsx}，
-分别给出题目要求的时间步长与径向间隔下的温度场与水分浓度场。
+  \multicolumn{1}{@{}l}{\texttt{（压缩包根目录）}}\\
+  \texttt{AI工具使用详情.pdf}\\
+  \addlinespace[2pt]
 
-下文给出核心程序全文。为便于对照正文，每段代码的注释均标出其在论文中的对应位置
-（如"论文对应：5.2 节"）。问题二与问题三复用问题一、问题四的求解器，其差异仅在物性
-经验式与环境条件，故不再重复列出，完整工程见支撑材料目录 \texttt{code/}。
+  \multicolumn{1}{@{}l}{\texttt{code/Q1/}\quad\textbf{问题一：预热平衡阶段（13 个文件）}}\\
+  \path{code/Q1/q1_common.py}\\
+  \path{code/Q1/q1_main.py}\\
+  \path{code/Q1/q1_verifier.py}\\
+  \path{code/Q1/q1_baseline.py}\\
+  \path{code/Q1/q1_robustness.py}\\
+  \path{code/Q1/q1_sensitivity.py}\\
+  \path{code/Q1/risk_probe.py}\\
+  \path{code/Q1/q1_time_scheme_diagnostic.py}\\
+  \path{code/Q1/q1_role_swap_impact.py}\\
+  \path{code/Q1/q1_role_swap_check.py}\\
+  \path{code/Q1/q1_main_pre_swap.py}\\
+  \path{code/Q1/q1_baseline_pre_swap.py}\\
+  \path{code/Q1/q1_advisory_multiday.py}\\
+  \addlinespace[2pt]
 
-\subsection{问题一公共模块}
+  \multicolumn{1}{@{}l}{\texttt{code/Q2/}\quad\textbf{问题二：恒温干燥全过程（5 个文件）}}\\
+  \path{code/Q2/q2_main.py}\\
+  \path{code/Q2/q2_baseline.py}\\
+  \path{code/Q2/q2_verifier.py}\\
+  \path{code/Q2/q2_robustness.py}\\
+  \path{code/Q2/risk_probe_q2.py}\\
+  \addlinespace[2pt]
+
+  \multicolumn{1}{@{}l}{\texttt{code/Q3/}\quad\textbf{问题三：烘干时长（5 个文件）}}\\
+  \path{code/Q3/q3_main.py}\\
+  \path{code/Q3/q3_baseline.py}\\
+  \path{code/Q3/q3_verifier.py}\\
+  \path{code/Q3/q3_robustness.py}\\
+  \path{code/Q3/risk_probe_q3.py}\\
+  \addlinespace[2pt]
+
+  \multicolumn{1}{@{}l}{\texttt{code/Q4/}\quad\textbf{问题四：尺寸收缩（5 个文件）}}\\
+  \path{code/Q4/q4_main.py}\\
+  \path{code/Q4/q4_baseline.py}\\
+  \path{code/Q4/q4_verifier.py}\\
+  \path{code/Q4/q4_robustness.py}\\
+  \path{code/Q4/risk_probe_q4.py}\\
+  \addlinespace[2pt]
+
+  \multicolumn{1}{@{}l}{\texttt{results/}\quad\textbf{四个问题的完整计算文件（4 个文件）}}\\
+  \path{results/result1.xlsx}\\
+  \path{results/result2.xlsx}\\
+  \path{results/result3.xlsx}\\
+  \path{results/result4.xlsx}\\
+\end{longtable}
+}
+
+\noindent
+下文给出五个核心程序全文。为便于对照正文，每段代码的注释均标出其论文对应位置
+（如“论文对应：5.2 节”）。问题二与问题三复用问题一、问题四的求解器，其差异仅在物性
+经验式与环境条件，故不重复列出；对应程序即上表 \texttt{code/Q2/}、\texttt{code/Q3/}
+两组文件。
+
+\subsection{问题一公共模块}\label{app:q1common}
 \lstinputlisting[style=pycode, caption={问题一公共模块 \texttt{q1\_common.py}：常数、附件读取、报告点映射与解析级数参照}]
   {code/Q1/q1_common.py}
 
-\subsection{问题一求解程序}
+\subsection{问题一求解程序}\label{app:q1main}
 \lstinputlisting[style=pycode, caption={问题一求解程序 \texttt{q1\_main.py}：顶点有限体积离散与自适应 BDF 时间推进}]
   {code/Q1/q1_main.py}
 
-\subsection{问题一检验程序}
+\subsection{问题一检验程序}\label{app:q1verifier}
 \lstinputlisting[style=pycode, caption={问题一检验程序 \texttt{q1\_verifier.py}：Bessel 级数参照与不变量核验}]
   {code/Q1/q1_verifier.py}
 
-\subsection{问题四求解程序}
+\subsection{问题四求解程序}\label{app:q4main}
 \lstinputlisting[style=pycode, caption={问题四求解程序 \texttt{q4\_main.py}：\texorpdfstring{$\xi=r/R(t)$}{xi = r/R(t)} 归一化坐标下的移动边界有限体积求解}]
   {code/Q4/q4_main.py}
 
-\subsection{问题四检验程序}
+\subsection{问题四检验程序}\label{app:q4verifier}
 \lstinputlisting[style=pycode, caption={问题四检验程序 \texttt{q4\_verifier.py}：级数参照与交付文件逐格核验}]
   {code/Q4/q4_verifier.py}
 
