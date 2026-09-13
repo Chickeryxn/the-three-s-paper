@@ -1,0 +1,108 @@
+% 建模主线流程图（论文图 1 的源文件）
+% 依据：全文核心内容——统一模型、共用求解主线、四问分支、四类独立验证
+% 编译：xelatex -interaction=nonstopmode -output-directory=paper/figures code/figures/fig14_modeling_mainline.tex
+% 产物：paper/figures/fig14_modeling_mainline.pdf
+% 约定：① 框内不写序号，总结词用黑体、描述用加粗楷体；
+%       ② 全图只用黑色（不设任何彩色），箭头为实心粗黑箭头；
+%       ③ 分组虚线框的大标题放在框的**底部居中**；
+%       ④ 字号：框内正文 \footnotesize(9pt)、分组大标题 \normalsize(12pt)，
+%          比初版各上调一档；因此行距、框宽与分组框高同步放大，避免文字挤压。
+\documentclass[border=8pt,12pt]{standalone}
+\usepackage{xeCJK}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,backgrounds}
+\setCJKmainfont{SimSun}
+\setCJKfamilyfont{zhhei}{SimHei}
+\setCJKfamilyfont{zhkai}[FakeBold=1.6]{KaiTi}
+\setmainfont{Times New Roman}
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+\pagestyle{empty}
+
+\newcommand{\hei}[1]{{\CJKfamily{zhhei}#1}}
+\newcommand{\kai}[1]{{\CJKfamily{zhkai}\bfseries #1}}
+
+\tikzset{
+  % 分组虚线框（黑）
+  grp/.style  = {draw=black, dashed, rounded corners=5pt, line width=0.8pt, inner sep=0pt},
+  % 分组大标题：底部居中、黑体；白底是为了遮住穿过它的连线
+  gttl/.style = {font=\normalsize\CJKfamily{zhhei}, text=black, anchor=center,
+                 fill=white, inner sep=3pt},
+  % 方框（白底黑框）
+  bx/.style   = {draw=black, fill=white, rounded corners=3.5pt, align=center,
+                 line width=0.7pt, font=\footnotesize, inner sep=3pt,
+                 text width=3.00cm, minimum height=1.75cm},
+  big/.style  = {bx, minimum height=1.95cm},
+  sum/.style  = {draw=black, fill=white, rounded corners=3.5pt, align=center,
+                 line width=0.7pt, font=\footnotesize,
+                 minimum height=0.90cm, text width=14.2cm, inner sep=4pt},
+  % 实心粗黑箭头 / 无箭头汇流线
+  bar/.style  = {-{Triangle[length=7pt,width=11pt]}, line width=2.4pt, draw=black,
+                 rounded corners=1.5pt},
+  mgl/.style  = {line width=1.6pt, draw=black, rounded corners=0pt},
+}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+% ============================================================
+% 一、统一模型
+% ============================================================
+\node[grp, minimum width=15.5cm, minimum height=2.95cm] (g1) at (8.10,-1.30) {};
+\node[gttl] at (8.10,-2.50) {统一模型};
+
+\node[bx] (a1) at (2.40,-1.30) {\hei{几何简化}\\[3pt]\kai{细长圆柱，只看径向}};
+\node[bx] (a2) at (6.20,-1.30) {\hei{控制方程}\\[3pt]\kai{导热与水分扩散}};
+\node[bx] (a3) at (10.00,-1.30) {\hei{定解条件}\\[3pt]\kai{边界、初值与环境}};
+\node[bx] (a4) at (13.80,-1.30) {\hei{量级判断}\\[3pt]\kai{失水集中在表层}};
+
+\draw[bar] (a1) -- (a2);
+\draw[bar] (a2) -- (a3);
+\draw[bar] (a3) -- (a4);
+
+\draw[bar] (8.10,-2.80) -- (8.10,-3.30);
+
+% ============================================================
+% 二、数值求解
+% ============================================================
+\node[grp, minimum width=15.5cm, minimum height=2.95cm] (g2) at (8.10,-4.70) {};
+\node[gttl] at (8.10,-5.90) {数值求解};
+
+\node[bx] (b1) at (2.40,-4.70) {\hei{空间离散}\\[3pt]\kai{顶点有限体积}};
+\node[bx] (b2) at (6.20,-4.70) {\hei{端点处理}\\[3pt]\kai{中心对称，表面直取}};
+\node[bx] (b3) at (10.00,-4.70) {\hei{时间推进}\\[3pt]\kai{先低阶起步，再切二阶}};
+\node[bx] (b4) at (13.80,-4.70) {\hei{逐时步求解}\\[3pt]\kai{追赶法解三对角}};
+
+\draw[bar] (b1) -- (b2);
+\draw[bar] (b2) -- (b3);
+\draw[bar] (b3) -- (b4);
+
+\draw[bar] (8.10,-6.20) -- (8.10,-6.70);
+
+% ============================================================
+% 三、四问分支
+% ============================================================
+\node[grp, minimum width=15.5cm, minimum height=3.15cm] (g3) at (8.10,-8.25) {};
+\node[gttl] at (8.10,-9.55) {四问分支};
+
+\node[big] (c1) at (2.40,-8.25)  {\hei{问题一\ \ 预热平衡}\\[3pt]\kai{升温为主，表层失水}};
+\node[big] (c2) at (6.20,-8.25)  {\hei{问题二\ \ 恒温干燥}\\[3pt]\kai{干燥靠内部扩散}};
+\node[big] (c3) at (10.00,-8.25) {\hei{问题三\ \ 烘干时长}\\[3pt]\kai{约 57.5 小时}};
+\node[big] (c4) at (13.80,-8.25) {\hei{问题四\ \ 尺寸收缩}\\[3pt]\kai{约 52.6 小时}};
+
+% 四问汇成一条线，再由一支箭头进入验证
+\coordinate (bus) at (8.10,-10.20);
+\draw[mgl] (c1.south) -- (2.40,-10.20);
+\draw[mgl] (c2.south) -- (6.20,-10.20);
+\draw[mgl] (c3.south) -- (10.00,-10.20);
+\draw[mgl] (c4.south) -- (13.80,-10.20);
+\draw[mgl] (2.40,-10.20) -- (13.80,-10.20);
+
+% ============================================================
+% 四、独立验证
+% ============================================================
+\node[sum] (d1) at (8.10,-11.05)
+  {\hei{四类独立验证}\quad\kai{与解析解对照、加密网格与步长、另写程序复算、守恒与不变量检验}};
+\draw[bar] (bus) -- (d1.north);
+
+\end{tikzpicture}
+\end{document}
