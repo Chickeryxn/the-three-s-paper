@@ -1,0 +1,54 @@
+% 统一求解流程图（论文图 3 的源文件）
+% 位置：第五章 5.3 数学求解过程
+% 编译：xelatex -interaction=nonstopmode -output-directory=paper/figures code/figures/fig15_solution_flow.tex
+% 产物：paper/figures/fig15_solution_flow.pdf
+% 结构：严格按 5.3 的小节顺序展开——
+%       5.3 起步（读取数据）→ 5.3.1 空间离散 → 5.3.2 端点处理 → 5.3.3 时间离散（格式+追赶法）
+%       → 5.3.4 移动边界坐标变换 → 5.3.5 守恒性核验与不变量检验 → 5.3.6 求解流程与统一验证设计
+% 约定：白底细黑框、细黑箭头；框内文字楷体（FakeBold 伪粗），字号与正文同为 12pt；图按最终宽度绘制不缩放。
+\documentclass[border=3pt,12pt]{standalone}
+\usepackage{xeCJK}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta}
+\setCJKmainfont{SimSun}
+\setCJKfamilyfont{zhhei}{SimHei}
+\setCJKfamilyfont{zhkai}[FakeBold=1.6]{KaiTi}
+\setmainfont{Times New Roman}
+\xeCJKDeclareCharClass{CJK}{"2460 -> "24FF}
+\pagestyle{empty}
+
+\tikzset{
+  bx/.style  = {draw=black!85, fill=white, align=center,
+                line width=0.4pt, font=\normalsize\CJKfamily{zhkai}\bfseries,
+                minimum width=3.82cm, minimum height=1.50cm, inner sep=3pt},
+  bar/.style = {-{Stealth[length=5pt,width=4pt]}, line width=0.5pt, draw=black!85},
+}
+
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+% 上排：由左至右（5.3 起步 → 5.3.1 → 5.3.2 → 5.3.3）
+\node[bx] (n1) at (2.26,-0.95)  {读取数据\\[2pt]环境序列与几何};
+\node[bx] (n2) at (6.32,-0.95)  {空间离散\\[2pt]对偶控制体离散};
+\node[bx] (n3) at (10.38,-0.95) {端点处理\\[2pt]中心对称表面直取};
+\node[bx] (n4) at (14.44,-0.95) {时间离散\\[2pt]先低阶起步再二阶};
+
+\draw[bar] (n1) -- (n2);
+\draw[bar] (n2) -- (n3);
+\draw[bar] (n3) -- (n4);
+
+% 下排：由右至左（5.3.3 追赶法 → 5.3.4 → 5.3.5 → 5.3.6）
+\node[bx] (n5) at (14.44,-4.75) {逐时步求解\\[2pt]解三对角方程组};
+\node[bx] (n6) at (10.38,-4.75) {坐标变换\\[2pt]收缩化为对流项};
+\node[bx] (n7) at (6.32,-4.75)  {守恒核验\\[2pt]残差与不变量检验};
+\node[bx] (n8) at (2.26,-4.75)  {统一验证\\[2pt]三条独立实现路径};
+
+% 折向下排（须在下排节点声明之后）
+\draw[bar] (n4.south) -- (n5.north);
+
+\draw[bar] (n5) -- (n6);
+\draw[bar] (n6) -- (n7);
+\draw[bar] (n7) -- (n8);
+
+\end{tikzpicture}
+\end{document}
