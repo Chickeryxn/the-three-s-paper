@@ -79,14 +79,7 @@ $\theta$ 加权格式对本问同样适用。不同的是，本问物性为常�
 按第五章的统一验证设计，本问另用一套\textbf{格心有限体积}实现独立复算：表面值由 Robin 条件
 （式~\eqref{eq:bcm} 的第三类对流条件）回算，时间推进改用固定步长的 Crank--Nicolson 格式，
 与主方法在表面值来源和时间离散两处都不同，两者不共用同一段代码，因此属于独立核算。
-两套实现的逐点对照见 6.4 节，求解流程见图~\ref{fig:flowq1}。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.90\textwidth]{fig08_flow_q1.pdf}
-  \caption{问题一的求解流程}
-  \label{fig:flowq1}
-\end{figure}
+两套实现的逐点对照见 6.4 节。
 
 \subsection{结果与分析}
 
