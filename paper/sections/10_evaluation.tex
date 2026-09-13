@@ -29,25 +29,8 @@
 热风烘干依赖烘房温湿环境的调控，本文得到的干燥规律可直接落到以下四条生产建议上。
 
 \begin{enumerate}[label=\arabic*., leftmargin=2.6em, itemsep=4pt]
-  \item \textbf{调控重点是烘房温度，不是风速。} 干燥由内部水分扩散控制（特征时间
-        $R^2/D\approx22$~h，传质 Biot 数约 $20$），表面蒸发不是瓶颈：$h_m$ 双向扰动 $5\%$
-        只使烘干时长变化 \qtwosenshmplusfivepct 与 \qtwosenshmminusfivepct，
-        而环境温度升高 $2$~$^\circ$C 使其变化 \qtwosensTinfplustwoC；
-        环境水分浓度的影响最小（\qtwosenscinflow 与 \qtwosenscinfhigh）。
-        故加大风量的收益有限，排湿控制的精度亦可放宽，资源应集中于温度控制。
-
-  \item \textbf{排产必须计入尺寸收缩，且前期升温宜缓。} 不计收缩时烘干时长为 \qthreedryingtime，
-        计入后为 \qfourdryingtimehours，变化量 \qfourvsqthreedryingtimehours，
-        按固定半径估算会高估工期。而收缩集中在前 $24$~h（完成全部收缩量的 $99.4\%$），
-        此时表面已降至 \qoneCsurfaceoneeightzerozeros、中心仍为 \qoneCcenteroneeightzerozeros，
-        升温过快容易造成“表干内湿”，升温宜主要安排在收缩基本完成之后。
-
-  \item \textbf{停机应以含水率判定并留余量。} 烘干时长落在判据 $\max_r C\le 0.15$~kg/kg
-        的穿越时刻，而该时刻继承了判据尾部的平坦性——两套相互独立的数值实现之间的分歧
-        （\qtwodryingtimespread）完全来自这一效应。含水率曲线在判据附近近乎水平，
-        故不宜按纯计时停机，应以取样或在线称重为准，并在判据之上留少量安全余量。
-
-  \item \textbf{按模型排产需预留约一成的系统偏差。} 最敏感的一项不是工艺参数，而是质量方程的口径：
-        改用湿基自洽的读法使烘干时长变化 \qtwosensmassequationform，量级超过任何一项参数扰动。
-        故模型给出的时长宜用于比较方案与判断趋势，直接用于排产前应先以实测曲线标定口径。
+  \item \textbf{调控重点是烘房温度，不是风速。} 
+  \item \textbf{排产必须计入尺寸收缩，且前期升温宜缓。} 
+  \item \textbf{停机应以含水率判定并留余量。} 
+  \item \textbf{按模型排产需预留约一成的系统偏差。}
 \end{enumerate}

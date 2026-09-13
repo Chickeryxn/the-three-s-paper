@@ -33,14 +33,6 @@ $D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$（式中温度按附录原式取开�
 
 报告层则按\textbf{当前物理距离}取值：每个时刻按 $r=\xi R(t)$ 映射回物理坐标，
 $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解变量。
-本问的求解流程见图~\ref{fig:flowq4}。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.90\textwidth]{fig09_flow_q4.pdf}
-  \caption{问题四的求解流程}
-  \label{fig:flowq4}
-\end{figure}
 
 \subsection{结果与分析}
 
@@ -69,24 +61,19 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
   \label{fig:q4}
 \end{figure}
 
-\steptitle{四问结果的汇总}
-
-至此四个问题已全部求解完毕。问题二与问题三给出同一烘干时长，
-而问题四因计入尺寸收缩而明显提前，四问的结果在物理上是连贯的。
 
 \subsection{尺寸收缩对烘干时长的影响}
 
 \steptitle{收缩为何缩短时长}
 
-与问题三相比，本问的烘干时长 \qfourdryingtimehours 比不考虑收缩时的 \qthreedryingtime
-缩短了 \qfourvsqthreedryingtimehours。这一结果初看反直觉：附录 4 的扩散系数前因子
-（$4.2\times10^{-4}$）比附录 3（$2.4\times10^{-3}$）小 $5.7$ 倍，
-仅替换物性应当\textbf{拉长}烘干时长；而收缩把扩散路径缩短到
-$R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
-路径缩短使扩散加快到约 $1/0.599^2\approx2.8$ 倍，其效应压倒了扩散系数的下降。
-因此\textbf{尺寸收缩不可忽略，问题四的烘干时长不能由问题三直接推算}。
-这也说明本文建立的移动边界模型是必要的——若沿用固定半径模型，
-本问的烘干时长将被高估近五小时。完整的时空分布见图~\ref{fig:q4map}。
+收缩与换物性这两个效应方向相反，量级对比才是关键。
+附录 4 的扩散系数前因子（$4.2\times10^{-4}$）比附录 3（$2.4\times10^{-3}$）小 $5.7$ 倍，
+仅换物性应当\textbf{拉长}时长；而收缩把扩散路径缩短到 $R_{\min}/R_0\approx0.599$，
+按特征时间正比于半径平方，扩散加快到 $1/0.599^2\approx2.8$ 倍，压倒了前者的拖慢。
+两者相抵的结果是 \qfourdryingtimehours，比问题三的 \qthreedryingtime 缩短
+\qfourvsqthreedryingtimehours。\textbf{故收缩不可忽略，问题四的时长不能由问题三推算}；
+沿用固定半径模型会把时长高估近五小时，这正是移动边界模型的必要性所在。
+完整时空分布见图~\ref{fig:q4map}。
 
 \begin{figure}[H]
   \centering
@@ -99,26 +86,23 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 
 \steptitle{守恒恒等式与解析不变量检验}
 
-移动边界下的守恒性不易目测，本文用第五章式~\eqref{eq:conservation} 给出的
-精确离散恒等式核验：$\frac{d}{dt}\sum_j \omega_j C_j
+移动边界下的守恒性难以目测，故按第五章式~\eqref{eq:conservation} 的离散恒等式逐时步核验：
+$\frac{d}{dt}\sum_j \omega_j C_j
 =-2\frac{\dot R}{R}\sum_j \omega_j C_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}(C_N-C_\infty)$，
-实测残差为 \qfourmassbalancerel，达到机器精度量级。
-比守恒恒等式更锋利的判据是\textbf{解析不变量检验}：关闭表面传质后只让计算域收缩，
-干基含水率必须严格保持不变，实测最大偏离仅为 \qfourmovingboundarydev。
-若表观对流项的符号或系数写错，该检验必然立刻暴露，因此它直接证明了式~\eqref{eq:q4moving}
-中这一新增项的正确性。
+实测残差 \qfourmassbalancerel。
+更锋利的判据是\textbf{解析不变量检验}：关闭表面传质、只让计算域收缩，干基含水率必须严格不变，
+实测最大偏离仅 \qfourmovingboundarydev。表观对流项的符号或系数一旦写错，该检验会立刻暴露，
+故它直接证明了式~\eqref{eq:q4moving} 新增项的正确性。
 
 \steptitle{数值层面的其余证据}
 
-数值层面的其余证据与前几问一致。首先是与解析解的对照：在固定半径、常数扩散系数的极限下，
-本问实现与 Bessel 级数解析解的最大绝对误差为 \qfourreferencemaxabserr。
-此外是加密实验：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qfourgridrefinementdiff；
-内部步长由 $10$~s 减半到 $5$~s，烘干时长的变化为 \qfourtimerefinementhours。
-最后是独立复算：格心实现（表面值由 Robin 半单元关系回算、不含启动步）与本文方法
-在表~6 上的最大差为 \qfourbaselinetablesixdiff，烘干时长相差 \qfourbaselinedryingtimeseconds。
-该差异集中在早期表面列，是对照方法用一阶半单元关系回算表面值的代价，
-而非本文方法的误差。综上所述，本问的全部检验量汇总于表~\ref{tab:verify}，
-四类证据的图形汇总见图~\ref{fig:verify}。
+其余三项与前三问同法：与 Bessel 级数解析解对照（固定半径、常数扩散系数的极限），
+最大绝对误差 \qfourreferencemaxabserr；网格由 $400$ 加密到 $800$，
+报告点最大差 \qfourgridrefinementdiff；内部步长减半，烘干时长变化 \qfourtimerefinementhours。
+独立复算方面，格心实现（表面值由 Robin 半单元关系回算、不含启动步）与本文方法在表~6 上
+最大差 \qfourbaselinetablesixdiff、时长相差 \qfourbaselinedryingtimeseconds，
+差异集中在早期表面列，是其一阶回算表面值的代价。全部检验量汇总于表~\ref{tab:verify}，
+图形汇总见图~\ref{fig:verify}。
 
 \begin{table}[H]
   \centering
@@ -148,19 +132,12 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 
 \steptitle{本问结论的适用条件}
 
-本问的适用范围有以下四点。
-
-\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
-  \item 结果以题目给定的 $h_m$、$h$、附录 4 经验式与“收缩严格按附件 2 进行”为条件。
-  \item 质量方程取 Fick 标准形式，几何收缩在模型内不是质量汇；
-        改用湿基自洽式会使烘干时长变化 \qfoursensmassequationformhours，
-        可见该读法的影响最大，必须明确声明。
-  \item 一维径向轴对称模型忽略了两端面的轴向输运。
-  \item 烘干时长精确落在判据穿越时刻，继承了判据尾部的平坦性。
-\end{enumerate}
-
-参数灵敏度方面，$h_m$ 放大 $5\%$ 使烘干时长变化 \qfoursenshmplusfivepcthours；
-扩散系数放大 $5\%$ 变化 \qfoursensDplusfivepcthours；环境温度升高 $2$~$^\circ$C
-变化 \qfoursensTinfplustwoChours。与问题二、三一致，
-\textbf{本问的主导不确定性来自模型设定而非题目给定的传质系数}，
-可见把不确定性归因于“参数不准”是不准确的，真正需要声明的是设定的选取。
+本问以题目给定的 $h_m$、$h$、附录 4 经验式与“收缩严格按附件 2 进行”为条件，
+质量方程取 Fick 标准形式（几何收缩在模型内不是质量汇），
+口径与轴对称简化沿用问题二、问题三的说明，不再重复。
+另有两点需专为声明：改用湿基自洽式会使烘干时长变化 \qfoursensmassequationformhours，
+量级超过任何一项参数扰动，可见\textbf{本问的主导不确定性来自模型设定而非题目给定的传质系数}，
+把不确定性归因于“参数不准”并不准确；烘干时长精确落在判据穿越时刻，
+继承了判据尾部的平坦性。单项扰动中，$h_m$ 放大 $5\%$ 使时长变化 \qfoursenshmplusfivepcthours，
+$D$ 放大 $5\%$ 变化 \qfoursensDplusfivepcthours，$T_\infty$ 升高 $2$~$^\circ$C
+变化 \qfoursensTinfplustwoChours，可见工艺参数的调节余地有限。
