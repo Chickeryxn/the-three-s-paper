@@ -44,25 +44,8 @@ def main():
           "\\end{table}", ""]
     (OUT / "table7_parameters.tex").write_text(chr(10).join(t7), encoding="utf-8")
 
-    rows8 = [
-        ("第 (1) 问", "预热平衡 $0\\sim1800$~s",
-         "$33.5753$ / $36.7856$", "$2.5500$ / $1.5102$",
-         "以升温为主，失水仅限表层"),
-        ("第 (2) 问", "恒温干燥全过程", "—", "—", "烘干时长 " + M("q2_drying_time")),
-        ("第 (3) 问", "烘干时长", "—", "—", "烘干时长 " + M("q3_drying_time")),
-        ("第 (4) 问", "考虑尺寸收缩", "—", "—",
-         "烘干时长 " + M("q4_drying_time_hours") + "，收缩至 " + M("q4_R_at_drying_end_cm")),
-    ]
-    t8 = ["\\begin{table}[H]", "  \\centering",
-          "  \\caption{四个问题的结果汇总}\\label{tab:results}", "  \\small",
-          "  \\begin{tabularx}{\\textwidth}{l l c c X}", "    \\toprule",
-          "    问题 & 任务 & 中心/表面温度 & 中心/表面含水率 & 关键结论 \\\\", "    \\midrule"]
-    for r in rows8:
-        t8.append("    " + " & ".join(r) + " \\\\")
-    t8 += ["    \\bottomrule", "  \\end{tabularx}",
-           "  \\par\\smallskip\\footnotesize 第 (1) 问的温度与含水率单位为 $^\\circ$C 与 kg/kg，取 $1800$~s 时刻的值；",
-           "  时间单位均为小时。", "\\end{table}", ""]
-    (OUT / "table8_results.tex").write_text(chr(10).join(t8), encoding="utf-8")
+    # table8_results.tex（四个问题的结果汇总）已按要求整表删除：其 \input 与
+    # 文件本身都已移除，这里不再生成，以免 `build.ps1 -Full` 把它重新写回来。
 
     def cell(q, cid):
         return M(cid)
@@ -87,7 +70,7 @@ def main():
           "  \\par\\smallskip\\footnotesize 第 (3) 问的解析对照取与其同模型的第 (2) 问结果；",
           "  第 (4) 问的时间加密一列为内部步长减半引起的烘干时长变化。", "\\end{table}", ""]
     (OUT / "table9_verification.tex").write_text(chr(10).join(t9), encoding="utf-8")
-    for n in ("table7_parameters", "table8_results", "table9_verification"):
+    for n in ("table7_parameters", "table9_verification"):
         print("wrote paper/tables/%s.tex" % n)
     return 0
 

@@ -71,11 +71,8 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
 
 \steptitle{四问结果的汇总}
 
-至此四个问题已全部求解完毕，其结果汇总于表~\ref{tab:results}。
-可以看到，问题二与问题三给出同一烘干时长，而问题四因计入尺寸收缩而明显提前，
-四问的结果在物理上是连贯的。
-
-\input{paper/tables/table8_results.tex}
+至此四个问题已全部求解完毕。问题二与问题三给出同一烘干时长，
+而问题四因计入尺寸收缩而明显提前，四问的结果在物理上是连贯的。
 
 \subsection{尺寸收缩对烘干时长的影响}
 
@@ -123,7 +120,24 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 而非本文方法的误差。综上所述，本问的全部检验量汇总于表~\ref{tab:verify}，
 四类证据的图形汇总见图~\ref{fig:verify}。
 
-\input{paper/tables/table9_verification.tex}
+\begin{table}[H]
+  \centering
+  \caption{四问的检验量汇总}\label{tab:verify}
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l *{5}{c}@{}}
+    \toprule
+    问题 & 解析对照/(kg/kg) & 网格加密/(kg/kg) & 时间加密/h & 独立实现差/s & 离散守恒 \\
+    \midrule
+    第 (1) 问 & $6.18\times10^{-7}$ & $3.24\times10^{-6}$ & $3.89\times10^{-10}$ & $9.72\times10^{-7}$ & $5.41\times10^{-11}$ \\
+    第 (2) 问 & $5.98\times10^{-7}$ & $3.2\times10^{-7}$   & $2.78\times10^{-4}$  & $26$              & $4.37\times10^{-13}$ \\
+    第 (3) 问 & $5.98\times10^{-7}$ & $3.2\times10^{-7}$   & $3.6\times10^{-3}$   & $26$              & $4.76\times10^{-13}$ \\
+    第 (4) 问 & $1.15\times10^{-6}$ & $2.12\times10^{-6}$  & $0$                  & $15$              & $2.56\times10^{-14}$ \\
+    \bottomrule
+  \end{tabular*}
+  \par\smallskip\footnotesize 注：第 (3) 问的解析对照取与其同模型的第 (2) 问结果；
+  第 (1) 问的时间加密与独立实现差两项为 kg/kg；离散守恒为无量纲相对残差。
+\end{table}
 
 \begin{figure}[H]
   \centering
