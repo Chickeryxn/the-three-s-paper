@@ -2,37 +2,47 @@
 
 \subsection{问题分析与模型的建立}
 
-问题三与问题二共用同一套模型（附录 3 物性、同一环境设定、同一判据），差别只在输出形态：
-本问要求给出\textbf{烘干所需的时间}，并按每 $6$~h、径向每隔 $0.5$~cm 列出水分浓度，末行为烘干结束时刻。
-由于两问的控制方程、物性经验式与判据完全相同，本问不重复建模，
-只说明其与问题二的一致性以及烘干时刻本身的判别方式。
+\subsubsection{本问的判据}
 
-需要留意的是判据针对“全域各处”，而表面失水最快、内部最慢，
-因此控制点必须由计算确认，不能先验假定在表面。由问题二的结果可知，
-全域最大干基含水率始终出现在药材中心，故本问以中心点作为判据的控制点。
+问题三与问题二共用同一套模型，差别只在输出形态。
+题目给出的干燥要求是全域各点都达到干燥标准，即\textbf{全域最大干基含水率}
+降至 $0.15$~kg/kg 以下：
 
-本问的求解流程见图~\ref{fig:flowq3}。
+\begin{equation*}
+  \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}.
+\end{equation*}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.95\textwidth]{fig11_flow_q3.pdf}
-  \caption{问题三的求解流程}
-  \label{fig:flowq3}
-\end{figure}
+烘干时长即为该条件首次满足的时刻，
+
+\begin{equation*}
+  t_{\mathrm{dry}}=\min\left\{t:\ \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}\right\}.
+\end{equation*}
+
+\subsubsection{控制点的确定}
+
+需要留意的是判据针对“全域各处”，而由问题二的结果可知，
+全域最大干基含水率始终出现在药材中心，故本问以中心点的含水率作为判据的量。
 
 \subsection{结果与分析}
 
-\textbf{全域最大干基含水率于 \qthreedryingtime 首次降至判据以下，即烘干时长为 \qthreedryingtime。}
-该值与问题二给出的 \qthreeconsistencywithQtwo 完全一致——两问本应给出同一结果，
-这一致性同时构成一次跨问自检。
+\subsubsection{烘干时长}
 
-烘干结束时中心干基含水率为 \qthreeCcenteratend，表面为 \qthreeCsurfaceatend；
-而判据越过前的最后一个 $6$~h 采样点（$54$~h）中心值仍为 \qthreeCcenterfivefourh，
-说明穿越判据是\textbf{一次性}的、不存在反复越界。表~\ref{tab:table5_q3} 给出题目要求的表格。
+\textbf{全域最大干基含水率于 \qthreedryingtime 首次降至判据以下，此即烘干时长。}
+表~\ref{tab:table5_q3} 给出题目要求的表格。
 
 \input{paper/tables/table5_q3.tex}
 
-图~\ref{fig:q23} 中的烘干曲线即为本问的判据穿越过程，完整的含水率时空分布见图~\ref{fig:q3map}。
+\subsubsection{穿越判据的时空过程}
+
+穿越判据（全域最大干基含水率 $\le 0.15$~kg/kg）是\textbf{一次性}的。图~\ref{fig:q23} 与图~\ref{fig:q3map} 分别从时程与时空分布两个角度给出这一过程。
+前者是中心、$r=1.0$~cm 与表面三个位置的含水率时程，虚线为 $0.15$~kg/kg 判据、点线为烘干时刻。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig03_drying_curve.pdf}
+  \caption{三个位置的含水率时程}
+  \label{fig:q23}
+\end{figure}
 
 \begin{figure}[H]
   \centering
@@ -41,27 +51,106 @@
   \label{fig:q3map}
 \end{figure}
 
-从图~\ref{fig:q3map}(b) 可以看到，越接近烘干结束，剖面越趋于平坦：
-这是扩散控制的必然结果——当内部浓度梯度被逐渐抹平后，表面可带走的水分随之减少，
-含水率的下降自然越来越慢。可见烘干时长的后半段主要是“等待内部水分扩散到表面”，
-这也解释了为什么判据附近曲线十分平坦。
+图~\ref{fig:q3map} 把整个烘干过程画成一幅含水率场云图：纵轴为半径，药材沿中心对称展开成整个直径，
+故刻度用距离的绝对值，中心在中间；颜色越深表示含水率越高，右侧竖直虚线为烘干结束时刻，
+两条水平点线标出 $r=1.0$~cm 的位置。由该图可以读出两个特征。其一，含水率的下降
+\textbf{自表面向中心推进}：靠表面的窄带最先变浅，中心区在很长时间内仍保持接近初值的高含水率，
+直到后期才整体变浅。其二，越接近烘干结束，整幅云图越趋于均匀，说明中心与表面的差别已被抹平——
+这是扩散控制的必然结果：内部浓度梯度被逐步抹平后，表面可带走的水分随之减少，
+含水率的下降自然越来越慢，因此烘干时长的后半段主要是“等待内部水分扩散到表面”。
 
 \subsection{数值检验与适用性分析}
 
-本问的数值检验与问题二同源，其独立证据如下。
-在空间方面，网格由 $400$ 加密到 $800$ 后报告点上的最大差为 \qthreegridrefinementdiff；
-在时间方面，内部步长由 $10$~s 减半到 $1$~s 引起的烘干时长差为 \qthreetimerefinementdiff；
-守恒性方面，离散质量守恒相对残差为 \qthreemassbalancerel；
-独立复算方面，格心实现给出的烘干时长与本文方法相差 \qtwodryingtimespread，与问题二一致。
-\textbf{以上证据表明本问给出的烘干时长已达到网格与步长无关的水平。}
+\subsubsection{数值检验与收敛性}
 
-需要特别指出的是，\textbf{烘干时长精确落在判据穿越时刻，而该时刻受判据尾部平坦性的影响较大}：
-两套相互独立的实现之间的分歧（$26$~s）完全来自这一效应，因此我们在引用烘干时长时
-同时给出该量级的不确定度，即烘干时长为 \qthreedryingtime，其不确定度约为半分钟，
-不影响以小时为单位的结论。
+本问的数值可信度由四类相互独立的证据确认，全部检验量汇总于表~\ref{tab:verify}。
 
-本问的适用范围与问题二相同。烘干时长以题目给定的 $h_m$、$h$ 与附录 3 经验式为条件；
-恒温段环境（$50$~$^\circ$C、$0.05$~kg/kg）取附件 1 稳定段均值外推，属模型设定而非实测；
-质量方程取题目给定的 Fick 标准形式；一维径向轴对称模型忽略了两端面的轴向输运。
-此外，本问结果是在\textbf{半径不变}的前提下得到的，
-而实际烘干过程中药材会随失水而收缩，这一效应是否可忽略将在第九章定量回答。
+\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item \textbf{网格加密}：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qthreegridrefinementdiff。
+  \item \textbf{时间加密}：内部步长由 $10$~s 减半到 $1$~s，烘干时长的变化为 \qthreetimerefinementdiff。
+  \item \textbf{守恒性}：离散质量守恒的相对残差为 \qthreemassbalancerel，达到机器精度量级。
+  \item \textbf{独立复算}：格心实现给出的烘干时长与本文方法相差 \qtwodryingtimespread，与问题二一致。
+\end{enumerate}
+
+\textbf{四类证据一致表明本问给出的烘干时长已达到网格与步长无关的水平。}
+需要指出的是，本问的检验量比问题二更"苛刻"：问题二核对的是 $3$~h 内的温度与含水率，
+本问核对的则是判据穿越时刻本身，因此上述差异都落在时间轴上。
+
+\subsubsection{判据尾部平坦性的影响}
+
+\textbf{烘干时长精确落在判据穿越时刻，而该时刻受判据尾部平坦性的影响较大}：
+两套相互独立的实现之间的分歧（\qtwodryingtimespread）完全来自这一效应——
+含水率曲线在判据附近近乎水平，极小的数值差异即可换来可观的时间差。
+
+因此我们在引用烘干时长时同时给出该量级的不确定度，即烘干时长为 \qthreedryingtime，
+其不确定度约为半分钟，不影响以小时为单位的结论。
+
+\subsubsection{参数与口径灵敏度}
+
+灵敏度分析针对两类对象：一类是题目给定但数值本身带不确定性的参数（对流传质系数、
+扩散系数、环境温度与环境水分浓度），另一类是建模过程中必须做出选择的设定（质量方程的读法）。
+为使扰动方向的影响可见，对传质系数与环境水分浓度做了\textbf{双向扰动}，
+其余项只做单向扰动。各单项扰动引起的烘干时长变化汇总于表~\ref{tab:sens}，
+并与图~\ref{fig:sens} 的条形一一对应。
+
+\begin{table}[H]
+  \centering
+  \caption{单项扰动引起的烘干时长变化}
+  \label{tab:sens}
+  \small
+  \begin{tabular}{lcc}
+    \toprule
+    扰动项 & 问题二与问题三（相对变化 / \%） & 问题四（绝对变化 / h） \\
+    \midrule
+    $h_m$ 缩小 $5\%$ & \qtwosenshmminusfivepct & \qfoursenshmminusfivepcthours \\
+    $h_m$ 放大 $5\%$ & \qtwosenshmplusfivepct & \qfoursenshmplusfivepcthours \\
+    $C_\infty=0.045$~kg/kg & \qtwosenscinflow & \qfoursenscinflowhours \\
+    $C_\infty=0.055$~kg/kg & \qtwosenscinfhigh & \qfoursenscinfhighhours \\
+    $D$ 放大 $5\%$ & \qtwosensDplusfivepct & \qfoursensDplusfivepcthours \\
+    $T_\infty=52$~$^\circ$C & \qtwosensTinfplustwoC & \qfoursensTinfplustwoChours \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip\footnotesize 正值表示烘干时长变长；$h_m$ 与环境水分浓度为双向扰动，
+  其余项只做单向扰动（其影响方向单一，反向算例不改变结论）。
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig12_sensitivity.pdf}
+  \caption{烘干时长对单项扰动的响应（问题二与问题三）}
+  \label{fig:sens}
+\end{figure}
+
+表~\ref{tab:sens} 与图~\ref{fig:sens} 给出的信息可以归纳为三点。
+
+\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item \textbf{烘干时长对表面传质系数最不敏感}：$h_m$ 缩小与放大 $5\%$ 分别使时长变化
+        \qtwosenshmminusfivepct 与 \qtwosenshmplusfivepct，两者量级相同、符号相反，
+        说明该响应在 $\pm5\%$ 内近似线性，不存在单向放大。
+        其原因仍在于干燥由内部水分扩散控制，传质 Biot 数约为 $20$，表面传质阻力不是瓶颈——
+        把表面“擦得更干”并不能加快内部水分向外迁移的速度。
+  \item \textbf{扩散系数与环境温度的影响依次增大}：$D$ 放大 $5\%$ 使时长变化 \qtwosensDplusfivepct，
+        环境温度升高 $2$~$^\circ$C 变化 \qtwosensTinfplustwoC，两者都缩短时长。
+  \item \textbf{环境水分浓度的影响最小}：$C_\infty$ 在 $0.045$ 与 $0.055$~kg/kg 两个方向的扰动
+        分别带来 \qtwosenscinflow 与 \qtwosenscinfhigh 的变化，即恒温段浓度口径的不确定性可以忽略。
+\end{enumerate}
+
+由此得到一个对结论表述至关重要的判断：\textbf{主导烘干时长的不确定性不是题目给定的传质系数，
+而是模型自身的口径}——质量方程改用湿基自洽式即使烘干时长变化 \qtwosensmassequationform，
+其量级远大于表中任何一项参数扰动。
+
+与之形成对照的是问题一：预热段的表面值对传质系数较为敏感，放大 $5\%$ 即使表面含水率变化
+\qonehmplusfivepctsurfaceshift，故该问的表面值只在题目给定值下成立。
+
+\subsubsection{本问结论的适用范围}
+
+本问的适用范围与问题二相同，另有两点需要说明。
+
+\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item 烘干时长以题目给定的 $h_m$、$h$ 与附录 3 经验式为条件；恒温段环境
+        （$50$~$^\circ$C、$0.05$~kg/kg）取附件 1 稳定段均值外延，属模型设定而非实测；
+        质量方程取题目给定的 Fick 标准形式。
+  \item 一维径向轴对称模型忽略了两端面的轴向输运；
+        且本问结果是在\textbf{半径不变}的前提下得到的，而实际烘干过程中药材会随失水而收缩，
+        这一效应是否可忽略将在第九章定量回答。
+\end{enumerate}

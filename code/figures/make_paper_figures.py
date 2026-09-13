@@ -378,17 +378,16 @@ def fig02():
 
 # ---------------------------------------------------------------- figure 3
 def fig03():
-    """长时程烘干：左为各位置含水率时程，右为参数敏感性。
+    """长时程烘干曲线：中心、1.0 cm 与表面的含水率时程。
 
-    全域最大含水率随时间的变化与各位置时程是同一信息，故只保留后者。
+    全域最大含水率随时间的变化与各位置时程是同一信息，故只保留后者；
+    参数与口径的敏感性不画在本图内，另见 fig12。
     """
     t, C = to_array(read_sheet("results/Q3/experiments/round1/result3.xlsx"))
     th = t / 3600.0
     tdry = load_json("results/Q3/experiments/round1/metrics/main.json")["drying_time_hours"]
     fig = plt.figure(figsize=(7.4, 2.9))
-    # 右侧的 y 轴类别标签较长，wspace 太小会顶进左图
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.08], wspace=0.55)
-    ax2 = fig.add_subplot(gs[0, 0])
+    ax2 = fig.add_subplot(111)
     ax2.plot(th, C[:, 0], color=P["primary"], lw=1.5, label="中心")
     ax2.plot(th, C[:, 10], color=P["accent1"], lw=1.5, ls="-.", label=r"$\mathbf{r}$ = 1.0 cm")
     ax2.plot(th, C[:, -1], color=P["negative"], lw=1.5, ls="--", label="表面")
@@ -399,19 +398,32 @@ def fig03():
                  arrowprops=dict(arrowstyle="->", color=P["negative"], lw=0.8))
     ax2.set_xlabel(r"$\mathbf{t}$ / $\mathbf{h}$")
     ax2.set_ylabel(r"$\mathbf{C}$ / ($\mathbf{kg/kg}$)")
-    ax2.set_title("含水率时程")
     ax2.set_ylim(0, 2.75)
+    ax2.set_xlim(0, 60)
     ax2.legend(fontsize=9.0)
+    finish(fig, "fig03_drying_curve",
+           {"data": "results/Q3/experiments/round1/result3.xlsx (Q2 shares the same model)",
+            "claims": ["q2_drying_time", "q3_drying_time"]},
+           DEFAULT_CHECKS)
 
-    ax3 = fig.add_subplot(gs[0, 1])
+
+# --------------------------------------------------- figure 12 (sensitivity)
+def fig12():
+    """参数与口径灵敏度：烘干时长对单项扰动的响应（问题二与问题三同模型）。
+
+    $h_m$ 与 $C_\\infty$ 取双向扰动（±5%、±0.005），$D$ 与环境温度只做单向扰动。
+    基准时长直接读自 Q3 主结果，不手写；本图与正文表 9 的对应行同值。
+    """
     rv = load_json("robustness/Q3/q3_robustness_summary.json")["checks"]
-    base = 57.46472222222222
+    base = load_json("results/Q3/experiments/round1/metrics/main.json")["drying_time_hours"]
     items = [(r"$\mathbf{h_m}$ ±5%", [rv["h_m_perturbation"]["minus5pct"]["observed"]["t_dry_shift_hours"],
-                                       rv["h_m_perturbation"]["plus5pct"]["observed"]["t_dry_shift_hours"]]),
+                                      rv["h_m_perturbation"]["plus5pct"]["observed"]["t_dry_shift_hours"]]),
              (r"$\mathbf{C_\infty}$ ±0.005", [rv["env_extrapolation_c_inf_0.045"]["observed"]["t_dry_shift_hours"],
-                                               rv["env_extrapolation_c_inf_0.055"]["observed"]["t_dry_shift_hours"]]),
+                                              rv["env_extrapolation_c_inf_0.055"]["observed"]["t_dry_shift_hours"]]),
              (r"$\mathbf{D}$ +5%", [rv["D_perturbation"]["observed"]["t_dry_shift_hours"]]),
              (r"$\mathbf{T_\infty}$ = 52 °C", [rv["env_extrapolation_t_inf_52"]["observed"]["t_dry_shift_hours"]])]
+    fig = plt.figure(figsize=(7.4, 2.6))
+    ax3 = fig.add_subplot(111)
     ypos = np.arange(len(items))[::-1]
     for y, (lab, vals) in zip(ypos, items):
         for k, v in enumerate(vals):
@@ -427,11 +439,11 @@ def fig03():
     ax3.set_xlabel(r"烘干时长变化 / $\mathbf{\%}$")
     ax3.set_xlim(-8.6, 2.4)
     ax3.set_ylim(-0.6, len(items) - 0.4)
-    ax3.set_title("敏感性")
-    finish(fig, "fig03_drying_curve_and_sensitivity",
-           {"data": "results/Q3/experiments/round1/result3.xlsx (Q2 shares the same model)",
-            "robustness": "robustness/Q3/q3_robustness_summary.json",
-            "claims": ["q2_drying_time", "q3_drying_time", "q2_sens_h_m_plus5pct",
+    finish(fig, "fig12_sensitivity",
+           {"robustness": "robustness/Q3/q3_robustness_summary.json",
+            "base": "results/Q3/experiments/round1/metrics/main.json $.drying_time_hours",
+            "claims": ["q2_sens_h_m_minus5pct", "q2_sens_h_m_plus5pct",
+                       "q2_sens_c_inf_low", "q2_sens_c_inf_high",
                        "q2_sens_D_plus5pct", "q2_sens_T_inf_plus2C"]},
            DEFAULT_CHECKS)
 
@@ -696,7 +708,7 @@ def fig06():
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     apply_style()
-    fig_mesh(); fig01(); fig02(); fig03(); fig04(); fig05(); fig06()
+    fig_mesh(); fig01(); fig02(); fig03(); fig04(); fig05(); fig06(); fig12()
     print("done")
     return 0
 

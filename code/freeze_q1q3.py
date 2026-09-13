@@ -81,6 +81,9 @@ def main():
         claim("q2_sens_T_inf_plus2C", sens("env_extrapolation_t_inf_52"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.env_extrapolation_t_inf_52.observed.t_dry_shift_percent", "q2_package_signoff"),
         claim("q2_sens_D_plus5pct", sens("D_perturbation"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.D_perturbation.observed.t_dry_shift_percent", "q2_package_signoff"),
         claim("q2_sens_h_m_plus5pct", sens("h_m_perturbation", "plus5pct"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.h_m_perturbation.plus5pct.observed.t_dry_shift_percent", "q2_package_signoff"),
+        claim("q2_sens_h_m_minus5pct", sens("h_m_perturbation", "minus5pct"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.h_m_perturbation.minus5pct.observed.t_dry_shift_percent", "q2_package_signoff"),
+        claim("q2_sens_c_inf_low", sens("env_extrapolation_c_inf_0.045"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.env_extrapolation_c_inf_0.045.observed.t_dry_shift_percent", "q2_package_signoff"),
+        claim("q2_sens_c_inf_high", sens("env_extrapolation_c_inf_0.055"), "%", "robustness/Q2/q2_robustness_summary.json", "$.checks.env_extrapolation_c_inf_0.055.observed.t_dry_shift_percent", "q2_package_signoff"),
         claim("q2_table_region_env_insensitivity", max(rv["checks"]["env_extrapolation_c_inf_0.045"]["observed"]["max_abs_diff_table_C"],
                                                       rv["checks"]["env_extrapolation_c_inf_0.055"]["observed"]["max_abs_diff_table_C"]), "kg/kg", "robustness/Q2/q2_robustness_summary.json", "$.checks.env_extrapolation_c_inf_0.045.observed.max_abs_diff_table_C", "q2_package_signoff"),
     ]}

@@ -6,7 +6,7 @@
       "unit": "h",
       "source_file": "results/Q3/experiments/round1/metrics/main.json",
       "source_locator": "$.drying_time_hours",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -16,7 +16,7 @@
       "unit": "kg/kg",
       "source_file": "results/Q3/experiments/round1/metrics/main.json",
       "source_locator": "$.table5_end_row.C[0]",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -26,7 +26,7 @@
       "unit": "kg/kg",
       "source_file": "results/Q3/experiments/round1/metrics/main.json",
       "source_locator": "$.table5_end_row.C[4]",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -36,7 +36,7 @@
       "unit": "kg/kg",
       "source_file": "results/Q3/experiments/round1/metrics/main.json",
       "source_locator": "$.table5_moisture_kg_per_kg['54'][0]",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -46,7 +46,7 @@
       "unit": "h",
       "source_file": "results/Q2/experiments/round1/metrics/main.json",
       "source_locator": "$.drying_time_hours",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -56,7 +56,7 @@
       "unit": "kg/kg",
       "source_file": "results/Q3/experiments/round1/metrics/main_validation.json",
       "source_locator": "$.grid_refinement_6h.max_abs_diff_C",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -66,7 +66,7 @@
       "unit": "h",
       "source_file": "results/Q3/experiments/round1/metrics/main_validation.json",
       "source_locator": "$.time_refinement_full_span.abs_diff_hours",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     },
@@ -76,7 +76,7 @@
       "unit": "",
       "source_file": "results/Q3/experiments/round1/metrics/main_validation.json",
       "source_locator": "$.mass_balance.rel_error",
-      "frozen_at": "2026-09-11T17:33:59+0800",
+      "frozen_at": "2026-09-13T15:34:52+0800",
       "frozen_by_skill": "solution-package-builder",
       "decision_id": "q3_package_signoff"
     }

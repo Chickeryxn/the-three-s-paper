@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "rendered_at": "2026-09-12T16:37:43+0800",
+  "rendered_at": "2026-09-13T15:35:00+0800",
   "checks": {
     "procedural": [
       "no clipped title, axis label, legend or annotation (bbox_inches=tight)",
@@ -17,7 +17,7 @@
       "no_text_outside_saved_canvas": {
         "pass": true,
         "offenders": [],
-        "texts_checked": 15
+        "texts_checked": 6
       },
       "no_overlapping_text": {
         "pass": true,
@@ -40,18 +40,14 @@
   },
   "source": {
     "data": "results/Q3/experiments/round1/result3.xlsx (Q2 shares the same model)",
-    "robustness": "robustness/Q3/q3_robustness_summary.json",
     "claims": [
       "q2_drying_time",
-      "q3_drying_time",
-      "q2_sens_h_m_plus5pct",
-      "q2_sens_D_plus5pct",
-      "q2_sens_T_inf_plus2C"
+      "q3_drying_time"
     ]
   },
   "outputs": [
-    "paper/figures/fig03_drying_curve_and_sensitivity.png",
-    "paper/figures/fig03_drying_curve_and_sensitivity.pdf"
+    "paper/figures/fig03_drying_curve.png",
+    "paper/figures/fig03_drying_curve.pdf"
   ],
   "dpi": 400,
   "style": "topjournal-style (opaque data, no grid, white background)"

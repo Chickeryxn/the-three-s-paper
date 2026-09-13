@@ -25,6 +25,9 @@
     "qfourreferencemaxabserr",
     "qfoursensDplusfivepcthours",
     "qfoursensTinfplustwoChours",
+    "qfoursenscinfhighhours",
+    "qfoursenscinflowhours",
+    "qfoursenshmminusfivepcthours",
     "qfoursenshmplusfivepcthours",
     "qfoursensmassequationformhours",
     "qfourshrinkagepercent",
@@ -63,16 +66,27 @@
     "qtwomassbalancerel",
     "qtwosensDplusfivepct",
     "qtwosensTinfplustwoC",
+    "qtwosenscinfhigh",
+    "qtwosenscinflow",
+    "qtwosenshmminusfivepct",
     "qtwosenshmplusfivepct",
     "qtwosensmassequationform",
     "qtwotableregionenvinsensitivity",
     "qtwotimerefinementdiff"
   ],
-  "frozen_count": 53,
+  "frozen_count": 59,
   "skipped_claims": [],
-  "frozen_reference_warnings": [],
+  "frozen_reference_warnings": [
+    "frozen claim q2_T_center_3h: never referenced via \\qtwoTcenterthreeh in the sections",
+    "frozen claim q2_T_surface_3h: never referenced via \\qtwoTsurfacethreeh in the sections",
+    "frozen claim q2_time_refinement_diff: never referenced via \\qtwotimerefinementdiff in the sections",
+    "frozen claim q3_C_center_54h: never referenced via \\qthreeCcenterfivefourh in the sections",
+    "frozen claim q3_C_center_at_end: raw value '0.15' appears in the text; reference \\qthreeCcenteratend instead",
+    "frozen claim q3_C_surface_at_end: never referenced via \\qthreeCsurfaceatend in the sections",
+    "frozen claim q3_consistency_with_Q2: never referenced via \\qthreeconsistencywithQtwo in the sections"
+  ],
   "bare_number_scan": {
-    "count": 274,
+    "count": 283,
     "sample": [
       "paper/sections/01_problem_restatement.tex:18: 0",
       "paper/sections/02_problem_analysis.tex:12: 0.97",
@@ -100,7 +114,7 @@
   "ai_declaration_sources": [
     "paper/ai_use_disclosure.md"
   ],
-  "approx_paper_chars": 27792,
+  "approx_paper_chars": 30973,
   "approx_pages_est": 15,
   "note": "Page estimate is a rough guide; enforce contest limits with a LaTeX build audit.",
   "ai_declaration_missing": false
