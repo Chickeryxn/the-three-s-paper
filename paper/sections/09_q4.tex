@@ -2,12 +2,16 @@
 
 \subsection{模型的建立}
 
+\steptitle{尺寸收缩的实测过程}
+
 实际烘干中水分流失会引起药材收缩。附件 2 给出半径由 $2.000$~cm 单调收缩到
 \qfourRatdryingendcm 附近的完整过程，总收缩量为 \qfourshrinkagepercent；
 前 $24$~h 完成全部收缩量的 $99.4\%$，此后半径基本不变。
 物性改按附录 4 取为 $\rho=760+90C$、$c_p=1850+2150C/(C+1)$、$k=0.12+0.20C/(C+1)$、
 $D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$（式中温度按附录原式取开尔文），
 判据与问题三相同，仍为全域最大干基含水率降至 $0.15$~kg/kg 以下。
+
+\steptitle{归一化坐标与表观对流项}
 
 与前三问的根本差别在于计算域本身随时间内移。若仍在固定网格上求解，
 边界处的通量将失去守恒性，收缩会在边界附近引入人工质量源。
@@ -25,6 +29,8 @@ $D=4.2\times10^{-4}e^{-0.30/C}e^{-3850/T}$（式中温度按附录原式取开�
 能量方程与之同形，系数换成热扩散率 $\alpha=k/(\rho c_p)$。
 表观对流项完全已知：$\dot R$ 由附件 2 的单调插值解析求导得到
 （改用线性插值只使烘干时长变化 \qfourradiusinterphours）。
+\steptitle{报告层的取值方式}
+
 报告层则按\textbf{当前物理距离}取值：每个时刻按 $r=\xi R(t)$ 映射回物理坐标，
 $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解变量。
 本问的求解流程见图~\ref{fig:flowq4}。
@@ -38,12 +44,16 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
 
 \subsection{结果与分析}
 
+\steptitle{烘干时刻与读数}
+
 \textbf{全域最大干基含水率于 \qfourdryingtimehours 降至判据以下，此时半径已收缩到 \qfourRatdryingendcm。}
 表~\ref{tab:table6_q4} 给出题目要求的表~6。$6$~h 时中心与表面的干基含水率分别为
 \qfourtablesixtsixcenter 与 \qfourtablesixtsixsurface；烘干结束时分别为 \qfourtablesixendcenter
 与 \qfourtablesixendsurface。
 
 \input{paper/tables/table6_q4.tex}
+
+\steptitle{收缩对报告列的影响}
 
 值得注意的是，$1.5$~cm 一列在 $6$~h 时已经为空——该时刻半径已小于 $1.5$~cm，
 按当前物理坐标的取法，该位置已经不在药材内，故按题目要求留空。
@@ -59,6 +69,8 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
   \label{fig:q4}
 \end{figure}
 
+\steptitle{四问结果的汇总}
+
 至此四个问题已全部求解完毕，其结果汇总于表~\ref{tab:results}。
 可以看到，问题二与问题三给出同一烘干时长，而问题四因计入尺寸收缩而明显提前，
 四问的结果在物理上是连贯的。
@@ -66,6 +78,8 @@ $r>R(t)$ 的位置留空；末列“药材表面”取 $\xi=1$ 处的原生解�
 \input{paper/tables/table8_results.tex}
 
 \subsection{尺寸收缩对烘干时长的影响}
+
+\steptitle{收缩为何缩短时长}
 
 与问题三相比，本问的烘干时长 \qfourdryingtimehours 比不考虑收缩时的 \qthreedryingtime
 缩短了 \qfourvsqthreedryingtimehours。这一结果初看反直觉：附录 4 的扩散系数前因子
@@ -86,6 +100,8 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 
 \subsection{数值检验与适用性分析}
 
+\steptitle{守恒恒等式与解析不变量检验}
+
 移动边界下的守恒性不易目测，本文用第五章式~\eqref{eq:conservation} 给出的
 精确离散恒等式核验：$\frac{d}{dt}\sum_j \omega_j C_j
 =-2\frac{\dot R}{R}\sum_j \omega_j C_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}(C_N-C_\infty)$，
@@ -94,6 +110,8 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
 干基含水率必须严格保持不变，实测最大偏离仅为 \qfourmovingboundarydev。
 若表观对流项的符号或系数写错，该检验必然立刻暴露，因此它直接证明了式~\eqref{eq:q4moving}
 中这一新增项的正确性。
+
+\steptitle{数值层面的其余证据}
 
 数值层面的其余证据与前几问一致。首先是与解析解的对照：在固定半径、常数扩散系数的极限下，
 本问实现与 Bessel 级数解析解的最大绝对误差为 \qfourreferencemaxabserr。
@@ -114,11 +132,19 @@ $R_{\min}/R_0\approx0.599$，按特征时间与半径平方成正比的关系，
   \label{fig:verify}
 \end{figure}
 
-本问的适用范围有以下四点。第一，结果以题目给定的 $h_m$、$h$、附录 4 经验式
-与“收缩严格按附件 2 进行”为条件。第二，质量方程取 Fick 标准形式，
-几何收缩在模型内不是质量汇；改用湿基自洽式会使烘干时长变化 \qfoursensmassequationformhours，
-可见该读法的影响最大，必须明确声明。第三，一维径向轴对称模型忽略了两端面的轴向输运。
-第四，烘干时长精确落在判据穿越时刻，继承了判据尾部的平坦性。
+\steptitle{本问结论的适用条件}
+
+本问的适用范围有以下四点。
+
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item 结果以题目给定的 $h_m$、$h$、附录 4 经验式与“收缩严格按附件 2 进行”为条件。
+  \item 质量方程取 Fick 标准形式，几何收缩在模型内不是质量汇；
+        改用湿基自洽式会使烘干时长变化 \qfoursensmassequationformhours，
+        可见该读法的影响最大，必须明确声明。
+  \item 一维径向轴对称模型忽略了两端面的轴向输运。
+  \item 烘干时长精确落在判据穿越时刻，继承了判据尾部的平坦性。
+\end{enumerate}
+
 参数灵敏度方面，$h_m$ 放大 $5\%$ 使烘干时长变化 \qfoursenshmplusfivepcthours；
 扩散系数放大 $5\%$ 变化 \qfoursensDplusfivepcthours；环境温度升高 $2$~$^\circ$C
 变化 \qfoursensTinfplustwoChours。与问题二、三一致，

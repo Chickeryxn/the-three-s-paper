@@ -9,13 +9,13 @@
 降至 $0.15$~kg/kg 以下：
 
 \begin{equation*}
-  \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}.
+  \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}
 \end{equation*}
 
 烘干时长即为该条件首次满足的时刻，
 
 \begin{equation*}
-  t_{\mathrm{dry}}=\min\left\{t:\ \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}\right\}.
+  t_{\mathrm{dry}}=\min\left\{t:\ \max_{0\le r\le R}C(r,t)\le 0.15~\text{kg/kg}\right\}
 \end{equation*}
 
 \subsubsection{控制点的确定}
@@ -53,11 +53,15 @@
 
 图~\ref{fig:q3map} 把整个烘干过程画成一幅含水率场云图：纵轴为半径，药材沿中心对称展开成整个直径，
 故刻度用距离的绝对值，中心在中间；颜色越深表示含水率越高，右侧竖直虚线为烘干结束时刻，
-两条水平点线标出 $r=1.0$~cm 的位置。由该图可以读出两个特征。其一，含水率的下降
-\textbf{自表面向中心推进}：靠表面的窄带最先变浅，中心区在很长时间内仍保持接近初值的高含水率，
-直到后期才整体变浅。其二，越接近烘干结束，整幅云图越趋于均匀，说明中心与表面的差别已被抹平——
-这是扩散控制的必然结果：内部浓度梯度被逐步抹平后，表面可带走的水分随之减少，
-含水率的下降自然越来越慢，因此烘干时长的后半段主要是“等待内部水分扩散到表面”。
+两条水平点线标出 $r=1.0$~cm 的位置。由该图可以读出两个特征。
+
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item 含水率的下降\textbf{自表面向中心推进}：靠表面的窄带最先变浅，
+        中心区在很长时间内仍保持接近初值的高含水率，直到后期才整体变浅。
+  \item 越接近烘干结束，整幅云图越趋于均匀，说明中心与表面的差别已被抹平——
+        这是扩散控制的必然结果：内部浓度梯度被逐步抹平后，表面可带走的水分随之减少，
+        含水率的下降自然越来越慢，因此烘干时长的后半段主要是“等待内部水分扩散到表面”。
+\end{enumerate}
 
 \subsection{数值检验与适用性分析}
 
@@ -65,7 +69,7 @@
 
 本问的数值可信度由四类相互独立的证据确认，全部检验量汇总于表~\ref{tab:verify}。
 
-\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
   \item \textbf{网格加密}：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qthreegridrefinementdiff。
   \item \textbf{时间加密}：内部步长由 $10$~s 减半到 $1$~s，烘干时长的变化为 \qthreetimerefinementdiff。
   \item \textbf{守恒性}：离散质量守恒的相对残差为 \qthreemassbalancerel，达到机器精度量级。
@@ -86,6 +90,8 @@
 其不确定度约为半分钟，不影响以小时为单位的结论。
 
 \subsubsection{参数与口径灵敏度}
+
+\steptitle{两类灵敏度对象}
 
 灵敏度分析针对两类对象：一类是题目给定但数值本身带不确定性的参数（对流传质系数、
 扩散系数、环境温度与环境水分浓度），另一类是建模过程中必须做出选择的设定（质量方程的读法）。
@@ -121,9 +127,11 @@
   \label{fig:sens}
 \end{figure}
 
+\steptitle{三点归纳}
+
 表~\ref{tab:sens} 与图~\ref{fig:sens} 给出的信息可以归纳为三点。
 
-\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
   \item \textbf{烘干时长对表面传质系数最不敏感}：$h_m$ 缩小与放大 $5\%$ 分别使时长变化
         \qtwosenshmminusfivepct 与 \qtwosenshmplusfivepct，两者量级相同、符号相反，
         说明该响应在 $\pm5\%$ 内近似线性，不存在单向放大。
@@ -139,6 +147,8 @@
 而是模型自身的口径}——质量方程改用湿基自洽式即使烘干时长变化 \qtwosensmassequationform，
 其量级远大于表中任何一项参数扰动。
 
+\steptitle{与问题一的对照}
+
 与之形成对照的是问题一：预热段的表面值对传质系数较为敏感，放大 $5\%$ 即使表面含水率变化
 \qonehmplusfivepctsurfaceshift，故该问的表面值只在题目给定值下成立。
 
@@ -146,7 +156,7 @@
 
 本问的适用范围与问题二相同，另有两点需要说明。
 
-\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
   \item 烘干时长以题目给定的 $h_m$、$h$ 与附录 3 经验式为条件；恒温段环境
         （$50$~$^\circ$C、$0.05$~kg/kg）取附件 1 稳定段均值外延，属模型设定而非实测；
         质量方程取题目给定的 Fick 标准形式。

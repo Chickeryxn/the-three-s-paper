@@ -90,6 +90,9 @@
 % 单独一行、不缩进、\smash 防止撑高行距；只在第五章的推导步骤中使用。
 \newcommand{\steptitle}[1]{\par\vspace{6pt}\noindent\smash{\large\ding{226}}~\textbf{#1}\par}
 
+% ①②… 分点标号：与第五章 5.2.2 的列举同一风格，不用西文 (1)(2)
+\newcommand{\cnum}[1]{\ifcase#1 \or ①\or ②\or ③\or ④\or ⑤\or ⑥\or ⑦\or ⑧\fi}
+
 % Frozen-number macros (injected by scripts/latex_assembly.py)
 __FROZEN_MACROS__
 

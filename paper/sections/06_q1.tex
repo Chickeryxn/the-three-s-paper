@@ -65,11 +65,15 @@ C=2.55~\text{kg/kg}
 本问沿用第五章的控制方程与顶点有限体积离散（$N=800$、$\Delta r=0.025$~mm，
 见式~\eqref{eq:semi} 与式~\eqref{eq:surf}），本节的增量只在时间推进。
 
+\steptitle{时间推进：自适应隐式多步 BDF}
+
 $\theta$ 加权格式对本问同样适用，但本问物性为常数、两个方程都是常系数线性方程，
 Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨步复用，自适应步长几乎无额外代价。
 因此主方法采用自适应隐式多步 BDF（$\mathrm{rtol}=10^{-9}$、$\mathrm{atol}=10^{-11}$）：
 突变段自动降为一阶小步、平滑段升为高阶大步，既相当于自动完成后向 Euler 启动，
 又使时间误差由容差直接量化，本问的时间精度证据正是容差加密。
+
+\steptitle{独立复算：格心有限体积}
 
 按第五章的统一验证设计，本问另用一套\textbf{格心有限体积}实现独立复算（表面值由 Robin 关系回算、
 时间改用固定步长 Crank--Nicolson），与主方法在表面值来源与时间推进上均不相同，
@@ -86,6 +90,8 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
 
 \input{paper/tables/table1_q1_temperature.tex}
 \input{paper/tables/table2_q1_moisture.tex}
+
+\steptitle{报告时刻的读数}
 
 \textbf{在 $1800$~s 时刻，中心温度为 \qoneTcenteroneeightzerozeros，表面温度为 \qoneTsurfaceoneeightzerozeros；
 中心干基含水率仍为 \qoneCcenteroneeightzerozeros，而表面已降至 \qoneCsurfaceoneeightzerozeros。}
@@ -111,6 +117,8 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
   \label{fig:q1map}
 \end{figure}
 
+\steptitle{本阶段的基本规律}
+
 上述结果呈现出本阶段最基本的规律：\textbf{升温已经接近完成，而失水仍局限于很薄的一层}。
 从表~\ref{tab:table2_q1_moisture} 可见，含水率在距表面 $0.5$~cm 以内的范围内已明显下降，
 而在中心附近几乎没有变化。这一现象的原因在第五章已由特征时间给出：
@@ -123,11 +131,11 @@ Jacobian 为常矩阵，故 BDF 每步只解一次线性方程组、分解可跨
 
 \subsection{数值检验与模型适用性}
 
-
+\steptitle{四类独立证据}
 
 结果的可信度由四类相互独立的证据确认，全部检验量汇总于表~\ref{tab:verify}。
 
-\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
   \item \textbf{与解析解对照}：在常物性、固定半径的极限下，本文实现与圆柱扩散问题的
         Bessel 级数解析解相比，最大绝对误差仅为 \qoneanalyticalmaxabserr，说明离散格式本身是正确的。
   \item \textbf{两项加密实验}：网格由 $400$ 加密到 $800$，报告点上的最大差为 \qonegridrefinementdiff；

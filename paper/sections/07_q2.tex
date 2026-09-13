@@ -6,21 +6,25 @@
 
 恒温干燥阶段与预热阶段共用同一控制方程骨架，即第五章式~\eqref{eq:energy} 与式~\eqref{eq:mass}：
 
-\begin{align*}
-  \rho c_p\frac{\partial T}{\partial t}
-    &= \frac{1}{r}\frac{\partial}{\partial r}\left(k\,r\,\frac{\partial T}{\partial r}\right), \\
-  \frac{\partial C}{\partial t}
-    &= \frac{1}{r}\frac{\partial}{\partial r}\left(D\,r\,\frac{\partial C}{\partial r}\right).
-\end{align*}
+\[
+\begin{cases}
+\rho c_p\dfrac{\partial T}{\partial t}
+  =\dfrac{1}{r}\dfrac{\partial}{\partial r}\left(k\,r\,\dfrac{\partial T}{\partial r}\right)\\[16pt]
+\dfrac{\partial C}{\partial t}
+  =\dfrac{1}{r}\dfrac{\partial}{\partial r}\left(D\,r\,\dfrac{\partial C}{\partial r}\right)
+\end{cases}
+\]
 
 边界仍为式~\eqref{eq:bc} 的第三类对流条件，即在表面 $r=R$ 处
 
-\begin{align*}
-  -k\left.\frac{\partial T}{\partial r}\right|_{r=R}
-    &= h\left(T(R,t)-T_\infty(t)\right), \\
-  -D\left.\frac{\partial C}{\partial r}\right|_{r=R}
-    &= h_m\left(C(R,t)-C_\infty(t)\right),
-\end{align*}
+\[
+\begin{cases}
+-k\left.\dfrac{\partial T}{\partial r}\right|_{r=R}
+  =h\left(T(R,t)-T_\infty(t)\right)\\[16pt]
+-D\left.\dfrac{\partial C}{\partial r}\right|_{r=R}
+  =h_m\left(C(R,t)-C_\infty(t)\right)
+\end{cases}
+\]
 
 而在中心 $r=0$ 处由轴对称性给出零梯度。与预热阶段相比，本问只在物性与环境驱动两处不同。
 
@@ -66,12 +70,14 @@
 网格仍取 $N=800$（$\Delta r=0.025$~mm）。与问题一不同，本问物性不再是常数，
 界面系数随时间层变化，故时间推进采用固定步长的 $\theta$ 加权隐式格式
 
-\begin{equation*}
-  \mathbf{y}^{n+1}-\mathbf{y}^{n}
-  =\Delta t\left[\theta_n\,\mathbf{Q}^{n+1}+(1-\theta_n)\,\mathbf{Q}^{n}\right],
-  \qquad
-  \theta_n=\begin{cases}1, & n\le 3,\\[2pt] 1/2, & n>3.\end{cases}
-\end{equation*}
+\[
+\begin{cases}
+\mathbf{y}^{n+1}-\mathbf{y}^{n}
+=\Delta t\left[\theta_n\,\mathbf{Q}^{n+1}+(1-\theta_n)\,\mathbf{Q}^{n}\right]\\[16pt]
+\theta_n=1,\quad n\le 3\\[16pt]
+\theta_n=1/2,\quad n>3
+\end{cases}
+\]
 
 \subsubsection{Rannacher 启动与步长选择}
 
@@ -80,9 +86,18 @@
 在纯 Crank--Nicolson 下会激起随时间衰减的振荡，以后向 Euler 启动即可将其抹平；
 三步之后解已充分光滑，再切回二阶格式不影响整体精度。
 
-取隐式格式还有两点考虑。其一，本问要积分两三天，显式格式的稳定步长远小于所需的报告精度，
-而隐式格式无条件稳定；其二，每个时间步归结为一个三对角方程组，可用追赶法在 $O(N)$ 时间内求解，
-代价很低。内部步长取 $1$~s，交付物 \texttt{result2.xlsx} 给出全程每隔 $1$~s、
+\steptitle{改用隐式格式的两点考虑}
+
+取隐式格式还有两点考虑。
+
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
+  \item 本问要积分两三天，显式格式的稳定步长远小于所需的报告精度，
+        而隐式格式无条件稳定；
+  \item 每个时间步归结为一个三对角方程组，可用追赶法在 $O(N)$ 时间内求解，
+        代价很低。
+\end{enumerate}
+
+内部步长取 $1$~s，交付物 \texttt{result2.xlsx} 给出全程每隔 $1$~s、
 径向每隔 $0.1$~cm 的完整温湿场。
 
 \subsubsection{独立复算}
@@ -103,12 +118,18 @@
 \input{paper/tables/table3_q2_temperature.tex}
 \input{paper/tables/table4_q2_moisture.tex}
 
+\steptitle{传热与失水的对比}
+
 两张表反映出一个鲜明的对比：$3$~h 内温度已接近环境值 $50$~$^\circ$C，中心与表面只差
 $0.1$~$^\circ$C 左右，\textbf{传热已基本达到准稳态；含水率的径向梯度却在同一时段内明显增大}，
 中心仍为 \qtwoCcenterthreeh，表面已降至 \qtwoCsurfacethreeh。
 
+\steptitle{干燥的控制机制}
+
 这一对比说明\textbf{干燥由内部水分扩散控制}，表面蒸发不是瓶颈：水分必须先由中心扩散到表面，
 才能被热风带走，而该扩散过程的特征时间是小时量级。该判断与第五章算得的传质 Biot 数约为 $20$ 相符。
+
+\steptitle{短时表格对环境取值的敏感性}
 
 短时表格对环境取值并不敏感：在 $3$~h 表格区域内，环境水分浓度在 $0.045\sim0.055$~kg/kg
 之间变化时，表值最大差仅为 \qtwotableregionenvinsensitivity。
@@ -135,7 +156,7 @@ $0.1$~$^\circ$C 左右，\textbf{传热已基本达到准稳态；含水率的�
 
 上述结果需要说明三点。
 
-\begin{enumerate}[label=(\arabic*), leftmargin=2.4em, itemsep=2pt, topsep=3pt, parsep=0pt]
+\begin{enumerate}[label=\protect\cnum{\arabic*}, leftmargin=2.6em, itemsep=2pt, topsep=3pt, parsep=0pt]
   \item 温湿场依赖题目给定的 $h$、$h_m$ 与附录 3 经验式。其中物性经验式完全来自题目、
         未经独立验证，而扩散系数的强非线性使结果对经验式的形式较为敏感，
         这是模型本身无法回避的不确定性。
