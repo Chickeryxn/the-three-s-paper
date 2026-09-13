@@ -72,7 +72,7 @@
   "skipped_claims": [],
   "frozen_reference_warnings": [],
   "bare_number_scan": {
-    "count": 268,
+    "count": 274,
     "sample": [
       "paper/sections/01_problem_restatement.tex:18: 0",
       "paper/sections/02_problem_analysis.tex:12: 0.97",
@@ -93,14 +93,14 @@
       "paper/sections/04_symbols.tex:33: 2",
       "paper/sections/04_symbols.tex:34: 2",
       "paper/sections/04_symbols.tex:35: 2",
-      "paper/sections/04_symbols.tex:39: 800"
+      "paper/sections/04_symbols.tex:42: 2"
     ]
   },
   "bibitem_count": 5,
   "ai_declaration_sources": [
     "paper/ai_use_disclosure.md"
   ],
-  "approx_paper_chars": 27105,
+  "approx_paper_chars": 27792,
   "approx_pages_est": 15,
   "note": "Page estimate is a rough guide; enforce contest limits with a LaTeX build audit.",
   "ai_declaration_missing": false

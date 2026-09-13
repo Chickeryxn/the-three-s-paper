@@ -301,11 +301,9 @@ def _disc(ax, cx, rad, knots_r, knots_v, cm, norm):
 
 
 def fig02():
-    """预热阶段温度与水分场：三维面图 + 关键时刻的截面圆盘。
+    """预热阶段温度与水分场：七个关键时刻的径向截面圆盘。
 
-    (a)(b) 为 T(r,t) 与 C(r,t) 的三维面图，颜色即该量本身；
-    (c)(d) 把七个关键时刻的径向截面画成圆盘——盘心到盘缘对应 r = 0 到 R，
-    相邻时刻之间用箭头标出经过的分钟数。
+    盘心到盘缘对应 r = 0 到 R，相邻时刻之间用箭头标出经过的分钟数。
     """
     rowsT = read_sheet("results/Q1/experiments/round1/result1.xlsx", "温度")
     rowsC = read_sheet("results/Q1/experiments/round1/result1.xlsx", "水分浓度")
@@ -318,49 +316,20 @@ def fig02():
     idx = [int(np.where(t == v)[0][0]) for v in times]
     cmT, cmC = CMAP_TEMP, CMAP_MOIST
 
-    fig = plt.figure(figsize=(7.4, 7.8))
+    # 三维面图已删除，只保留两排圆盘；图高按两排圆盘的实际高度缩短，
+    # 两排圆盘自身的尺寸与相对位置与删除前完全一致
+    fig = plt.figure(figsize=(7.4, 3.35))
     # 圆盘两排用等比例坐标，绘图区会被压扁并在格内居中留白；
     # 把两排的格子高度压到贴合内容，两排才会真正靠拢
-    gs = fig.add_gridspec(3, 2, height_ratios=[2.05, 0.72, 0.72],
-                          hspace=0.02, wspace=0.26,
-                          left=0.075, right=0.905, top=0.985, bottom=0.03)
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.0],
+                          hspace=0.19, wspace=0.26,
+                          left=0.075, right=0.905, top=0.960, bottom=0.0997)
 
-    # ---- (a)(b) 三维面图（去掉面片网格线，只留颜色） ----
-    # 重采样到细网格：原来的 60x21 采样会让曲面边缘出现阶梯状刻面
-    tt_f = np.linspace(float(t[0]), float(t[-1]), 240)
-    rr_f = np.linspace(0.0, 2.0, 101)
-    Rg, Tg = np.meshgrid(rr_f, tt_f / 60.0)
-    for k, (mat, cm, zl, tag) in enumerate(((T, cmT, _T_LAB, "a"),
-                                            (C, cmC, _C_LAB, "b"))):
-        ax = _surf_axes(fig, gs[0, k])
-        Zt = np.column_stack([np.interp(tt_f, t, mat[:, j]) for j in range(mat.shape[1])])
-        Z = np.vstack([np.interp(rr_f, R_COLS_CM, Zt[i]) for i in range(Zt.shape[0])])
-        # rasterized=True is what actually removes the mesh: the seams only appear in
-        # the vector PDF, where every quad is stroked independently, and are invisible
-        # in the PNG. The surface is embedded as a 400 dpi raster instead.
-        s = ax.plot_surface(Rg, Tg, Z, cmap=cm, linewidth=0, antialiased=False,
-                            shade=False, edgecolor="none", rasterized=True,
-                            rcount=Z.shape[0], ccount=Z.shape[1])
-        ax.set_xlim(0, 2)
-        ax.set_ylim(0, 30)
-        # 时间轴的 0 与距离轴的终点重合，删掉这个刻度标注
-        ax.yaxis.set_major_formatter(
-            FuncFormatter(lambda v, _p: "" if abs(v) < 1e-9 else "%g" % v))
-        _box(ax)
-        # built-in 3D axis titles: matplotlib centres each one alongside its own
-        # axis, which hand-placed text2D cannot do
-        ax.set_xlabel(_R_LAB, fontsize=9.5, labelpad=-2)
-        ax.set_ylabel(_T_MIN_LAB, fontsize=9.5, labelpad=-2)
-        cb = fig.colorbar(s, ax=ax, shrink=0.62, aspect=13, pad=0.05)
-        cb.set_label(zl, fontsize=9.5)
-        cb.ax.tick_params(labelsize=8.5)
-        cb.outline.set_linewidth(0.5)
-
-    # ---- (c)(d) 关键时刻的截面圆盘 ----
+    # ---- 关键时刻的截面圆盘 ----
     xstep, rad = 1.35, 0.45
     for k, (mat, cm, zl, tag) in enumerate(((T, cmT, _T_LAB, "c"),
                                             (C, cmC, _C_LAB, "d"))):
-        ax = fig.add_subplot(gs[1 + k, :])
+        ax = fig.add_subplot(gs[k, :])
         ax.set_aspect("equal")
         ax.axis("off")
         last = (k == 1)          # 上下两排的时间点相同，只在下面一排标一次
@@ -389,7 +358,9 @@ def fig02():
             # 两个色卡都放在右侧，并在右侧分左右并排
             for sm, x0, lab, side in ((smT, 0.906, _T_LAB, "left"),
                                       (smC, 0.968, _C_LAB, "right")):
-                cax = fig.add_axes([x0, 0.075, 0.013, 0.275])
+                # 图高缩短后按同样的绝对位置/高度换算成图面比例，
+                # 两个色卡的尺寸与位置与删除三维图之前一致
+                cax = fig.add_axes([x0, 0.1746, 0.013, 0.6403])
                 cb = fig.colorbar(sm, cax=cax)
                 cb.set_label(lab, fontsize=9.5)
                 # 两个色卡并排时标签分别朝外，避免互相压字
