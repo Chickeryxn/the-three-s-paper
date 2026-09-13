@@ -6,49 +6,59 @@
 而药材长径比超过 $12$，两端面的轴向输运相对于径向可以忽略，
 因此我们取\textbf{一维径向轴对称}模型，即第五章式~\eqref{eq:energy} 与式~\eqref{eq:mass}：
 
-\begin{align*}
-  \rho c_p\frac{\partial T}{\partial t}
-    &= \frac{1}{r}\frac{\partial}{\partial r}\left(k\,r\,\frac{\partial T}{\partial r}\right), \\
-  \frac{\partial C}{\partial t}
-    &= \frac{1}{r}\frac{\partial}{\partial r}\left(D\,r\,\frac{\partial C}{\partial r}\right).
-\end{align*}
+\begin{equation}
+\begin{cases}
+\rho c_p\dfrac{\partial T}{\partial t}=\dfrac{1}{r}\dfrac{\partial}{\partial r}
+\left(k\,r\,\dfrac{\partial T}{\partial r}\right)\\[16pt]
+\dfrac{\partial C}{\partial t}=\dfrac{1}{r}\dfrac{\partial}{\partial r}
+\left(D\,r\,\dfrac{\partial C}{\partial r}\right)
+\end{cases}
+\label{eq:q1gov}
+\end{equation}
 
-边界为式~\eqref{eq:bc} 的第三类对流条件，即在表面 $r=R$ 处
+边界取式~\eqref{eq:bc} 的第三类对流条件，在 $r=R$ 处有
 
-\begin{align*}
-  -k\left.\frac{\partial T}{\partial r}\right|_{r=R}
-    &= h\left(T(R,t)-T_\infty(t)\right), \\
-  -D\left.\frac{\partial C}{\partial r}\right|_{r=R}
-    &= h_m\left(C(R,t)-C_\infty(t)\right),
-\end{align*}
+\[
+\begin{cases}
+-k\,\dfrac{\partial T}{\partial r}=h\left(T-T_\infty\right)\\[16pt]
+-D\,\dfrac{\partial C}{\partial r}=h_m\left(C-C_\infty\right)
+\end{cases}
+\]
 
-而在中心 $r=0$ 处由轴对称性给出零梯度。初值取 $T=28$~$^\circ$C、$C=2.55$~kg/kg，且全域均匀。
-环境温湿度 $T_\infty(t)$、$C_\infty(t)$ 取附件~1 的实测序列并线性插值：
-题目要求的 $t=100$~s 不是附件~1 的采样点，只能插值得到。
+在 $r=0$ 处由轴对称性给出零梯度。初值取
 
-本问的物性按附录~2 取为常值，汇总于表~\ref{tab:q1props}。
+\[
+\begin{cases}
+T=28~^\circ\text{C}\\[16pt]
+C=2.55~\text{kg/kg}
+\end{cases}
+\]
+
+且全域均匀。环境温湿度 $T_\infty(t)$、$C_\infty(t)$ 取附件 1 的实测序列并线性插值——
+题目要求的 $t=100$~s 不是附件 1 的采样点，必须插值才能得到。
+附录 2 给出的本问物性汇总于表~\ref{tab:q1props}。
 
 \begin{table}[H]
   \centering
-  \caption{问题一所用的物性参数（附录 2）}
-  \label{tab:q1props}
+  \caption{问题一所用物性参数}\label{tab:q1props}
   \small
-  \begin{tabular}{@{}lll@{}}
+  \begin{tabular}{@{}llll@{}}
     \toprule
-    参数 & 符号 & 取值 \\
+    物性 & 符号 & 取值 & 单位 \\
     \midrule
-    药材密度 & $\rho$ & $820$~kg/m$^3$ \\
-    比热容 & $c_p$ & $2600$~J/(kg$\cdot$K) \\
-    导热系数 & $k$ & $0.36$~W/(m$\cdot$K) \\
-    对流传热系数 & $h$ & $25$~W/(m$^2\cdot$K) \\
-    对流传质系数 & $h_m$ & $8\times10^{-7}$~m/s \\
-    水分扩散系数 & $D$ & $7\times10^{-9}e^{-0.89/C}$~m$^2$/s \\
+    药材密度 & $\rho$ & $820$ & kg/m$^3$ \\
+    比热容 & $c_p$ & $2600$ & J/(kg$\cdot$K) \\
+    导热系数 & $k$ & $0.36$ & W/(m$\cdot$K) \\
+    对流传热系数 & $h$ & $25$ & W/(m$^2\cdot$K) \\
+    对流传质系数 & $h_m$ & $8\times10^{-7}$ & m/s \\
+    水分扩散系数 & $D$ & $7\times10^{-9}e^{-0.89/C}$ & m$^2$/s \\
     \bottomrule
   \end{tabular}
-  \par\smallskip\footnotesize 表中 $C$ 为干基含水率，单位为 kg/kg。
 \end{table}
 
-
+质量方程按题目明文采用 Fick 标准形式，$\rho$、$c_p$、$k$ 只进入能量方程。
+注意到本问物性为常数，温度不进入扩散系数、含水率也不进入热物性，
+因此式~\eqref{eq:q1gov} 的两个方程彼此独立，可以分别求解。
 
 \subsection{模型的求解}
 

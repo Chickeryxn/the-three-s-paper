@@ -1,3 +1,9 @@
+% !TEX root = main.tex
+% 本文件是**模板**，不能直接编译：正文里的四个占位符（冻结数值宏、章节引入、
+% AI 使用声明、参考文献）要由 scripts/latex_assembly.py 替换后才能生成可编译的 paper/main.tex。
+% 注意：本注释里**不能**写出那四个占位符的字面写法，否则装配脚本的朴素字符串替换
+% 会把注释本身也展开，生成的文件头部会被塞进整段宏定义，编译立刻失败。
+% 上一行的 !TEX root 就是为此：在任何编辑器里从本文件触发编译时，LaTeX Workshop 会改为编译 main.tex。
 % Clean-room contest paper baseline (self-written; no upstream template code is vendored).
 % Compile with XeLaTeX from the repository root:
 %   xelatex -interaction=nonstopmode -output-directory=paper paper/main.tex   (twice)
@@ -9,6 +15,7 @@
 \usepackage{float}
 \usepackage{caption,subcaption}
 \usepackage{enumitem}
+\usepackage{pifont}   % \ding{226}：问题提出分点的指针（上半白下半黑，➢）；直接写该字符会缺字
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref}   % 正文无彩色：链接与引用均为黑色
@@ -78,6 +85,10 @@
   captionpos=b,
 }
 \lstset{style=pycode}
+
+% ➤ 小标题：与「问题提出」同一标号（pifont \ding{226}，上半白下半黑），
+% 单独一行、不缩进、\smash 防止撑高行距；只在第五章的推导步骤中使用。
+\newcommand{\steptitle}[1]{\par\vspace{6pt}\noindent\smash{\large\ding{226}}~\textbf{#1}\par}
 
 % Frozen-number macros (injected by scripts/latex_assembly.py)
 __FROZEN_MACROS__

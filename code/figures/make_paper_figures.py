@@ -603,16 +603,18 @@ def fig05():
     ax4.set_ylim(1e-14, 4e-7)
     ax4.text(0.60, 2.2e-9, "阈值 $10^{-8}$", fontsize=9.6, color=P["criterion"],
              ha="center", va="center")
-    # a log-axis offset text ("0e+00") is positioned outside the tight bbox; the
-    # mathtext log formatter prints the exponent in every label, so no offset is needed
-    from matplotlib.ticker import LogFormatterMathtext
+    # 纵轴刻度写成显式的 $10^{k}$，不要用 LogFormatterMathtext：后者内部用
+    # \mathdefault，会回退到正文字体 SimSun，而 SimSun 没有 U+2212 减号，
+    # 于是指数里的负号被画成方框（10¤6）。显式 mathtext 走 mathtext.fontset（STIX），
+    # 减号正常。偏移量文本（"0e+00"）仍隐藏，指数已在每个标签里给出。
+    def _pow10(v, _pos):
+        return "$10^{%d}$" % int(round(np.log10(v)))
+
     for ax_ in fig.get_axes():
         if ax_.get_yscale() == "log":
-            ax_.yaxis.set_major_formatter(LogFormatterMathtext())
+            ax_.yaxis.set_major_formatter(FuncFormatter(_pow10))
         ax_.yaxis.get_offset_text().set_visible(False)
         ax_.xaxis.get_offset_text().set_visible(False)
-    for ax_, lab in zip([ax, ax2, ax3, ax4], "abcd"):
-        panel_label(ax_, lab, dx=-0.22, dy=1.10)
     finish(fig, "fig05_numerical_verification",
            {"data": ["results/Q*/experiments/round1/metrics/main_validation.json",
                      "results/Q*/experiments/round1/metrics/verifier_validation.json",

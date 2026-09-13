@@ -1,0 +1,95 @@
+% 第五章内容结构与建模路线图（论文图 2 的源文件）
+% 依据：paper/sections/05_model_and_solution.tex 的标题层级
+%       5.1 / 5.2.1-5.2.3 / 5.3.1-5.3.6
+% 编译：xelatex -interaction=nonstopmode -output-directory=paper/figures code/figures/fig13_chapter5_roadmap.tex
+% 产物：paper/figures/fig13_chapter5_roadmap.pdf
+% 约定：框内只用简短总结语，不加任何公式；无底色、无分节线，纯黑白线框。
+%       三处分支拆成"物性／时程／区域"三框后再合并；定解条件的三个条件嵌套在
+%       "定解条件"容器框内。
+\documentclass[border=8pt,12pt]{standalone}
+\usepackage{xeCJK}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta}
+\setCJKmainfont{SimSun}
+\setCJKfamilyfont{zhhei}{SimHei}
+\setmainfont{Times New Roman}
+\pagestyle{empty}
+
+\tikzset{
+  base/.style = {align=center, font=\small\CJKfamily{zhhei}, draw=black, fill=white,
+                 line width=0.9pt, rounded corners=3pt, inner sep=3pt},
+  bx/.style   = {base, rectangle, text width=2.9cm, minimum height=1.6cm},
+  bxs/.style  = {base, rectangle, rounded corners=2pt, line width=0.7pt,
+                 text width=2.5cm, minimum height=0.9cm},
+  bxi/.style  = {base, rectangle, rounded corners=2pt, line width=0.7pt,
+                 minimum width=2.2cm, minimum height=0.85cm, inner sep=2pt},
+  dec/.style  = {base, diamond, rounded corners=1.5pt, aspect=1.95,
+                 minimum height=1.9cm, inner sep=0pt, line width=1.0pt},
+  term/.style = {base, rounded corners=0.8cm,
+                 minimum height=1.6cm},
+  ar/.style   = {-{Latex[length=5pt,width=4.5pt]}, line width=0.9pt, rounded corners=6pt},
+  ln/.style   = {line width=0.9pt, rounded corners=6pt},
+  lab/.style  = {font=\scriptsize\CJKfamily{zhhei}, inner sep=2pt, fill=white},
+  ctitle/.style = {font=\small\CJKfamily{zhhei}, anchor=center, inner sep=0pt},
+}
+
+\begin{document}
+\begin{tikzpicture}
+
+% ============ 建模准备：统一模型 → 三处分支 → 合并 ============
+\node[term, text width=3.2cm] (t1) at (2.50,-1.85) {统一径向轴对称模型};
+\node[bxs] (p1) at (7.00,-0.80) {物性};
+\node[bxs] (p2) at (7.00,-1.85) {时程};
+\node[bxs] (p3) at (7.00,-2.90) {区域};
+\node[bx]  (b3) at (11.90,-1.85) {守恒分析得\\两方程};
+
+\coordinate (sp) at (4.90,-1.85);
+\coordinate (mg) at (9.40,-1.85);
+\draw[ln] (t1.east) -- (sp);
+\draw[ar] (sp) |- (p1.west);
+\draw[ar] (sp) -- (p2.west);
+\draw[ar] (sp) |- (p3.west);
+\draw[ln] (p1.east) -| (mg);
+\draw[ln] (p2.east) -- (mg);
+\draw[ln] (p3.east) -| (mg);
+\draw[ar] (mg) -- (b3.west);
+
+% ============ 定解条件（容器框，内嵌三个条件框） ============
+\node[base, rectangle, rounded corners=4pt, minimum width=8.2cm, minimum height=2.1cm,
+      inner sep=0pt] (cond) at (4.80,-5.35) {};
+\node[ctitle] at (4.80,-4.67) {定解条件};
+\node[bxi] (c1) at (2.10,-5.80) {边界条件};
+\node[bxi] (c2) at (4.70,-5.80) {初值};
+\node[bxi] (c3) at (7.30,-5.80) {环境驱动};
+\node[bx]  (b5) at (11.90,-5.35) {量级判定\\Fourier／Biot};
+
+\draw[ar] (b3.south) -- (11.90,-3.70) -- (4.80,-3.70) -- (cond.north);
+\draw[ar] (cond.east) -- (b5.west);
+
+% ============ 求解主线 ============
+\node[bx]  (b6) at (2.30,-8.20)  {顶点有限\\体积离散};
+\node[bx]  (b7) at (6.30,-8.20)  {端点处理与\\时间推进};
+\node[dec] (b8) at (10.20,-8.20) {含移动\\边界？};
+\node[bx]  (b9) at (14.20,-8.20) {坐标变换与\\表观对流项};
+
+\node[bx]  (b10) at (14.20,-10.80) {守恒核验与\\三路验证};
+\node[term, text width=3.0cm] (b11) at (7.50,-10.80) {输出温湿场};
+
+\draw[ar] (b5.south) -- (11.90,-6.85) -- (2.30,-6.85) -- (b6.north);
+\draw[ar] (b6) -- (b7);
+\draw[ar] (b7) -- (b8);
+\draw[ar] (b8.east) -- node[lab, above]{是} (b9.west);
+\draw[ar] (b9.south) -- (b10.north);
+
+% 不含移动边界时直接进入核验
+\draw[ar] (b8.south) -- (10.20,-9.55) -- node[lab, above]{否} (12.90,-9.55)
+                      -- (12.90,-10.00);
+
+% 回环：三路验证不一致则加密网格
+\draw[ar] (b10.south) -- (14.20,-12.40) -- node[lab, above]{不一致·加密} (7.00,-12.40)
+                        -- (0.25,-12.40) -- (0.25,-8.20) -- (b6.west);
+
+\draw[ar] (b10) -- (b11);
+
+\end{tikzpicture}
+\end{document}

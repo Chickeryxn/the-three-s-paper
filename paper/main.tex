@@ -9,6 +9,7 @@
 \usepackage{float}
 \usepackage{caption,subcaption}
 \usepackage{enumitem}
+\usepackage{pifont}   % \ding{226}：问题提出分点的指针（上半白下半黑，➢）；直接写该字符会缺字
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage[hidelinks]{hyperref}   % 正文无彩色：链接与引用均为黑色
@@ -78,6 +79,10 @@
   captionpos=b,
 }
 \lstset{style=pycode}
+
+% ➤ 小标题：与「问题提出」同一标号（pifont \ding{226}，上半白下半黑），
+% 单独一行、不缩进、\smash 防止撑高行距；只在第五章的推导步骤中使用。
+\newcommand{\steptitle}[1]{\par\vspace{6pt}\noindent\smash{\large\ding{226}}~\textbf{#1}\par}
 
 % Frozen-number macros (injected by scripts/latex_assembly.py)
 \newcommand{\qoneCcenteroneeightzerozeros}{2.55\,kg/kg}

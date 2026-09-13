@@ -2,115 +2,162 @@
 
 \subsection{建模准备与总体框架}
 
-四个问题研究的是同一个对象，即圆柱形药材在热风中的升温与失水，控制方程、边界条件与初值完全一致。
-因此我们不逐问重复建模，而是先建立一套统一的径向轴对称模型，四个问题都在它上面求解，
-只在物性经验式、环境时程与计算区域三处分支：问题一取问题给定的常物性，
-问题二与问题三取附录 3 的温度—浓度双向耦合经验式，问题四再叠加由附件 2 决定的尺寸收缩。
-\\这样处理既免去重复推导，也使四问的结果具有直接可比性。本节先给出控制方程与定解条件，
+四个问题研究的都是圆柱形药材在热风中的升温与失水，而控制方程、边界条件与初值完全一致。
+因此我们不需要逐问重复建模，而只需要先建立一套统一的径向轴对称模型，四个问题都在它上面求解即可，
+只在物性经验式、环境时程与计算区域三个地方进行分支使四问的\textbf{结果具有直接可比性}。本节先给出控制方程与定解条件，
 再给出统一的数值方法，各问的具体参数与求解结果分别见第六章至第九章。
+本章的内容结构与建模路线见图~\ref{fig:ch5roadmap}。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{fig13_chapter5_roadmap.pdf}
+  \caption{第五章的内容结构与建模路线}
+  \label{fig:ch5roadmap}
+\end{figure}
 
 \subsection{控制方程的建立}
 
 \subsubsection{由守恒律导出控制方程}
 
-药材内部既无内热源也无化学反应，故热量只靠导热传递，水分只由浓度梯度驱动。
-由微元法，在药材内取半径由 $r$ 到 $r+\Delta r$ 的一层薄环，并沿轴向取单位长度，由\textbf{能量守恒定律}环内热量的变化率应等于
-两侧界面净导入的导热热流，即
+\steptitle{微元与守恒分析}
+
+药材内部既没有内热源也没有化学反应，所以热量几乎只靠导热传递，水分只由浓度梯度驱动。
+由微元法，在药材内取半径由 $r$ 到 $r+\Delta r$ 的一层薄环，并沿轴向取单位长度，根据\textbf{能量守恒定律}，环内热量的变化率应等于
+两侧界面净导入的导热流，即
 
 \begin{equation}
 \rho c_p\frac{\partial T}{\partial t}\cdot 2\pi r\,\Delta r
 =\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r+\Delta r}
--\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r}.
+-\left.\left(k\cdot 2\pi r\frac{\partial T}{\partial r}\right)\right|_{r}
 \label{eq:energybalance}
 \end{equation}
+
+\steptitle{能量方程}
 
 两端同除以 $2\pi r\,\Delta r$，再令 $\Delta r\to 0$，右端即成为散度形式，于是得到能量方程
 
 \begin{equation}
 \rho c_p\frac{\partial T}{\partial t}
-=\frac{1}{r}\frac{\partial}{\partial r}\left(k\,r\,\frac{\partial T}{\partial r}\right).
+=\frac{1}{r}\frac{\partial}{\partial r}\left(k\,r\,\frac{\partial T}{\partial r}\right)
 \label{eq:energy}
 \end{equation}
 
-对水分做同样的守恒分析：环内水量的变化率等于两侧界面净导入的水分质量流，
-而质量流的本构关系即\textbf{ Fick 定律}，即通量等于扩散系数乘以浓度梯度的负值，于是
+\steptitle{质量方程与 Fick 定律}
+
+对水分也做同样的守恒分析：环内水量的变化率等于两侧界面净导入的水质量流，
+而质量流的本构关系，也就是\textbf{ Fick 定律}，即通量等于扩散系数乘以浓度梯度的负值，于是可得
 
 \begin{equation}
 \frac{\partial C}{\partial t}
-=\frac{1}{r}\frac{\partial}{\partial r}\left(D\,r\,\frac{\partial C}{\partial r}\right).
+=\frac{1}{r}\frac{\partial}{\partial r}\left(D\,r\,\frac{\partial C}{\partial r}\right)
 \label{eq:mass}
 \end{equation}
 
-观察到，问题一中物性 $k$、$D$ 与状态无关，式~\eqref{eq:energy} 与式~\eqref{eq:mass} 彼此独立，
-温度场与水分场可以分别求解。
+\steptitle{两式的可分离性}
 
-需要说明的是，式~\eqref{eq:mass} 中不含密度：本文按题目明文的 Fick 标准形式建立质量方程，
-密度、比热容与导热系数只出现在能量方程中。这一读法决定了后文全部时长结论的适用范围，
-其影响量级在灵敏度分析中定量给出。
+注意到问题一中物性 $k$、$D$ 与状态无关，则式~\eqref{eq:energy} 与式~\eqref{eq:mass} 之间彼此独立，
+所以温度场与水分场可以分别求解。
+
+\steptitle{关于质量方程的说明}
+
+需要说明的是，式~\eqref{eq:mass} 中不含密度：本文按照题目规定的 Fick 标准形式建立质量方程，
+密度、比热容与导热系数只出现在能量方程中。这一说明决定了后文全部时长结论的适用范围，
+其影响量级将在灵敏度分析中定量给出。
 
 \subsubsection{边界条件与初值}
+
+\steptitle{边界条件的给出}
 
 \begin{tabular}{@{}p{1.4em}p{0.85\textwidth}@{}}
 ① & 在中心 \(r=0\) 处，由轴对称性给出零梯度条件；\\[2pt]
 ② & 在表面 \(r=R\) 处，热流与质量流均由对流控制。\\
 \end{tabular}
 
-把外法向通量写开，即得第三类（Robin）边界条件
+\steptitle{第三类对流边界}
+
+把外法向通量写开，可以得第三类边界条件
 \begin{equation}
 \left.-k\frac{\partial T}{\partial r}\right|_{r=R}
-=h\left(T(R,t)-T_\infty(t)\right),
+=h\left(T(R,t)-T_\infty(t)\right)
 \label{eq:bc}
 \end{equation}
 
 \begin{equation}
 \left.-D\frac{\partial C}{\partial r}\right|_{r=R}
-=h_m\left(C(R,t)-C_\infty(t)\right).
+=h_m\left(C(R,t)-C_\infty(t)\right)
 \label{eq:bcm}
 \end{equation}
 
 其中 $h$ 与 $h_m$ 分别为对流传热系数与对流传质系数，$T_\infty$ 与 $C_\infty$ 为烘房环境的
-温度与水分浓度。初始时刻温度与含水率在全域均匀，即 $T(r,0)=T_0$、$C(r,0)=C_0$。\\
-[2pt]环境序列由附件 1 的实测数据给出（$0$--$14400$~s，步长 $60$~s），采样点之间的时刻按相邻两点的分段线性插值取值。
-$14400$~s 之后记录终止，本文取末段（约 $t\ge9000$~s）稳定平台的实测均值并保持不变，
-即 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg，以支撑问题二至问题四 的计算。
+温度与水分浓度。
+
+\steptitle{初值}
+
+初始时刻温度与含水率在\textbf{全域均匀}，即 $T(r,0)=T_0$、$C(r,0)=C_0$。
+
+\steptitle{环境序列的驱动与外推}
+
+环境序列直接使用附件 1 给出的实测数据（$0$--$14400$~s，步长 $60$~s），采样点之间的时刻按相邻两点的\textbf{分段线性插值}取值。
+$14400$~s 之后记录终止，本文取末段（约 $t\ge9000$~s）\textbf{稳定平台的实测均值}并保持不变，
+即 $T_\infty=50$~$^\circ$C、$C_\infty=0.05$~kg/kg，以支撑问题二至问题四的计算。
 
 \subsubsection{特征时间与量级分析}
 
-数值求解之前，先由控制方程判断两个阶段的主控机制，为时间步长与验证设计定标。
-对式~\eqref{eq:mass} 与式~\eqref{eq:bcm} 作无量纲化，取 $\xi=r/R$、$u=(C-C_\infty)/(C_0-C_\infty)$，得
+\steptitle{无量纲化与支配参数}
+
+数值求解之前，先由控制方程判断两个阶段的主导控制机制，为时间步长与验证设计制定标准。
+对式~\eqref{eq:mass} 与式~\eqref{eq:bcm} 作无量纲化处理，取 $\xi=r/R$、$u=(C-C_\infty)/(C_0-C_\infty)$，可得
 
 \begin{equation}
-\frac{\partial u}{\partial\tau}
-=\frac{1}{\xi}\frac{\partial}{\partial\xi}\left(\xi\frac{\partial u}{\partial\xi}\right),\qquad
-\tau=\frac{Dt}{R^2},
+\begin{cases}
+\dfrac{\partial u}{\partial\tau}
+=\dfrac{1}{\xi}\dfrac{\partial}{\partial\xi}\left(\xi\dfrac{\partial u}{\partial\xi}\right)\\[16pt]
+\tau=\dfrac{Dt}{R^2}\\[16pt]
+\left.-\dfrac{\partial u}{\partial\xi}\right|_{\xi=1}
+=\text{Bi}_m\,u(1,\tau)\\[16pt]
+\text{Bi}_m=\dfrac{h_mR}{D}=\dfrac{R/D}{1/h_m}
+\end{cases}
 \label{eq:massnd}
 \end{equation}
 
-\begin{equation}
-\left.-\frac{\partial u}{\partial\xi}\right|_{\xi=1}
-=\text{Bi}_m\,u(1,\tau),\qquad
-\text{Bi}_m=\frac{h_mR}{D}=\frac{R/D}{1/h_m}.
-\label{eq:bcnd}
-\end{equation}
+该方程组的第一个式子不含任何参数，物性只由 Fourier 数 $\tau$ 与传质 Biot 数 $\text{Bi}_m$ 的定义代入，
+由此可见水分过程仅由这两个无量纲数支配。
 
-式~\eqref{eq:massnd} 不含任何参数，物性只由式~\eqref{eq:bcnd} 进入，
-可见水分过程仅由 Fourier 数 $\tau$ 与传质 Biot 数 $\text{Bi}_m$ 支配。
+\steptitle{Fourier 数 $\tau$：失水仅限表层}
 
 $\tau$ 表示已过去的时间相当于多少个特征扩散时间 $R^2/D$。预热阶段处于湿端
-（$C\approx1.5$--$2.5$~kg/kg、$T\approx28$~$^\circ$C），$R^2/D\approx20$--$22$~h，
-而该阶段只有 $30$~min，$t=1800$~s 时 $\tau\approx0.025$、穿透深度 $\sqrt{Dt}\approx0.3$~cm，
-不足半径的两成，故\textbf{失水只能发生在表层}。
-\\$\text{Bi}_m$ 是内部扩散阻力与外部对流传质阻力之比，本题湿端约 $3$、干端约 $20$，全程大于 $1$，
-说明\textbf{表面传质阻力小于内部扩散阻力，干燥由内部扩散控制}。
+（$C\approx1.5$--$2.5$~kg/kg、$T\approx28$~$^\circ$C），其特征时间与 Fourier 数为
 
-这两个量级判断将在第六、七章的灵敏度分析中被定量证实。
+\[
+\begin{cases}
+R^2/D\approx20\text{--}22~\text{h}\\[16pt]
+\tau=\dfrac{Dt}{R^2}\approx\dfrac{30~\text{min}}{20\text{--}22~\text{h}}\approx0.025
+\end{cases}
+\]
+
+该阶段只有 $30$~min，$t=1800$~s 时穿透深度
+
+\[
+\sqrt{Dt}\approx0.3~\text{cm}
+\]
+
+不足半径的两成，故\textbf{失水只能发生在表层}。
+
+\steptitle{传质 Biot 数：内部扩散控制}
+
+$\text{Bi}_m$ 是内部扩散阻力与外部对流传质阻力之比，本题湿端约 $3$、干端约 $20$，全程大于 $1$，
+说明\textbf{表面传质阻力小于内部扩散阻力，干燥主要由内部扩散控制}。
+
+这两个量级的判断将在第六、七章的灵敏度分析中被定量证实。
 
 \subsection{数学求解过程}
 
-四个问题共用同一条求解链条：把空间导数离散成守恒通量形式，把时间导数按 $\theta$ 加权格式推进，
-问题四再叠加移动边界的表观对流项，每个时间步归结为一个三对角方程组并用追赶法求解，
+\steptitle{统一求解主线}
+
+四个问题共用同一条求解主线：把空间导数离散成守恒通量形式，把时间导数按 $\theta$ 加权格式推进，
+问题四再叠加\textbf{移动边界的表观对流项}，把每个时间步归结为一个三对角方程组并用追赶法求解，
 最后在题目要求的报告时刻与位置取值。四问的差别只在代入哪套物性经验式、
-是否启用坐标变换以及计算区域如何取，链条本身不变。完整流程见图~\ref{fig:flow}。
+是否启用坐标变换以及计算区域如何取，主线本身不变。完整流程见图~\ref{fig:flow}。
 
 \begin{figure}[H]
   \centering
@@ -120,33 +167,41 @@ $\tau$ 表示已过去的时间相当于多少个特征扩散时间 $R^2/D$。�
   \label{fig:flow}
 \end{figure}
 
-下面按空间离散、时间离散、移动边界处理与验证设计的顺序给出各环节。
+下面按空间离散、时间离散、移动边界处理和验证设计的顺序给出各个环节。
 
 \subsubsection{空间离散：对偶控制体的顶点有限体积格式}
 
+\steptitle{控制体的取法}
+
 空间离散采用有限体积法：把守恒律写在每个小控制体上，界面通量一进一出相互抵消，
-因此水分不会凭空产生或消失。下面按“取控制体—写通量”两步构造格式。
+因此水分不会凭空产生或消失。下面按照取控制体、写通量两步构造格式。
 
 把区间 $[0,R]$ 等分为 $N$ 段，节点为 $r_j=j\Delta r$。以每个节点为中心取对偶控制体：
 内部节点的控制体为 $[r_j-\Delta r/2,\;r_j+\Delta r/2]$，首尾节点各取半格。
-把式~\eqref{eq:mass} 在每个控制体上作径向加权积分（权为 $r$，即环面积因子），得
+\steptitle{加权积分与界面通量}
+
+把式~\eqref{eq:mass} 在每个控制体上作径向加权积分（权为 $r$，即环面积因子），可得
 
 \begin{equation}
 \int_{V_j} r\frac{\partial C}{\partial t}\,dr
-=\left[\,r D\frac{\partial C}{\partial r}\right]_{\text{两侧界面}},
+=\left[\,r D\frac{\partial C}{\partial r}\right]_{\text{两侧界面}}
 \label{eq:fv}
 \end{equation}
 
-右端只出现界面上的通量，这正是有限体积法的出发点。把左端的积分近似为
+\steptitle{半离散方程}
+
+右端只出现界面上的通量，这也正是有限体积法的出发点。把左端的积分近似为
 $w_j\,\mathrm{d}C_j/\mathrm{d}t$，其中权重 $w_j=\int_{V_j}r\,\mathrm{d}r$ 为对偶控制体上径向坐标的积分，
 把右端的界面通量用相邻节点的差商近似，即得半离散方程
 
 \begin{equation}
 w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
 =r_{j+\frac12}D_{j+\frac12}\frac{C_{j+1}-C_j}{\Delta r}
--r_{j-\frac12}D_{j-\frac12}\frac{C_j-C_{j-1}}{\Delta r}.
+-r_{j-\frac12}D_{j-\frac12}\frac{C_j-C_{j-1}}{\Delta r}
 \label{eq:semi}
 \end{equation}
+
+\steptitle{网格参数与几何含义}
 
 图~\ref{fig:mesh} 给出这一离散的几何含义：左侧在圆柱截面上取一行径向节点，
 右侧放大后可以看到节点、对偶控制体与界面通量的相对位置。
@@ -161,34 +216,47 @@ w_j\frac{\mathrm{d}C_j}{\mathrm{d}t}
 
 \subsubsection{两个端点的处理}
 
+\steptitle{中心节点}
+
 在中心 $r=0$ 处，对偶控制体的内侧界面半径为 $0$，式~\eqref{eq:semi} 中对应的通量项自动为零，
-轴对称条件\textbf{由格式本身满足}，无需对 $1/r$ 的奇点作任何特殊处理。
+轴对称条件\textbf{由格式本身满足}，无需对 $1/r$ 的\textbf{奇点}作任何特殊处理。
+
+\steptitle{表面节点}
+
 在表面 $r=R$ 处，节点本身就是边界点，把式~\eqref{eq:bcm} 的通量代入式~\eqref{eq:fv} 的界面项，得
 
 \begin{equation}
 w_N\frac{\mathrm{d}C_N}{\mathrm{d}t}
 =r_{N-\frac12}D_{N-\frac12}\frac{C_{N-1}-C_N}{\Delta r}
--R\,h_m\left(C_N-C_\infty\right).
+-R\,h_m\left(C_N-C_\infty\right)
 \label{eq:surf}
 \end{equation}
 
+\steptitle{顶点格式的优势}
+
 式~\eqref{eq:surf} 说明：报告的表面值就是解变量 $C_N$ 本身，不需要由最外层单元中心回算。
-这避免了半单元重构引入的一阶误差，也正是我们选择顶点格式作为主要求解格式的原因。
+这\textbf{避免了半单元重构引入的一阶误差}，也正是我们选择顶点格式作为主要求解格式的原因。
 
 \subsubsection{时间离散：$\theta$ 加权与启动步}
+
+\steptitle{$\theta$ 加权格式}
 
 对半离散系统 $\mathbf{w}\,\mathrm{d}\mathbf{y}/\mathrm{d}t=\mathbf{Q}(\mathbf{y})$ 取 $\theta$ 加权，得
 
 \begin{equation}
 \mathbf{y}^{n+1}-\mathbf{y}^{n}
-=\Delta t\left[\theta\,\mathbf{Q}^{n+1}+(1-\theta)\mathbf{Q}^{n}\right].
+=\Delta t\left[\theta\,\mathbf{Q}^{n+1}+(1-\theta)\mathbf{Q}^{n}\right]
 \label{eq:theta}
 \end{equation}
 
-当 $\theta=1$ 时为后向 Euler，精度一阶但耗散强、无条件稳定；当 $\theta=1/2$ 时为
+\steptitle{启动步与稳定性}
+
+当 $\theta=1$ 时为后向 Euler，精度一阶但耗散性强、无条件稳定；当 $\theta=1/2$ 时为
 Crank--Nicolson，精度二阶且 A 稳定。本文取 $\theta=1/2$，但\textbf{前 $3$ 步改用 $\theta=1$}：
-初值处的温湿场与边界驱动之间存在突变，纯 Crank--Nicolson 会把这一突变转化为随时间衰减的振荡，
-以后向 Euler 启动即可将其抹平；三步之后解已充分光滑，再切回二阶格式不影响整体精度。
+初值处的温湿场与边界驱动之间存在突变，只用 Crank--Nicolson 会把这一突变转化为随时间衰减的振荡，
+用后向 Euler 启动即可将其抹平；三步之后解已充分光滑，再切回二阶格式并不影响整体精度。
+
+\steptitle{三对角方程组与追赶法}
 
 由于物性依赖温度与含水率，每一步的系数取上一时间层的值，使每个时间步仍是一个形如
 
@@ -202,66 +270,112 @@ a_jy_{j-1}+b_jy_j+c_jy_{j+1}=d_j
 
 \subsubsection{移动边界的坐标变换}
 
+\steptitle{归一化坐标}
+
 问题四中半径随时间收缩为 $R(t)$，固定网格无法贴合移动的边界。引入归一化坐标 $\xi=r/R(t)$，
-把未知的移动域 $[0,R(t)]$ 映射为固定的 $[0,1]$，这一步把“网格跟着边界走”转化为“边界不动、
-方程多一项”。设 $C(r,t)=\tilde C(\xi,t)$，由链式法则
+把未知的移动域 $[0,R(t)]$ 映射为固定的 $[0,1]$：
 
 \begin{equation}
-\left.\frac{\partial C}{\partial t}\right|_r
-=\left.\frac{\partial \tilde C}{\partial t}\right|_\xi
-+\frac{\partial \tilde C}{\partial \xi}\cdot\left.\frac{\partial \xi}{\partial t}\right|_r,
-\qquad \left.\frac{\partial \xi}{\partial t}\right|_r=-\frac{r\dot R}{R^2}=-\frac{\xi\dot R}{R},
+\begin{cases}
+\xi=\dfrac{r}{R(t)}\in[0,1]\\[16pt]
+r=\xi\,R(t)
+\end{cases}
+\label{eq:xi}
+\end{equation}
+
+从而把网格随边界的移动转化为方程的项。
+
+\steptitle{链式法则}
+
+设 $C(r,t)=\tilde C(\xi,t)$，由链式法则
+
+\begin{equation}
+\begin{cases}
+\left.\dfrac{\partial C}{\partial t}\right|_r
+=\left.\dfrac{\partial \tilde C}{\partial t}\right|_\xi
++\dfrac{\partial \tilde C}{\partial \xi}\cdot\left.\dfrac{\partial \xi}{\partial t}\right|_r\\[16pt]
+\left.\dfrac{\partial \xi}{\partial t}\right|_r
+=-\dfrac{r\dot R}{R^2}=-\dfrac{\xi\dot R}{R}
+\end{cases}
 \label{eq:chain}
 \end{equation}
+
+\steptitle{变换后的方程与表观对流项}
 
 同时 $\partial/\partial r=R^{-1}\,\partial/\partial\xi$，代入式~\eqref{eq:mass} 即得
 
 \begin{equation}
 \left.\frac{\partial \tilde C}{\partial t}\right|_\xi
 =\frac{1}{\xi R^2}\frac{\partial}{\partial \xi}\left(D\,\xi\,\frac{\partial \tilde C}{\partial \xi}\right)
-+\underbrace{\frac{\xi\dot R}{R}\frac{\partial \tilde C}{\partial \xi}}_{\text{表观对流项}} .
++\underbrace{\frac{\xi\dot R}{R}\frac{\partial \tilde C}{\partial \xi}}_{\text{表观对流项}}
 \label{eq:moving}
 \end{equation}
 
+\steptitle{表观对流项的物理含义}
+
 这一项的物理含义是清楚的：干基含水率按定义不随几何收缩而改变，因此在固定于材料的归一化坐标下，
 收缩表现为一个把浓度剖面按 $\xi\dot R/R$ 平流的对流项，而不是一个凭空产生或消灭水分的源汇。
-$\dot R$ 由附件 2 的单调插值解析求导得到，是已知函数，因此式~\eqref{eq:moving} 仍是线性方程组，
-无需重构网格即可求解。
+$\dot R$ 通过附件 2 的单调插值解析求导得到，是已知函数，因此式~\eqref{eq:moving} 仍是线性方程组，
+不需要重构网格就能求解。
 
 \subsubsection{移动边界的守恒性核验与不变量检验}
 
-移动边界下的守恒性不易目测，本文把它写成一个可以直接核验的离散恒等式。
+\steptitle{守恒恒等式的推导}
+
+移动边界下的守恒性不易观测，于是本文把它写成一个可以直接核验的\textbf{离散恒等式}。
 把式~\eqref{eq:moving} 两端同乘 $\xi$ 并在 $[0,1]$ 上积分，左端为
-$\frac{\mathrm{d}}{\mathrm{d}t}\int_0^1\xi\tilde C\,\mathrm{d}\xi$（$\xi$ 域固定，可移入导数）。
-右端第一项按分部积分给出界面项 $\left[\xi D\,\partial_\xi\tilde C/R^2\right]_0^1
-=-\frac{h_m}{R}(C_N-C_\infty)$，第二项给出
-$\frac{\dot R}{R}\int_0^1\xi^2\partial_\xi\tilde C\,\mathrm{d}\xi
-=\frac{\dot R}{R}\left(C_N-2\int_0^1\xi\tilde C\,\mathrm{d}\xi\right)$。
+
+\[
+\frac{\mathrm{d}}{\mathrm{d}t}\int_0^1\xi\tilde C\,\mathrm{d}\xi
+\]
+
+其中 $\xi$ 域固定，导数可移入积分号内。右端第一项按分部积分给出界面项
+
+\[
+\left[\xi D\,\partial_\xi\tilde C/R^2\right]_0^1
+=-\frac{h_m}{R}(C_N-C_\infty)
+\]
+
+第二项给出
+
+\[
+\frac{\dot R}{R}\int_0^1\xi^2\partial_\xi\tilde C\,\mathrm{d}\xi
+=\frac{\dot R}{R}\left(C_N-2\int_0^1\xi\tilde C\,\mathrm{d}\xi\right)
+\]
+
 把两个积分用归一化坐标下对偶控制体的权重 $\omega_j=\int_{\text{cell}}\xi\,\mathrm{d}\xi$ 离散
-（它与式~\eqref{eq:fv} 中的 $w_j$ 相差常数因子 $R^2$），整理得
+（它和式~\eqref{eq:fv} 中的 $w_j$ 相差常数因子为 $R^2$），整理得到
 
 \begin{equation}
 \frac{\mathrm{d}}{\mathrm{d}t}\sum_j \omega_jC_j
-=-2\frac{\dot R}{R}\sum_j \omega_jC_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}\left(C_N-C_\infty\right).
+=-2\frac{\dot R}{R}\sum_j \omega_jC_j+\frac{\dot R}{R}C_N-\frac{h_m}{R}\left(C_N-C_\infty\right)
 \label{eq:conservation}
 \end{equation}
 
-式~\eqref{eq:conservation} 是一个\textbf{可以直接逐时步核验的离散恒等式}：
-左端由数值解给出，右端由当步的系数给出，二者之差即格式的守恒性残差。
+\steptitle{守恒性的核验方式}
 
-再设一条更锋利的判据：令 $h_m=0$ 但保持收缩，则式~\eqref{eq:moving} 退化为纯平流方程，
+式~\eqref{eq:conservation} 是一个\textbf{可以直接逐时间步核验的离散恒等式}：
+左端由数值解给出，右端由所在步的系数给出，二者之差也就是格式的守恒性残差。
+
+\steptitle{解析不变量检验}
+
+令 $h_m=0$ 但保持收缩，则式~\eqref{eq:moving} 退化为纯平流方程，
 其解析解要求 $\tilde C(\xi,t)\equiv C_0$ 恒成立——因为干基含水率不随几何缩小而改变。
-若表观对流项的符号或系数写错，收缩就会凭空产生或消灭水分，该检验必然立刻暴露。
+若表观对流项的符号或系数写错，收缩就会凭空产生或消灭水分，该检验一定会暴露出来。
 这里我们把这条判据称为\textbf{解析不变量检验}，它是针对移动边界项最有针对性的一条验证设计，
 其结果见第九章。
 
 \subsubsection{求解流程与统一验证设计}
 
-综合以上推导，四个问题共用同一套求解流程：读取环境序列与几何数据；构造对偶控制体权重与界面系数；
-按问题选择物性经验式与时间格式；组装三对角方程组并用追赶法逐时步推进；在报告时刻按题目要求的
+\steptitle{统一求解流程}
+
+综合以上推导，四个问题共用同一套求解流程：读取环境序列与几何数据、构造对偶控制体权重与界面系数、
+按问题选择物性经验式与时间格式、组装三对角方程组并用追赶法逐时步推进、在报告时刻按题目要求的
 位置取值输出。其中问题四额外按 $\dot R$ 叠加表观对流项。完整流程见图~\ref{fig:flow}。
+
+\steptitle{三条独立实现路径}
 
 每一问都使用三条相互独立的实现路径：本文方法（顶点有限体积）、对照方法（格心有限体积，
 其表面值由式~\eqref{eq:bcm} 回算）与独立复算（常物性下的级数解析解，以及式~\eqref{eq:conservation}
-给出的守恒恒等式与本节的不变量检验）。三条路径不共享数值输入，只在其结果上相互比对，
-以保证实现的正确性。各问的比对结果分别见第六至第九章。
+给出的守恒恒等式与本节的不变量检验）。三条路径不共享数值输入，只在其结果上进行相互比对，
+以保证结果一致不是自证。各问的比对结果分别见第六至第九章。
