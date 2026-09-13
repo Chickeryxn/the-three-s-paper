@@ -72,7 +72,7 @@
   "skipped_claims": [],
   "frozen_reference_warnings": [],
   "bare_number_scan": {
-    "count": 271,
+    "count": 268,
     "sample": [
       "paper/sections/01_problem_restatement.tex:18: 0",
       "paper/sections/02_problem_analysis.tex:12: 0.97",
@@ -100,8 +100,8 @@
   "ai_declaration_sources": [
     "paper/ai_use_disclosure.md"
   ],
-  "approx_paper_chars": 27930,
-  "approx_pages_est": 16,
+  "approx_paper_chars": 27105,
+  "approx_pages_est": 15,
   "note": "Page estimate is a rough guide; enforce contest limits with a LaTeX build audit.",
   "ai_declaration_missing": false
 }
